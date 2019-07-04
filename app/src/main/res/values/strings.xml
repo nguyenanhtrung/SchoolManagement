@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">SchoolManagement</string>
+    <string name="image_description">No Image</string>
+    <string name="up_case_app_name">QUẢN LÝ TRƯỜNG HỌC</string>
+    <string name="hint_input_email">Nhập email</string>
+    <string name="hint_input_password">Nhập mật khẩu</string>
+    <string name="title_save_login">Lưu đăng nhập</string>
+    <string name="title_login">Đăng nhập</string>
+    <string name="text_forgot_password">Quên mật khẩu</string>
+    <string name="title_change_password">Đổi mật khẩu</string>
+    <string name="text_notify_forgot_password">Vui lòng nhập email đã tạo tài khoản. Mật khẩu mới sẽ được gửi vào email.</string>
+    <string name="title_close">Đóng</string>
+    <string name="title_confirm">Xác nhận</string>
 </resources>

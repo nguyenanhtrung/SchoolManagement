@@ -1,2 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <style name="Widget.OutLineTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/colorOnBackground</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="android:textAppearance">@style/TextNormal</item>
+    </style>
+
+
+    <style name="Widget.OutLinePasswordInputLayout" parent="Widget.OutLineTextInputLayout">
+        <item name="endIconMode">password_toggle</item>
+    </style>
+
+
+    <style name="Widget.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="Widget.EditTextPassword" parent="Widget.EditText">
+        <item name="android:inputType">textPassword</item>
+    </style>
+
+
+    <style name="Widget.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="android:textAppearance">@style/TextSmall</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+
+    <style name="Widget.Button" parent="Widget.MaterialComponents.Button">
+        <item name="cornerSize">8dp</item>
+        <item name="shapeAppearance">@style/ButtonShapeAppearance</item>
+    </style>
+
+    <style name="ButtonShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamilyTopLeft">cut</item>
+        <item name="cornerFamilyBottomLeft">cut</item>
+        <item name="cornerFamilyTopRight">cut</item>
+        <item name="cornerFamilyBottomRight">cut</item>
+    </style>
+</resources>

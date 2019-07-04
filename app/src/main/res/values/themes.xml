@@ -12,5 +12,10 @@
         <item name="colorOnError">@color/colorOnError</item>
         <item name="colorOnSurface">@color/colorOnSurface</item>
         <item name="colorSurface">@color/colorSurface</item>
+        <item name="textInputStyle">@style/Widget.OutLineTextInputLayout</item>
+        <item name="android:textAppearance">@style/TextNormal</item>
+        <item name="editTextStyle">@style/Widget.EditText</item>
+        <item name="checkboxStyle">@style/Widget.CheckBox</item>
+        <item name="materialButtonStyle">@style/Widget.Button</item>
     </style>
 </resources>
