@@ -1,2 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+
+    <style name="TitleNormal" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/roboto_medium</item>
+        <item name="fontFamily">@font/roboto_medium</item>
+    </style>
+</resources>
