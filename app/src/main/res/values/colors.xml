@@ -9,4 +9,5 @@
     <color name="colorOnError">#EF5350</color>
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
+    <color name="colorBackground">#EDFFFFFF</color>
 </resources>

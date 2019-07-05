@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    xmlns:tools="http://schemas.android.com/tools"
+
+    android:foregroundTint="@color/colorSurface">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/padding_normal_100">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_account"
+            android:layout_width="@dimen/width_circle_user_image"
+            android:layout_height="@dimen/height_circle_user_image"
+            tools:src="@tools:sample/avatars"
+            />
+
+        <TextView
+            android:id="@+id/text_account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="@tools:sample/full_names"
+            android:layout_toEndOf="@id/image_account"
+            android:layout_marginStart="@dimen/margin_normal_100"
+            android:textAppearance="@style/TextNormal"
+            />
+
+        <TextView
+            android:id="@+id/text_account_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text=" - GV12231231"
+            android:layout_toEndOf="@id/text_account_name"
+            android:textAppearance="@style/TextNormal"
+            />
+
+        <TextView
+            android:id="@+id/text_account_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_account_name"
+            android:layout_toEndOf="@id/image_account"
+            android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:textAppearance="@style/TextAccountType"
+            android:textColor="@color/colorSecondary"
+            tools:text="Need Update"
+            />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/check_box_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:visibility="gone"
+            android:layout_alignTop="@id/image_account"
+            android:layout_alignBottom="@id/image_account"
+            />
+
+
+    </RelativeLayout>
+
+
+
+</com.google.android.material.card.MaterialCardView>

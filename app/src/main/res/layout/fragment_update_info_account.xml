@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_account"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars[7]" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+        <TextView
+            android:id="@+id/text_account_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:textAppearance="@style/TitleNormal"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="@+id/image_account"
+            app:layout_constraintStart_toStartOf="@+id/image_account"
+            app:layout_constraintTop_toBottomOf="@+id/image_account"
+            tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/text_account_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:textAppearance="@style/TitleNormal"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/text_account_name"
+            app:layout_constraintStart_toStartOf="@+id/text_account_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_account_name"
+            tools:text="Student" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_detail_info"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_150"
+            android:foregroundTint="@color/colorSurface"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/text_account_type">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingBottom="@dimen/margin_normal_150"
+                >
+
+
+                <TextView
+                    android:id="@+id/title_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_normal_100"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:text="@string/title_birthday"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_normal_100"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_birthday"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/title_birthday"
+                    tools:text="@tools:sample/date/ddmmyy" />
+
+                <TextView
+                    android:id="@+id/title_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:text="@string/title_phone_number"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintStart_toStartOf="@+id/title_birthday"
+                    app:layout_constraintTop_toBottomOf="@+id/title_birthday" />
+
+                <TextView
+                    android:id="@+id/text_phone_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_phone_number"
+                    app:layout_constraintEnd_toEndOf="@+id/text_birthday"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/title_phone_number"
+                    app:layout_constraintTop_toTopOf="@+id/title_phone_number"
+                    tools:text="@tools:sample/us_phones" />
+
+                <TextView
+                    android:id="@+id/title_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:text="@string/title_email"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintStart_toStartOf="@+id/title_phone_number"
+                    app:layout_constraintTop_toBottomOf="@+id/title_phone_number" />
+
+                <TextView
+                    android:id="@+id/text_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/TextNormal"
+                    app:layout_constraintBottom_toBottomOf="@+id/title_email"
+                    app:layout_constraintEnd_toEndOf="@+id/text_phone_number"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/title_email"
+                    app:layout_constraintTop_toTopOf="@+id/title_email"
+                    tools:text="nguyenanhtrung2495@gmail.com" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_faculty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/hint_select_faculty"
+                    app:layout_constraintEnd_toEndOf="@+id/text_email"
+                    app:layout_constraintStart_toStartOf="@+id/title_email"
+                    app:layout_constraintTop_toBottomOf="@+id/text_email">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_faculty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_class"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/hint_select_class"
+                    app:layout_constraintEnd_toEndOf="@+id/input_layout_faculty"
+                    app:layout_constraintStart_toStartOf="@+id/input_layout_faculty"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_faculty">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_submit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_200"
+                    android:text="@string/title_submit"
+                    app:layout_constraintEnd_toEndOf="@+id/input_layout_class"
+                    app:layout_constraintStart_toStartOf="@+id/input_layout_class"
+                    app:layout_constraintTop_toBottomOf="@+id/input_layout_class" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.card.MaterialCardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

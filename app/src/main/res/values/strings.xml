@@ -11,4 +11,18 @@
     <string name="text_notify_forgot_password">Vui lòng nhập email đã tạo tài khoản. Mật khẩu mới sẽ được gửi vào email.</string>
     <string name="title_close">Đóng</string>
     <string name="title_confirm">Xác nhận</string>
+    <string name="title_account">Tài khoản</string>
+    <string name="title_personal_info">Thông tin cá nhân</string>
+    <string name="title_male">Nam</string>
+    <string name="title_female">Nữ</string>
+    <string name="hint_input_name">Nhập họ tên</string>
+    <string name="hint_input_phone_number">Nhập số điện thoại</string>
+    <string name="hint_input_address">Nhập địa chỉ</string>
+    <string name="input_personal_email">Nhập email cá nhân</string>
+    <string name="title_birthday">Ngày sinh</string>
+    <string name="title_phone_number">Số điện thoại</string>
+    <string name="title_email">Email</string>
+    <string name="hint_select_class">Chọn lớp</string>
+    <string name="hint_select_faculty">Chọn khoa</string>
+    <string name="title_submit">Xác nhận</string>
 </resources>

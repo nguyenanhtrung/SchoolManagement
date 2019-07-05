@@ -39,4 +39,9 @@
         <item name="cornerFamilyTopRight">cut</item>
         <item name="cornerFamilyBottomRight">cut</item>
     </style>
+
+    <style name="FloatButtonShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">@dimen/radius_diamond_button</item>
+    </style>
 </resources>
