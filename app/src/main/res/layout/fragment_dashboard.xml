@@ -59,7 +59,7 @@
         android:layout_marginTop="@dimen/margin_small_100"
         android:fontFamily="@font/roboto_medium"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-        android:textColor="@color/colorSecondary"
+        android:textColor="@color/colorOnPrimary"
         app:layout_constraintStart_toStartOf="@+id/text_account_name"
         app:layout_constraintTop_toBottomOf="@+id/text_account_name"
         tools:text="ADMIN" />
@@ -118,7 +118,7 @@
                 app:layout_constraintBottom_toBottomOf="@+id/imageView3"
                 app:layout_constraintStart_toEndOf="@+id/imageView3"
                 app:layout_constraintTop_toTopOf="@+id/imageView3"
-                tools:text=" 11/01/2020" />
+                tools:text=" Hom nay - 11/01/2020" />
 
             <TextView
                 android:id="@+id/text_message"
@@ -145,7 +145,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_tasks"
@@ -159,6 +161,7 @@
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView"
         app:layout_constraintVertical_bias="0.0"
+        app:spanCount="3"
         tools:listitem="@layout/item_task_dashboard" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

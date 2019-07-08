@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/padding_normal_100"
+    android:paddingEnd="@dimen/padding_normal_100"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/text_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="21/10/2019"
+        android:layout_alignBaseline="@id/text_status"
+        android:textColor="@color/colorPrimary"
+        android:textAppearance="@style/TextNormal"
+        />
+
+    <View
+        android:id="@+id/view_time_line"
+        android:layout_width="3dp"
+        android:layout_height="60dp"
+        android:background="@color/colorPrimary"
+        android:layout_below="@id/text_time"
+        android:layout_alignEnd="@id/text_time"
+        />
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/text_time"
+        android:layout_marginStart="@dimen/margin_normal_200"
+        android:textAppearance="@style/TitleNormal"
+        tools:text="Absent"
+        />
+
+
+
+</RelativeLayout>

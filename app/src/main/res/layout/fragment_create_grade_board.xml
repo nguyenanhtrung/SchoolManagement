@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/padding_normal_100"
+        >
+
+
+        <ImageView
+            android:id="@+id/image_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_select_student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:text="@string/title_button_select_student"
+            app:layout_constraintEnd_toEndOf="@+id/image_student"
+            app:layout_constraintStart_toStartOf="@+id/image_student"
+            app:layout_constraintTop_toBottomOf="@+id/image_student" />
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_view_inputs"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:foregroundTint="@color/colorSurface"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/button_select_student">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="@dimen/padding_normal_100"
+                android:paddingEnd="@dimen/padding_normal_100"
+                android:orientation="vertical">
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_student_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_student_id">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_student_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <org.angmarch.views.NiceSpinner
+                    android:id="@+id/spinner_semester"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_first_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_first_grade">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_first_grade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_second_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_second_grade">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_second_grade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_third_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_third_grade">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_third_grade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_exam_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_exam_grade">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_exam_grade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_150"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_final_grade"
+                        android:textAppearance="@style/TextNormal"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_final_grade"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginStart="@dimen/margin_normal_100"
+                        tools:text="8.5"
+                        android:textAppearance="@style/TitleNormal"
+                        />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_150"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/title_result"
+                        android:textAppearance="@style/TextNormal"
+                        />
+
+                    <TextView
+                        android:id="@+id/text_final_result"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:layout_marginStart="@dimen/margin_normal_100"
+                        tools:text="Passed"
+                        android:textAppearance="@style/TitleNormal"
+                        />
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_confirm"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/title_confirm"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintTop_toBottomOf="@id/card_view_inputs"
+            app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

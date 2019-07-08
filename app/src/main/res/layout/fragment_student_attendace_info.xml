@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hori_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_student_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:foregroundTint="@color/colorSurface"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_normal_100"
+            >
+
+
+            <ImageView
+                android:id="@+id/image_student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/text_student_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:textAppearance="@style/TitleNormal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_student"
+                app:layout_constraintTop_toTopOf="@+id/image_student"
+                tools:text="Nguyen Anh Trung" />
+
+            <TextView
+                android:id="@+id/text_student_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_100"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/text_student_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_student_name"
+                tools:text="SV0123123" />
+
+            <TextView
+                android:id="@+id/text_class_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_100"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/text_student_id"
+                app:layout_constraintTop_toBottomOf="@+id/text_student_id"
+                tools:text="PM.06" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/title_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_150"
+        android:text="@string/title_subject"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_student_info" />
+
+    <TextView
+        android:id="@+id/text_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/title_select"
+        android:textAppearance="@style/TextNormal"
+        android:textColor="@color/colorPrimary"
+        app:layout_constraintBottom_toBottomOf="@+id/title_subject"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintTop_toTopOf="@+id/title_subject" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_subject"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:foregroundTint="@color/colorSurface"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_subject">
+
+        <TextView
+            android:id="@+id/text_suject_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:paddingTop="@dimen/padding_small_100"
+            android:paddingBottom="@dimen/padding_small_100"
+            android:textAppearance="@style/TextNormalBold"
+            tools:text="Lap trinh Java" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/title_attendance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_learning_timetable"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_subject" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_attendance"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_attendance"
+        tools:listitem="@layout/item_student_attendance" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

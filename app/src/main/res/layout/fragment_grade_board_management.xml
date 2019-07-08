@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/text_student_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:textAppearance="@style/TitleNormal"
+            app:layout_constraintStart_toEndOf="@+id/imageView"
+            app:layout_constraintTop_toTopOf="@+id/imageView"
+            tools:text="@tools:sample/full_names" />
+
+        <TextView
+            android:id="@+id/text_student_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:textAppearance="@style/TextNormal"
+            app:layout_constraintStart_toStartOf="@+id/text_student_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_student_name"
+            tools:text="SV0123123" />
+
+        <TextView
+            android:id="@+id/title_faculty_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:text="@string/title_faculty_id"
+            android:textAppearance="@style/TextNormal"
+            app:layout_constraintStart_toStartOf="@+id/text_student_id"
+            app:layout_constraintTop_toBottomOf="@+id/text_student_id" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/spinner_semester"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_subjects"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:layout_marginBottom="@dimen/margin_normal_100"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/spinner_semester"
+            app:spanCount="3"
+            tools:listitem="@layout/item_subject_grade_board" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar_grade_board"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:navigationIcon="@drawable/ic_back"
+        app:fabAlignmentMode="center"
+        app:fabAnimationMode="scale" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/float_button_create_grade_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add"
+        app:layout_anchor="@id/bottom_app_bar_grade_board"
+        />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

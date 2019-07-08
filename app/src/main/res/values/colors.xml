@@ -10,4 +10,5 @@
     <color name="colorSurface">#FFFFFF</color>
     <color name="colorOnSurface">#000000</color>
     <color name="colorBackground">#EDFFFFFF</color>
+    <color name="colorResultPass">#4CAF50</color>
 </resources>

@@ -1,6 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hori_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top"
+        app:srcCompat="@drawable/ic_back" />
+
+    <ImageView
+        android:id="@+id/image_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/text_student_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintEnd_toEndOf="@+id/image_student"
+        app:layout_constraintStart_toStartOf="@+id/image_student"
+        app:layout_constraintTop_toBottomOf="@+id/image_student"
+        tools:text="@tools:sample/full_names" />
+
+    <TextView
+        android:id="@+id/text_student_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small_100"
+        android:textAppearance="@style/TextNormal"
+        app:layout_constraintEnd_toEndOf="@+id/text_student_name"
+        app:layout_constraintStart_toStartOf="@+id/text_student_name"
+        app:layout_constraintTop_toBottomOf="@+id/text_student_name"
+        tools:text="123123231" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:foregroundTint="@color/colorSurface"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/text_student_id" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_normal_100"
+            >
+
+            <TextView
+                android:id="@+id/title_faculty_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_faculty_id"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_faculty_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_faculty_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_faculty_id"
+                tools:text="CNTT" />
+
+            <TextView
+                android:id="@+id/title_class_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_class_id"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_faculty_id"
+                app:layout_constraintTop_toBottomOf="@+id/title_faculty_id" />
+
+            <TextView
+                android:id="@+id/text_class_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_class_id"
+                app:layout_constraintEnd_toEndOf="@+id/text_faculty_id"
+                app:layout_constraintTop_toTopOf="@+id/title_class_id"
+                tools:text="PM.05" />
+
+            <TextView
+                android:id="@+id/title_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_gender"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_class_id"
+                app:layout_constraintTop_toBottomOf="@+id/title_class_id" />
+
+            <TextView
+                android:id="@+id/text_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_gender"
+                app:layout_constraintEnd_toEndOf="@+id/text_class_id"
+                app:layout_constraintTop_toTopOf="@+id/title_gender"
+                tools:text="Nam" />
+
+            <TextView
+                android:id="@+id/title_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_phone_number"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_gender"
+                app:layout_constraintTop_toBottomOf="@+id/title_gender" />
+
+            <TextView
+                android:id="@+id/text_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_phone_number"
+                app:layout_constraintEnd_toEndOf="@+id/text_gender"
+                app:layout_constraintTop_toTopOf="@+id/title_phone_number"
+                tools:text="0986576889" />
+
+            <TextView
+                android:id="@+id/title_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_address"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_phone_number"
+                app:layout_constraintTop_toBottomOf="@+id/title_phone_number" />
+
+            <TextView
+                android:id="@+id/text_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_address"
+                app:layout_constraintEnd_toEndOf="@+id/text_phone_number"
+                app:layout_constraintTop_toTopOf="@+id/title_address"
+                tools:text="199 Phuc Tan" />
+
+            <TextView
+                android:id="@+id/title_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_email"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_address"
+                app:layout_constraintTop_toBottomOf="@+id/title_address" />
+
+            <TextView
+                android:id="@+id/text_email"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:gravity="end"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_email"
+                app:layout_constraintEnd_toEndOf="@+id/text_address"
+                app:layout_constraintStart_toEndOf="@+id/title_email"
+                app:layout_constraintTop_toTopOf="@+id/title_email"
+                tools:text="nguyenanhtrung2495@gmail.com" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_150"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_button_select_student"
+        app:layout_constraintEnd_toEndOf="@+id/image_student"
+        app:layout_constraintStart_toStartOf="@+id/image_student"
+        app:layout_constraintTop_toBottomOf="@+id/image_student" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_student_info"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_150"
+        android:foregroundTint="@color/colorSurface"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/button_select_student" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_normal_100"
+            >
+
+            <TextView
+                android:id="@+id/title_student_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_student_id"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_student_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_student_id"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_student_id"
+                tools:text="SV023123213" />
+
+            <TextView
+                android:id="@+id/title_class_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_class_id"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_student_id"
+                app:layout_constraintTop_toBottomOf="@+id/title_student_id" />
+
+            <TextView
+                android:id="@+id/text_class_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_class_id"
+                app:layout_constraintEnd_toEndOf="@+id/text_student_id"
+                app:layout_constraintTop_toTopOf="@+id/title_class_id"
+                tools:text="PM08" />
+
+            <TextView
+                android:id="@+id/title_faculty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_faculty_id"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_class_id"
+                app:layout_constraintTop_toBottomOf="@+id/title_class_id" />
+
+            <TextView
+                android:id="@+id/text_faculty_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_faculty"
+                app:layout_constraintEnd_toEndOf="@+id/text_class_id"
+                app:layout_constraintTop_toTopOf="@+id/title_faculty"
+                tools:text="CNTT" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/title_change_to_class"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_change_to_class"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_student_info" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_select_class"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_choose_class"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_change_to_class"
+        app:strokeColor="@color/colorPrimary" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_confirm"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_200"
+        android:text="@string/title_confirm"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/button_select_class" />
+</androidx.constraintlayout.widget.ConstraintLayout>

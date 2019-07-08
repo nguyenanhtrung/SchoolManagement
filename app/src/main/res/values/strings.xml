@@ -25,4 +25,26 @@
     <string name="hint_select_class">Chọn lớp</string>
     <string name="hint_select_faculty">Chọn khoa</string>
     <string name="title_submit">Xác nhận</string>
+    <string name="title_faculty_id">Mã khoa</string>
+    <string name="title_class_id">Mã lớp</string>
+    <string name="title_gender">Giới tính</string>
+    <string name="title_address">Địa chỉ</string>
+    <string name="title_button_select_student">Chọn sinh viên</string>
+    <string name="title_student_id">Mã sinh viên</string>
+    <string name="title_change_to_class">Chuyển tới lớp</string>
+    <string name="title_choose_class">Chọn lớp</string>
+    <string name="title_first_grade">Điểm số 1</string>
+    <string name="title_second_grade">Điểm số 2</string>
+    <string name="title_third_grade">Điểm số 3</string>
+    <string name="title_exam_grade">Điểm thi</string>
+    <string name="title_final_grade">Điểm tổng</string>
+    <string name="title_result">Kết quả</string>
+    <string name="title_grade_board">Bảng điểm</string>
+    <string name="title_subject">Môn học</string>
+    <string name="title_input_first_grade">Nhập điểm lần 1</string>
+    <string name="title_input_second_grade">Nhập điểm lần 2</string>
+    <string name="input_third_grade">Nhập điểm lần 3</string>
+    <string name="input_exam_grade">Nhập điểm thi</string>
+    <string name="title_select">Chọn</string>
+    <string name="title_learning_timetable">Lịch học</string>
 </resources>

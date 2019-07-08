@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hori_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <ImageView
+        android:id="@+id/image_student"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/title_student_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginTop="@dimen/margin_small_100"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toEndOf="@+id/image_student"
+        app:layout_constraintTop_toTopOf="@+id/image_student"
+        tools:text="Nguyen Anh Trung" />
+
+    <TextView
+        android:id="@+id/title_student_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small_100"
+        android:textAppearance="@style/TextNormal"
+        app:layout_constraintStart_toStartOf="@+id/title_student_name"
+        app:layout_constraintTop_toBottomOf="@+id/title_student_name"
+        tools:text="12312312322" />
+
+    <TextView
+        android:id="@+id/text_class_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small_100"
+        android:textAppearance="@style/TextNormal"
+        app:layout_constraintStart_toStartOf="@+id/title_student_id"
+        app:layout_constraintTop_toBottomOf="@+id/title_student_id"
+        tools:text="PM08" />
+
+    <TextView
+        android:id="@+id/title_grade_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_150"
+        android:text="@string/title_grade_board"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/image_student" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view_grade_board"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:foregroundTint="@color/colorSurface"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_grade_board">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_normal_100"
+            >
+
+            <TextView
+                android:id="@+id/title_subject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:text="@string/title_subject"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/text_subject_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintBottom_toBottomOf="@+id/title_subject"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/title_subject"
+                tools:text="CNTT" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_first_grade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:hint="@string/title_input_first_grade"
+                app:layout_constraintEnd_toEndOf="@+id/text_subject_name"
+                app:layout_constraintStart_toStartOf="@+id/title_subject"
+                app:layout_constraintTop_toBottomOf="@+id/title_subject">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_first_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_second_grade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:hint="@string/title_input_second_grade"
+                app:layout_constraintEnd_toEndOf="@+id/input_layout_first_grade"
+                app:layout_constraintStart_toStartOf="@+id/input_layout_first_grade"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_first_grade">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_second_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_third_grade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:hint="@string/input_third_grade"
+                app:layout_constraintEnd_toEndOf="@+id/input_layout_second_grade"
+                app:layout_constraintStart_toStartOf="@+id/input_layout_second_grade"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_second_grade">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_third_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_exam_grade"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:hint="@string/input_exam_grade"
+                app:layout_constraintEnd_toEndOf="@+id/input_layout_third_grade"
+                app:layout_constraintStart_toStartOf="@+id/input_layout_third_grade"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_third_grade">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_exam_grade"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/title_final_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_200"
+                android:text="@string/title_final_grade"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/input_layout_exam_grade"
+                app:layout_constraintTop_toBottomOf="@+id/input_layout_exam_grade" />
+
+            <TextView
+                android:id="@+id/text_final_grade"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TitleNormal"
+                android:textColor="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="@+id/title_final_grade"
+                app:layout_constraintEnd_toEndOf="@+id/input_layout_exam_grade"
+                app:layout_constraintTop_toTopOf="@+id/title_final_grade"
+                tools:text="8.5" />
+
+            <TextView
+                android:id="@+id/title_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal_150"
+                android:text="@string/title_result"
+                android:textAppearance="@style/TextNormal"
+                app:layout_constraintStart_toStartOf="@+id/title_final_grade"
+                app:layout_constraintTop_toBottomOf="@+id/title_final_grade" />
+
+            <TextView
+                android:id="@+id/text_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TitleNormal"
+                android:textColor="@color/colorResultPass"
+                app:layout_constraintBottom_toBottomOf="@+id/title_result"
+                app:layout_constraintEnd_toEndOf="@+id/text_final_grade"
+                app:layout_constraintTop_toTopOf="@+id/title_result"
+                tools:text="Đạt" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <ImageButton
+        android:id="@+id/button_edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/title_grade_board"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintTop_toTopOf="@+id/title_grade_board"
+        app:srcCompat="@drawable/ic_edit" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
