@@ -27,4 +27,14 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
             _errorLiveData.value = ErrorState.NoAction("Kết nối mạng đã ngắt! Vui lòng kiểm tra kết nối.")
         }
     }
+
+    internal fun setLoading(apiResult: ApiResult) {
+        _loadingLiveData.value = apiResult
+    }
+
+    internal fun showError(errorState: ErrorState) {
+        _errorLiveData.value = errorState
+    }
+
+
 }

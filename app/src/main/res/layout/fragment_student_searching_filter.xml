@@ -31,10 +31,11 @@
         android:id="@+id/text_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_200"
         android:text="@string/title_close"
         android:textAppearance="@style/TextNormal"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top" />
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_class_id" />
 
     <TextView
         android:id="@+id/text_confirm"
@@ -52,9 +53,8 @@
         android:layout_height="wrap_content"
         android:text="@string/title_filter"
         android:textAppearance="@style/TitleNormal"
-        app:layout_constraintEnd_toStartOf="@+id/text_confirm"
-        app:layout_constraintHorizontal_bias="0.588"
-        app:layout_constraintStart_toEndOf="@+id/text_close"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toTopOf="@+id/guideline_hori_top" />
 
     <com.google.android.material.textfield.TextInputLayout
