@@ -1,6 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingStart="@dimen/padding_normal_100"
+    android:paddingEnd="@dimen/padding_normal_100"
+    android:paddingTop="@dimen/padding_normal_100"
     android:layout_height="match_parent">
+
+    <include
+        layout="@layout/include_search_view"
+        />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:scrollbars="none"
+        >
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_search_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Chip"
+                android:layout_width="@dimen/width_chip_seach_filter"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                tools:text="Class"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Chip"
+                android:layout_width="@dimen/width_chip_seach_filter"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                tools:text="Class"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Chip"
+                android:layout_width="@dimen/width_chip_seach_filter"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                tools:text="Class"/>
+
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.Chip"
+                android:layout_width="@dimen/width_chip_seach_filter"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
+                tools:text="Class"/>
+
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </HorizontalScrollView>
+
+    <TextView
+        android:id="@+id/title_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_result"
+        android:textAppearance="@style/TitleNormal"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_normal_100"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        />
+
 
 </LinearLayout>

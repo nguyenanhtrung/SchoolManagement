@@ -16,4 +16,6 @@
     <dimen name="card_radius">4dp</dimen>
     <dimen name="width_image_square">100dp</dimen>
     <dimen name="height_image_square">120dp</dimen>
+    <dimen name="margin_normal_250">40dp</dimen>
+    <dimen name="width_chip_seach_filter">100dp</dimen>
 </resources>

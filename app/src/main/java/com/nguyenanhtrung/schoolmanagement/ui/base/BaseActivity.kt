@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.ui.base
 
+import android.app.Application
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -12,7 +13,11 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.ApiResult
 import javax.inject.Inject
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.inputmethod.InputMethodManager
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
+import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -22,12 +27,34 @@ abstract class BaseActivity : AppCompatActivity() {
     abstract var baseViewModel: BaseViewModel
 
     private lateinit var loadingBar: ProgressBar
+    private lateinit var networkLiveData: NetworkLiveData
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        injectDependencies(application)
+        baseViewModel = createViewModel(viewModelFactory)
         initUiComponent()
         subscribeLoading()
+        subscribeError()
+        subscribeNetworkStatus()
+
+    }
+
+    private fun subscribeNetworkStatus() {
+        networkLiveData = NetworkLiveData(applicationContext)
+        networkLiveData.observe(this, Observer {
+            baseViewModel.onNetworkStatusChanged(it)
+        })
+    }
+
+    private fun subscribeError() {
+        baseViewModel.errorLiveData.observe(this, Observer {
+            when(it) {
+                is ErrorState.NoAction -> showSnackbar(it.message)
+                is ErrorState.WithAction -> showSnackbarWithAction(it.message, it.actionName, it.action)
+            }
+        })
     }
 
     private fun subscribeLoading() {
@@ -48,6 +75,18 @@ abstract class BaseActivity : AppCompatActivity() {
             loadingBar.visibility = View.VISIBLE
             disableInteraction()
         }
+    }
+
+    private fun showSnackbar(message: String) {
+        Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_SHORT).show()
+    }
+
+    private fun showSnackbarWithAction( message: String, actionName: String, action: () -> Unit) {
+        Snackbar.make(getViewForSnackbar(), message,Snackbar.LENGTH_INDEFINITE)
+            .setAction(actionName) {
+                action()
+            }
+            .show()
     }
 
     private fun disableInteraction() {
@@ -72,10 +111,16 @@ abstract class BaseActivity : AppCompatActivity() {
         input.hideSoftInputFromWindow(editText.windowToken, 0)
     }
 
-    protected fun showKeyboard() {
-        
+    protected fun showKeyboard(editText: TextInputEditText) {
+        if (editText.requestFocus()) {
+            val input = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            input.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT)
+        }
     }
 
 
-    abstract fun getLoadingBar(): ProgressBar
+    protected abstract fun getLoadingBar(): ProgressBar
+    protected abstract fun createViewModel(viewModelFactory: ViewModelProvider.AndroidViewModelFactory): BaseViewModel
+    protected abstract fun getViewForSnackbar(): View
+    protected abstract fun injectDependencies(application: Application)
 }

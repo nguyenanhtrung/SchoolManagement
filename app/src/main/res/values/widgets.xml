@@ -44,4 +44,9 @@
         <item name="cornerFamily">cut</item>
         <item name="cornerSize">@dimen/radius_diamond_button</item>
     </style>
+
+    <style name="Widget.Chip" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorOnPrimary</item>
+    </style>
 </resources>

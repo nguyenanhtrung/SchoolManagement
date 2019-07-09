@@ -47,4 +47,6 @@
     <string name="input_exam_grade">Nhập điểm thi</string>
     <string name="title_select">Chọn</string>
     <string name="title_learning_timetable">Lịch học</string>
+    <string name="title_filter">Lọc tìm kiếm</string>
+    <string name="input_class_id">Nhập mã lớp</string>
 </resources>
