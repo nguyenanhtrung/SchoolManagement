@@ -13,8 +13,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_small_100"
         android:hint=""
+        android:background="@android:color/transparent"
         android:layout_marginEnd="@dimen/margin_normal_250"
-        android:background="null"
         />
 
     <ImageButton

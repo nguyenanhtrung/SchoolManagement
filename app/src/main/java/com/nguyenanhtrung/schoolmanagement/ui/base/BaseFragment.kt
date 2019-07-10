@@ -13,15 +13,15 @@ import javax.inject.Inject
 abstract class BaseFragment : Fragment() {
 
     @Inject
-    lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
+    lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var fragmentViewModel: BaseViewModel
-    private lateinit var activityViewModel: BaseViewModel
+    private lateinit var activityViewModel: BaseActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies(requireActivity().application)
-        fragmentViewModel = createFragmentViewModel(viewModelFactory)
+        fragmentViewModel = createFragmentViewModel()
         activityViewModel = bindActivityViewModel()
     }
 
@@ -33,8 +33,15 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        subscribeViewState()
         subscribeLoading()
         subscribeError()
+    }
+
+    private fun subscribeViewState() {
+        fragmentViewModel.viewStateLiveData.observe(viewLifecycleOwner, Observer {
+            activityViewModel.handleViewState(it)
+        })
     }
 
     private fun subscribeError() {
@@ -51,7 +58,7 @@ abstract class BaseFragment : Fragment() {
 
 
     protected abstract fun injectDependencies(application: Application)
-    protected abstract fun createFragmentViewModel(viewModelFactory: ViewModelProvider.AndroidViewModelFactory): BaseViewModel
-    protected abstract fun bindActivityViewModel(): BaseViewModel
+    protected abstract fun createFragmentViewModel(): BaseViewModel
+    protected abstract fun bindActivityViewModel(): BaseActivityViewModel
     protected abstract fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View?
 }

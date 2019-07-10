@@ -3,13 +3,13 @@ package com.nguyenanhtrung.schoolmanagement.util
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import javax.inject.Inject
 import javax.inject.Provider
 
-class AppViewModelFactory @Inject constructor(
-    private val creators: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>,
-    application: Application
-) : ViewModelProvider.AndroidViewModelFactory(application) {
+class AppViewModelFactory  @Inject constructor(
+    private val creators: @JvmSuppressWildcards Map<Class<out ViewModel>, Provider<ViewModel>>
+) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val found = creators.entries.find { modelClass.isAssignableFrom(it.key) }

@@ -11,14 +11,12 @@ import kotlinx.coroutines.withContext
 
 abstract class NetworkBoundResources<in Params, Output>
 constructor(
-    private val coroutineScope: CoroutineScope,
     private val params: Params,
     private val result: MutableLiveData<ResultModel<Output>>
 ) where Output : Any {
 
 
-    internal fun createCall() {
-        coroutineScope.launch {
+    internal suspend fun createCall() {
             if (shouldFetchFromServer(params)) {
                 result.value = ResultModel.Loading
                 //call api
@@ -35,7 +33,7 @@ constructor(
                 }
                 result.value = dataFromLocal
             }
-        }
+
 
     }
 

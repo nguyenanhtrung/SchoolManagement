@@ -5,24 +5,23 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
-import javax.inject.Inject
-import android.view.inputmethod.InputMethodManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
+import javax.inject.Inject
 
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.AndroidViewModelFactory
-    abstract var baseViewModel: BaseViewModel
+
+    lateinit var baseViewModel: BaseActivityViewModel
 
     private lateinit var loadingBar: ProgressBar
     private lateinit var networkLiveData: NetworkLiveData
@@ -31,7 +30,7 @@ abstract class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies(application)
-        baseViewModel = createViewModel(viewModelFactory)
+        baseViewModel = createViewModel()
         initUiComponent()
         subscribeLoading()
         subscribeError()
@@ -122,7 +121,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
 
     protected abstract fun getLoadingBar(): ProgressBar
-    protected abstract fun createViewModel(viewModelFactory: ViewModelProvider.AndroidViewModelFactory): BaseViewModel
+    protected abstract fun createViewModel(): BaseActivityViewModel
     protected abstract fun getViewForSnackbar(): View
     protected abstract fun injectDependencies(application: Application)
 }
