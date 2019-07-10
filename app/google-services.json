@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "169661726726",
+    "firebase_url": "https://schoolmanagement-f6cb0.firebaseio.com",
+    "project_id": "schoolmanagement-f6cb0",
+    "storage_bucket": "schoolmanagement-f6cb0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:169661726726:android:595a74ec7750a0b7",
+        "android_client_info": {
+          "package_name": "com.nguyenanhtrung.schoolmanagement"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "169661726726-s7v90fltomkdvi2pkh5fdd4fq16nhs93.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCGXz2S0t1geYvTEbsc9XHXbjsajXX1PLg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "169661726726-s7v90fltomkdvi2pkh5fdd4fq16nhs93.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

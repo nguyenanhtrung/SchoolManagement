@@ -9,14 +9,12 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ApiResult
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import javax.inject.Inject
-import android.content.Context.INPUT_METHOD_SERVICE
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
 import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
 
 
@@ -39,6 +37,10 @@ abstract class BaseActivity : AppCompatActivity() {
         subscribeError()
         subscribeNetworkStatus()
 
+        baseViewModel.viewStateLiveData.observe(this, Observer {
+            baseViewModel.handleViewState(it)
+        })
+
     }
 
     private fun subscribeNetworkStatus() {
@@ -60,7 +62,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun subscribeLoading() {
         baseViewModel.loadingLiveData.observe(this, Observer {
             when(it) {
-                ApiResult.Loading -> showLoading()
+                ResultModel.Loading -> showLoading()
                 else -> hideLoading()
             }
         })

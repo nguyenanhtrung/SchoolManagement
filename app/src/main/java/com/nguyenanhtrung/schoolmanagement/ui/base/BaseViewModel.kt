@@ -3,16 +3,21 @@ package com.nguyenanhtrung.schoolmanagement.ui.base
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ApiResult
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 
 abstract class BaseViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _loadingLiveData by lazy {
-        MutableLiveData<ApiResult>()
+    val viewStateLiveData by lazy {
+        MediatorLiveData<ResultModel<Any>>()
     }
-    internal val loadingLiveData: LiveData<ApiResult>
+
+    private val _loadingLiveData by lazy {
+        MutableLiveData<ResultModel<Any>>()
+    }
+    internal val loadingLiveData: LiveData<ResultModel<Any>>
         get() = _loadingLiveData
 
     private val _errorLiveData by lazy {
@@ -28,7 +33,7 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         }
     }
 
-    internal fun setLoading(apiResult: ApiResult) {
+    internal fun setLoading(apiResult: ResultModel<Any>) {
         _loadingLiveData.value = apiResult
     }
 
@@ -36,5 +41,19 @@ abstract class BaseViewModel(application: Application) : AndroidViewModel(applic
         _errorLiveData.value = errorState
     }
 
+    protected fun createApiResultLiveData(): MutableLiveData<ResultModel<Any>> {
+        val apiResultLiveData = MutableLiveData<ResultModel<Any>>()
+        viewStateLiveData.addSource(apiResultLiveData) {
+            viewStateLiveData.value = it
+        }
+        return apiResultLiveData
+    }
+
+    internal fun handleViewState(resultModel: ResultModel<Any>) {
+        when(resultModel) {
+            is ResultModel.Loading -> _loadingLiveData.value = resultModel
+            is ResultModel.Failure -> _errorLiveData.value = ErrorState.NoAction(resultModel.error)
+        }
+    }
 
 }

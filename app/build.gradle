@@ -36,7 +36,7 @@ android {
 
 dependencies {
     def lifecycle_version = "2.0.0"
-    def constraint_version = "2.0.0-beta1"
+    def constraint_version = "2.0.0-beta2"
     def nav_version_ktx = "2.1.0-alpha06"
     def recycler_view_version = "1.1.0-beta01"
     def room_version = "2.1.0"
@@ -52,6 +52,7 @@ dependencies {
     def material_component_version = "1.1.0-alpha07"
     def circle_image_version = "3.0.0"
     def dagger_version = "2.23.2"
+    def firebase_auth_version = "18.0.0"
 
 
 
@@ -121,4 +122,11 @@ dependencies {
 
     //
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02'
+
+    //Firebase
+    implementation 'com.google.firebase:firebase-core:17.0.0'
+
+    implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
+
 }
+apply plugin: 'com.google.gms.google-services'
