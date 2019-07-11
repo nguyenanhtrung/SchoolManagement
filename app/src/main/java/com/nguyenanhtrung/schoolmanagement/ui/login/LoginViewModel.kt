@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.domain.login.LoginUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -34,7 +35,7 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     private val _loginResultLiveData by lazy {
         createApiResultLiveData<Boolean>()
     }
-    internal val loginResultLiveData: LiveData<ResultModel<Boolean>>
+    internal val loginResultLiveData: LiveData<Resource<Boolean>>
         get() = _loginResultLiveData
 
 

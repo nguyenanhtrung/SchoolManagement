@@ -1,20 +1,24 @@
 package com.nguyenanhtrung.schoolmanagement.ui.base
 
-import android.app.Application
-import androidx.lifecycle.*
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 
 abstract class BaseViewModel() : ViewModel() {
 
     val viewStateLiveData by lazy {
-        MediatorLiveData<ResultModel<Any>>()
+        MediatorLiveData<Resource<*>>()
     }
 
     private val _loadingLiveData by lazy {
-        MutableLiveData<ResultModel<Any>>()
+        MutableLiveData<Boolean>()
     }
-    internal val loadingLiveData: LiveData<ResultModel<Any>>
+    internal val loadingLiveData: LiveData<Boolean>
         get() = _loadingLiveData
 
     private val _errorLiveData by lazy {
@@ -24,27 +28,32 @@ abstract class BaseViewModel() : ViewModel() {
         get() = _errorLiveData
 
 
-    internal fun setLoading(apiResult: ResultModel<Any>) {
-        _loadingLiveData.value = apiResult
+    internal fun setLoading(isLoading: Boolean) {
+        _loadingLiveData.value = isLoading
     }
 
     internal fun showError(errorState: ErrorState) {
         _errorLiveData.value = errorState
     }
 
-    protected fun<T> createApiResultLiveData(): MutableLiveData<ResultModel<T>> where T: Any{
-        val apiResultLiveData = MutableLiveData<ResultModel<T>>()
+    protected fun<T> createApiResultLiveData(): MutableLiveData<Resource<T>> where T: Any{
+        val apiResultLiveData = MutableLiveData<Resource<T>>()
         viewStateLiveData.addSource(apiResultLiveData) {
             viewStateLiveData.value = it
         }
         return apiResultLiveData
     }
 
-    internal fun handleViewState(resultModel: ResultModel<Any>) {
-        when(resultModel) {
-            is ResultModel.Loading -> _loadingLiveData.value = resultModel
-            is ResultModel.Failure -> _errorLiveData.value = ErrorState.NoAction(resultModel.error)
-            is ResultModel.Success -> _loadingLiveData.value = resultModel
+    internal fun handleViewState(resource: Resource<*>) {
+        when(resource.status) {
+            Status.LOADING, Status.SUCCESS -> _loadingLiveData.value = false
+            Status.FAILURE -> {
+                _loadingLiveData.value = false
+                _errorLiveData.value = ErrorState.NoAction(resource.error)
+            }
+            Status.EXCEPTION -> {
+                _loadingLiveData.value = false
+            }
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.ForgotPasswordViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
 import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
 import com.nguyenanhtrung.schoolmanagement.util.ViewModelKey
 import dagger.Binds
@@ -31,4 +32,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MainViewModel::class)
     abstract fun bindMainViewModel(mainViewModel: MainViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SplashViewModel::class)
+    abstract fun bindSplashViewModel(splashViewModel: SplashViewModel) : ViewModel
 }

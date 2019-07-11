@@ -1,19 +1,20 @@
 package com.nguyenanhtrung.schoolmanagement.domain.login
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.nguyenanhtrung.schoolmanagement.data.local.model.LoginState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepository
 import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import javax.inject.Inject
 
-class LoginUseCase @Inject constructor(private val loginRepository: LoginRepository) : BaseUseCase<Pair<String, String>, Boolean>(){
+class CheckAlreadyLoginUseCase @Inject constructor(private val loginRepository: LoginRepository) : BaseUseCase<Unit, LoginState>() {
+
 
     override suspend fun execute(
-        params: Pair<String, String>,
-        resultLiveData: MutableLiveData<Resource<Boolean>>
+        params: Unit,
+        resultLiveData: MutableLiveData<Resource<LoginState>>
     ) {
-        loginRepository.loginAsync(params, resultLiveData)
+        loginRepository.checkAlreadyLoginAsync(resultLiveData)
     }
 }

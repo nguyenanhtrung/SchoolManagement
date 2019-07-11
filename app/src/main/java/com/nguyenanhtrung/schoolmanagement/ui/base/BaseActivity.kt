@@ -3,20 +3,18 @@ package com.nguyenanhtrung.schoolmanagement.ui.base
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
-import javax.inject.Inject
 
 
 abstract class BaseActivity : AppCompatActivity() {
@@ -39,7 +37,6 @@ abstract class BaseActivity : AppCompatActivity() {
         subscribeNetworkStatus()
 
         baseViewModel.viewStateLiveData.observe(this, Observer {
-            Log.d("LoginState",it.toString())
             baseViewModel.handleViewState(it)
         })
 
@@ -54,17 +51,21 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private fun subscribeError() {
         baseViewModel.errorLiveData.observe(this, Observer {
-            when(it) {
-                is ErrorState.NoAction -> showSnackbar(it.message)
-                is ErrorState.WithAction -> showSnackbarWithAction(it.message, it.actionName, it.action)
+            when (it) {
+                is ErrorState.NoAction -> showSnackbar(getString(it.messageId))
+                is ErrorState.WithAction -> showSnackbarWithAction(
+                    getString(it.messageId),
+                    it.actionName,
+                    it.action
+                )
             }
         })
     }
 
     private fun subscribeLoading() {
         baseViewModel.loadingLiveData.observe(this, Observer {
-            when(it) {
-                ResultModel.Loading -> showLoading()
+            when (it) {
+                true -> showLoading()
                 else -> hideLoading()
             }
         })
@@ -85,8 +86,8 @@ abstract class BaseActivity : AppCompatActivity() {
         Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun showSnackbarWithAction( message: String, actionName: String, action: () -> Unit) {
-        Snackbar.make(getViewForSnackbar(), message,Snackbar.LENGTH_INDEFINITE)
+    private fun showSnackbarWithAction(message: String, actionName: String, action: () -> Unit) {
+        Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_INDEFINITE)
             .setAction(actionName) {
                 action()
             }
@@ -96,7 +97,8 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun disableInteraction() {
         window?.setFlags(
             WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
     }
 
     private fun enableInteraction() {
