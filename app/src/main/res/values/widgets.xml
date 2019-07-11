@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Widget.OutLineTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-        <item name="boxStrokeColor">@color/colorOnBackground</item>
         <item name="endIconMode">clear_text</item>
         <item name="android:textAppearance">@style/TextNormal</item>
     </style>

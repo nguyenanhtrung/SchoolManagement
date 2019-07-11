@@ -19,4 +19,8 @@
         <item name="materialButtonStyle">@style/Widget.Button</item>
         <item name="android:windowBackground">@color/colorBackground</item>
     </style>
+
+    <style name="LaunchTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_logo_launch</item>
+    </style>
 </resources>

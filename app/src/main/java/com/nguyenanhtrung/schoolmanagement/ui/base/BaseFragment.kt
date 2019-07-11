@@ -12,9 +12,6 @@ import javax.inject.Inject
 
 abstract class BaseFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private lateinit var fragmentViewModel: BaseViewModel
     private lateinit var activityViewModel: BaseActivityViewModel
 

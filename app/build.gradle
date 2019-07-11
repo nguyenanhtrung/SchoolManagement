@@ -128,5 +128,8 @@ dependencies {
 
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
+
+
 }
 apply plugin: 'com.google.gms.google-services'

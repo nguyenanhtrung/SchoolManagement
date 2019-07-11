@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.util
 
+import android.util.Log
 import androidx.annotation.MainThread
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.MutableLiveData
@@ -9,9 +10,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-abstract class NetworkBoundResources<in Params, Output>
+abstract class NetworkBoundResources<Params, Output>
 constructor(
-    private val params: Params,
+    protected val params: Params,
     private val result: MutableLiveData<ResultModel<Output>>
 ) where Output : Any {
 

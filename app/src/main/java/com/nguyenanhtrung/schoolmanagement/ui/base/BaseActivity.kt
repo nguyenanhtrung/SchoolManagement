@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.base
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -29,6 +30,7 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(inflateLayout())
         injectDependencies(application)
         baseViewModel = createViewModel()
         initUiComponent()
@@ -37,6 +39,7 @@ abstract class BaseActivity : AppCompatActivity() {
         subscribeNetworkStatus()
 
         baseViewModel.viewStateLiveData.observe(this, Observer {
+            Log.d("LoginState",it.toString())
             baseViewModel.handleViewState(it)
         })
 
@@ -124,4 +127,5 @@ abstract class BaseActivity : AppCompatActivity() {
     protected abstract fun createViewModel(): BaseActivityViewModel
     protected abstract fun getViewForSnackbar(): View
     protected abstract fun injectDependencies(application: Application)
+    protected abstract fun inflateLayout(): Int
 }

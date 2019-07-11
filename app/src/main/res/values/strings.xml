@@ -49,4 +49,9 @@
     <string name="title_learning_timetable">Lịch học</string>
     <string name="title_filter">Lọc tìm kiếm</string>
     <string name="input_class_id">Nhập mã lớp</string>
+    <string name="error_empty_email">Vui lòng nhập email</string>
+    <string name="error_format_email">Định dạng email không hợp lệ.</string>
+    <string name="error_empty_password">Vui lòng nhập mật khẩu</string>
+    <string name="error_length_password">Độ dài mật khẩu từ 8 đến 15 kí tự.Vui lòng nhập lại</string>
+    <string name="empty">""</string>
 </resources>

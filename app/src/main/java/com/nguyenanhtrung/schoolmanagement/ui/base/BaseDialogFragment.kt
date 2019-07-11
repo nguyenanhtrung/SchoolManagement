@@ -9,13 +9,15 @@ import android.view.*
 import androidx.annotation.DimenRes
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.nguyenanhtrung.schoolmanagement.R
 import javax.inject.Inject
 
 
 abstract class BaseDialogFragment : DialogFragment() {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
+    companion object {
+        const val DEFAULT_PERCENT_WIDTH = 0.85f
+    }
 
     private lateinit var dialogViewModel: BaseViewModel
     private lateinit var activityViewModel: BaseActivityViewModel
@@ -35,7 +37,26 @@ abstract class BaseDialogFragment : DialogFragment() {
     ): View? {
         val view = inflateLayout(inflater, container)
         setDefaultBackgroundDialog()
+        setCancelableOutside()
         return view
+    }
+
+    private fun setCancelableOutside() {
+        val myDialog  = dialog
+        myDialog?.setCanceledOnTouchOutside(false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setDialogAnimation()
+    }
+
+    private fun setDialogAnimation() {
+        val myDialog = dialog
+        if (myDialog != null) {
+            val myWindow = myDialog.window
+            myWindow?.attributes?.windowAnimations = R.style.DialogAnimation
+        }
     }
 
     override fun onResume() {
@@ -44,7 +65,7 @@ abstract class BaseDialogFragment : DialogFragment() {
     }
 
     protected fun setSizeDialog() {
-        setDialogSizeByMode()
+        setDialogSizeByPercentage(DEFAULT_PERCENT_WIDTH)
     }
 
     protected fun setDialogSizeByDimens(@DimenRes widthId: Int, @DimenRes heightId: Int) {
@@ -57,7 +78,7 @@ abstract class BaseDialogFragment : DialogFragment() {
         }
     }
 
-    protected fun setDialogSizeByPercentage(widthPercent: Int, heightPercent: Int) {
+    protected fun setDialogSizeByPercentage(widthPercent: Float) {
         val window = dialog?.window
         val size = Point()
         // Store dimensions of the screen in `size`
@@ -66,14 +87,14 @@ abstract class BaseDialogFragment : DialogFragment() {
 
         // Set the width of the dialog proportional to 75% of the screen width
         window?.setLayout(
-            (size.x * (widthPercent / 100)).toInt(),
-            (size.y * (heightPercent / 100)).toInt()
+            (size.x * (widthPercent)).toInt(),
+            (WindowManager.LayoutParams.WRAP_CONTENT)
         )
         window?.setGravity(Gravity.CENTER)
     }
 
     protected fun setDialogSizeByMode(
-        widthParam: Int = WindowManager.LayoutParams.MATCH_PARENT,
+        widthParam: Int = WindowManager.LayoutParams.WRAP_CONTENT,
         heightParam: Int = WindowManager.LayoutParams.WRAP_CONTENT
     ) {
         // Get existing layout params for the window
@@ -81,7 +102,7 @@ abstract class BaseDialogFragment : DialogFragment() {
         // Assign window properties to fill the parent
         params?.width = widthParam
         params?.height = heightParam
-        dialog?.window?.attributes = params as android.view.WindowManager.LayoutParams
+        dialog?.window?.attributes = params as WindowManager.LayoutParams
     }
 
     private fun setDefaultBackgroundDialog() {

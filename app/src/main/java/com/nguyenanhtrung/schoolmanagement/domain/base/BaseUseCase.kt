@@ -1,4 +1,4 @@
-package com.nguyenanhtrung.schoolmanagement.domain
+package com.nguyenanhtrung.schoolmanagement.domain.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,5 +23,5 @@ abstract class BaseUseCase<in Params, Output> where Output : Any{
         }
     }
 
-    protected abstract suspend fun execute(params: Params, resultLiveData: LiveData<ResultModel<Output>>)
+    protected abstract suspend fun execute(params: Params, resultLiveData: MutableLiveData<ResultModel<Output>>)
 }

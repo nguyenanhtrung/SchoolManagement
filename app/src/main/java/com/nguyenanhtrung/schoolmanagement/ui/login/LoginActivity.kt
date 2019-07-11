@@ -2,16 +2,23 @@ package com.nguyenanhtrung.schoolmanagement.ui.login
 
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
+import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
+import com.nguyenanhtrung.schoolmanagement.util.getString
 import kotlinx.android.synthetic.main.activity_login.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity() {
@@ -28,8 +35,66 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        //
+        setupUiEvents()
+        subscribeEmailError()
+        subscribePasswordError()
+        subscribeForgotPasswordDialog()
+        subscribeLoginResult()
+    }
+
+    private fun subscribeLoginResult() {
+        loginViewModel.loginResultLiveData.observe(this, Observer {
+
+        })
+    }
+
+    private fun subscribeForgotPasswordDialog() {
+        loginViewModel.showForgotPasswordDialog.observe(this, Observer {
+           it.getContentIfNotHandled()?.let { isShow ->
+               if (isShow) {
+                    showForgotPasswordDialog()
+               }
+           }
+        })
+    }
+
+    private fun subscribePasswordError() {
+        loginViewModel.passwordErrorLiveData.observe(this, Observer {
+            val message = getString(it)
+            input_layout_password.error = message
+        })
+    }
+
+    private fun subscribeEmailError() {
+        loginViewModel.emailErrorLiveData.observe(this, Observer {
+            val message = getString(it)
+            input_layout_email.error = message
+        })
+    }
+
+    private fun setupUiEvents() {
+        button_login.setOnClickListener {
+            loginViewModel.onClickButtonLogin(
+                edit_text_email.getString(),
+                edit_text_password.getString()
+            )
+        }
+
+        edit_text_email.clearErrorWhenFocus(input_layout_email)
+        edit_text_password.clearErrorWhenFocus(input_layout_password)
+
+        text_forgot_password.setOnClickListener {
+            loginViewModel.onClickTextForgotPassword()
+        }
+
+    }
+
+    private fun showForgotPasswordDialog() {
+        val dialogForgotPassword = DialogForgotPasswordFragment.newInstance()
+        dialogForgotPassword.show(supportFragmentManager, DialogForgotPasswordFragment.TAG)
     }
 
     override fun getLoadingBar(): ProgressBar = progress_bar_loading
@@ -37,6 +102,8 @@ class LoginActivity : BaseActivity() {
     override fun createViewModel(): BaseActivityViewModel {
         return loginViewModel
     }
+
+    override fun inflateLayout(): Int = R.layout.activity_login
 
     override fun getViewForSnackbar(): View = root
 }

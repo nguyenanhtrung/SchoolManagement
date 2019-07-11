@@ -1,9 +1,10 @@
 package com.nguyenanhtrung.schoolmanagement.di.component
 
-import android.app.Application
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.di.module.*
+import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
+import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -18,4 +19,6 @@ import javax.inject.Singleton
 interface AppComponent {
     fun inject(application: MyApplication)
     fun inject(loginActivity: LoginActivity)
+    fun inject(forgotPasswordFragment: DialogForgotPasswordFragment)
+    fun inject(mainActivity: MainActivity)
 }

@@ -16,15 +16,17 @@
         <item name="fontFamily">@font/roboto_medium</item>
     </style>
 
-    <style name="TextComment" parent="TextAppearance.AppCompat.Body1">
+    <style name="TextComment" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
     </style>
 
-    <style name="TextSmall" parent="TextAppearance.AppCompat.Body1">
+    <style name="TextSmall" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
     </style>
+
+
 
     <style name="TextAccountType" parent="TextAppearance.AppCompat.Body1">
         <item name="android:fontFamily">@font/roboto_medium</item>

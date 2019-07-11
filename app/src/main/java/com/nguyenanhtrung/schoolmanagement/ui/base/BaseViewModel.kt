@@ -32,8 +32,8 @@ abstract class BaseViewModel() : ViewModel() {
         _errorLiveData.value = errorState
     }
 
-    protected fun createApiResultLiveData(): MutableLiveData<ResultModel<Any>> {
-        val apiResultLiveData = MutableLiveData<ResultModel<Any>>()
+    protected fun<T> createApiResultLiveData(): MutableLiveData<ResultModel<T>> where T: Any{
+        val apiResultLiveData = MutableLiveData<ResultModel<T>>()
         viewStateLiveData.addSource(apiResultLiveData) {
             viewStateLiveData.value = it
         }
@@ -44,6 +44,7 @@ abstract class BaseViewModel() : ViewModel() {
         when(resultModel) {
             is ResultModel.Loading -> _loadingLiveData.value = resultModel
             is ResultModel.Failure -> _errorLiveData.value = ErrorState.NoAction(resultModel.error)
+            is ResultModel.Success -> _loadingLiveData.value = resultModel
         }
     }
 
