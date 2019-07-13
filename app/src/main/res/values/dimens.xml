@@ -21,4 +21,5 @@
     <dimen name="radius_corner_dialog">12dp</dimen>
     <dimen name="width_image_logo">200dp</dimen>
     <dimen name="height_image_logo">120dp</dimen>
+    <dimen name="padding_normal_150">24dp</dimen>
 </resources>

@@ -8,9 +8,11 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
+import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
@@ -55,7 +57,7 @@ abstract class BaseActivity : AppCompatActivity() {
                 is ErrorState.NoAction -> showSnackbar(getString(it.messageId))
                 is ErrorState.WithAction -> showSnackbarWithAction(
                     getString(it.messageId),
-                    it.actionName,
+                    getString(it.actionNameId),
                     it.action
                 )
             }
@@ -87,11 +89,12 @@ abstract class BaseActivity : AppCompatActivity() {
     }
 
     private fun showSnackbarWithAction(message: String, actionName: String, action: () -> Unit) {
-        Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_INDEFINITE)
-            .setAction(actionName) {
-                action()
-            }
-            .show()
+        val snackBar = Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_INDEFINITE)
+        snackBar.setAction(actionName) {
+            action()
+        }
+        snackBar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        snackBar.show()
     }
 
     private fun disableInteraction() {

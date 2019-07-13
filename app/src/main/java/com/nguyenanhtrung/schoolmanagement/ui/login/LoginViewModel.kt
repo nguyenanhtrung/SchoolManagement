@@ -1,9 +1,11 @@
 package com.nguyenanhtrung.schoolmanagement.ui.login
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
@@ -38,6 +40,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     internal val loginResultLiveData: LiveData<Resource<Boolean>>
         get() = _loginResultLiveData
 
+    private val _mainScreenLiveData by lazy {
+        MutableLiveData<Event<Boolean>>()
+    }
+    internal val mainScreenLiveData: LiveData<Event<Boolean>>
+        get() = _mainScreenLiveData
+
 
     internal fun onClickButtonLogin(email: String, password: String) {
         val isLoginValid = Validator.isEmailValid(email, _emailErrorLiveData) && Validator.isPasswordValid(password, _passwordErrorLiveData)
@@ -50,6 +58,17 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
 
     internal fun onClickTextForgotPassword() {
         _showForgotPasswordDialog.value = Event(true)
+    }
+
+    internal fun onCheckLogin(isLoginSuccess: Boolean) {
+        Log.d("LoginViewModel", "LoginStatus = " + isLoginSuccess)
+        if (isLoginSuccess) {
+            //open main screen
+            _mainScreenLiveData.value = Event(true)
+        } else {
+            //show login error
+            showError(ErrorState.NoAction(R.string.error_wrong_login))
+        }
     }
 
 }

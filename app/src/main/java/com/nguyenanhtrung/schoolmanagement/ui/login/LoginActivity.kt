@@ -6,17 +6,21 @@ import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
+import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
 import com.nguyenanhtrung.schoolmanagement.util.getString
+import com.nguyenanhtrung.schoolmanagement.util.openActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -35,7 +39,6 @@ class LoginActivity : BaseActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         //
         setupUiEvents()
@@ -43,11 +46,22 @@ class LoginActivity : BaseActivity() {
         subscribePasswordError()
         subscribeForgotPasswordDialog()
         subscribeLoginResult()
+        subscribeOpenMainScreen()
+
+    }
+
+    private fun subscribeOpenMainScreen() {
+        loginViewModel.mainScreenLiveData.observe(this, Observer {
+            openActivity(MainActivity::class.java)
+            finish()
+        })
     }
 
     private fun subscribeLoginResult() {
         loginViewModel.loginResultLiveData.observe(this, Observer {
-
+            it.data?.let { isLoginSuccess ->
+                loginViewModel.onCheckLogin(isLoginSuccess)
+            }
         })
     }
 

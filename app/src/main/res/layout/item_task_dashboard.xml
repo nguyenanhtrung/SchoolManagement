@@ -7,32 +7,18 @@
 
     android:foregroundTint="@color/colorSurface">
 
-    <LinearLayout
+    <TextView
+        android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginEnd="@dimen/margin_normal_100"
+        android:textAppearance="@style/TitleNormal"
+        android:textColor="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:paddingTop="@dimen/padding_normal_100"
-        android:paddingBottom="@dimen/padding_normal_100"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/image_icon_task"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            tools:src="@tools:sample/avatars"
-            />
-
-        <TextView
-            android:layout_marginTop="@dimen/margin_normal_100"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_normal_100"
-            android:layout_marginEnd="@dimen/margin_normal_100"
-            android:textAppearance="@style/TitleNormal"
-            android:gravity="center_horizontal"
-            tools:text="@tools:sample/full_names"
-            />
-
-    </LinearLayout>
+        android:drawableTop="@drawable/ic_create"
+        android:drawablePadding="@dimen/padding_small_100"
+        tools:text="@tools:sample/full_names"
+        />
 
 </com.google.android.material.card.MaterialCardView>

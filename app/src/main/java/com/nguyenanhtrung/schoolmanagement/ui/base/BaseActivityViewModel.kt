@@ -12,4 +12,5 @@ abstract class BaseActivityViewModel() : BaseViewModel() {
             showError(errorState)
         }
     }
+
 }

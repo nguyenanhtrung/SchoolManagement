@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -13,13 +14,14 @@ import javax.inject.Inject
 abstract class BaseFragment : Fragment() {
 
     private lateinit var fragmentViewModel: BaseViewModel
-    private lateinit var activityViewModel: BaseActivityViewModel
+    lateinit var activityViewModel: BaseActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         injectDependencies(requireActivity().application)
         fragmentViewModel = createFragmentViewModel()
         activityViewModel = bindActivityViewModel()
+
     }
 
     override fun onCreateView(
@@ -33,6 +35,9 @@ abstract class BaseFragment : Fragment() {
         subscribeViewState()
         subscribeLoading()
         subscribeError()
+        setupUiEvents()
+
+
     }
 
     private fun subscribeViewState() {
@@ -58,4 +63,5 @@ abstract class BaseFragment : Fragment() {
     protected abstract fun createFragmentViewModel(): BaseViewModel
     protected abstract fun bindActivityViewModel(): BaseActivityViewModel
     protected abstract fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View?
+    protected abstract fun setupUiEvents()
 }

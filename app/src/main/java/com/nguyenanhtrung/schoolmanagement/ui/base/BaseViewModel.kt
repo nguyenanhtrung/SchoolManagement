@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 
-abstract class BaseViewModel() : ViewModel() {
+abstract class BaseViewModel : ViewModel() {
 
     val viewStateLiveData by lazy {
         MediatorLiveData<Resource<*>>()
@@ -46,15 +47,20 @@ abstract class BaseViewModel() : ViewModel() {
 
     internal fun handleViewState(resource: Resource<*>) {
         when(resource.status) {
-            Status.LOADING, Status.SUCCESS -> _loadingLiveData.value = false
+            Status.SUCCESS -> _loadingLiveData.value = false
+            Status.LOADING -> _loadingLiveData.value = true
             Status.FAILURE -> {
                 _loadingLiveData.value = false
-                _errorLiveData.value = ErrorState.NoAction(resource.error)
+                handleErrorState(resource)
             }
             Status.EXCEPTION -> {
                 _loadingLiveData.value = false
             }
         }
+    }
+
+    protected open fun handleErrorState(resource: Resource<*>) {
+        _errorLiveData.value = ErrorState.NoAction(resource.error)
     }
 
 }

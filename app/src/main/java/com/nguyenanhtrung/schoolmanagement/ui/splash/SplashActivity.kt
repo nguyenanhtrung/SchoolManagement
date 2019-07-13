@@ -5,13 +5,18 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.google.android.material.snackbar.Snackbar
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
+import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
+import com.nguyenanhtrung.schoolmanagement.util.openActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 import javax.inject.Inject
 
@@ -21,7 +26,7 @@ class SplashActivity : BaseActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private val splashViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[SplashViewModel::class.java]
+        ViewModelProviders.of(this@SplashActivity, viewModelFactory)[SplashViewModel::class.java]
     }
 
 
@@ -30,12 +35,9 @@ class SplashActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         //
         subscribeCheckLogin()
-    }
+        subscribeNavigateToLoginScreen()
+        subscribeNavigateToMainScreen()
 
-    private fun subscribeCheckLogin() {
-        splashViewModel.checkLoginLiveData.observe(this, Observer {
-            splashViewModel.onCheckLoginState(it.data)
-        })
     }
 
     override fun inflateLayout(): Int = R.layout.activity_splash
@@ -50,5 +52,31 @@ class SplashActivity : BaseActivity() {
     override fun createViewModel(): BaseActivityViewModel = splashViewModel
 
     override fun getViewForSnackbar(): View = root_layout
+
+    private fun subscribeNavigateToMainScreen() {
+        splashViewModel.navigateMainScreen.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                openActivity(MainActivity::class.java)
+                finish()
+            }
+        })
+    }
+
+    private fun subscribeNavigateToLoginScreen() {
+        splashViewModel.navigateLoginScreen.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                openActivity(LoginActivity::class.java)
+                finish()
+            }
+        })
+    }
+
+    private fun subscribeCheckLogin() {
+        splashViewModel.checkLoginLiveData.observe(this, Observer {
+            splashViewModel.onCheckLoginState(it.data)
+        })
+    }
+
+
 
 }
