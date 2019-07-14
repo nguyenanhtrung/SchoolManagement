@@ -58,4 +58,6 @@
     <string name="error_network">Kết nối mạng đã ngắt.</string>
     <string name="retry">Thử lại</string>
     <string name="title_error_state">Có lỗi đã xảy ra</string>
+    <string name="title_dash_board">Bảng chính</string>
+    <string name="title_message">Tin nhắn</string>
 </resources>
