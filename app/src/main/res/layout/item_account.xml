@@ -27,7 +27,8 @@
             tools:text="nguyenanhtrung2495@gmail.com"
             android:layout_toEndOf="@id/image_account"
             android:layout_marginStart="@dimen/margin_small_100"
-            android:textAppearance="@style/TextNormal"
+            android:maxLines="1"
+            android:textAppearance="@style/TitleNormal"
             />
 
         <TextView

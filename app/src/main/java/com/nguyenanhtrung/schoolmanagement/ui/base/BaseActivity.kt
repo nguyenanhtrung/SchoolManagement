@@ -14,8 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
 
 
@@ -26,6 +24,9 @@ abstract class BaseActivity : AppCompatActivity() {
 
     private lateinit var loadingBar: ProgressBar
     private lateinit var networkLiveData: NetworkLiveData
+    private val snackBar by lazy {
+       Snackbar.make(getViewForSnackbar(), "", Snackbar.LENGTH_LONG)
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,14 +55,18 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun subscribeError() {
         baseViewModel.errorLiveData.observe(this, Observer {
             when (it) {
-                is ErrorState.NoAction -> showSnackbar(getString(it.messageId))
-                is ErrorState.WithAction -> showSnackbarWithAction(
+                is ErrorState.NoAction -> showError(getString(it.messageId))
+                is ErrorState.WithAction -> showErrorWithAction(
                     getString(it.messageId),
-                    getString(it.actionNameId),
                     it.action
                 )
+                is ErrorState.Empty -> clearError()
             }
         })
+    }
+
+    protected open fun clearError() {
+        snackBar.dismiss()
     }
 
     private fun subscribeLoading() {
@@ -84,13 +89,14 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    private fun showSnackbar(message: String) {
-        Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_SHORT).show()
+    protected open fun showError(message: String) {
+        snackBar.setText(message)
+        snackBar.show()
     }
 
-    private fun showSnackbarWithAction(message: String, actionName: String, action: () -> Unit) {
-        val snackBar = Snackbar.make(getViewForSnackbar(), message, Snackbar.LENGTH_INDEFINITE)
-        snackBar.setAction(actionName) {
+    protected open fun showErrorWithAction(message: String, action: () -> Unit) {
+        snackBar.setText(message)
+        snackBar.setAction(getString(R.string.retry)) {
             action()
         }
         snackBar.setActionTextColor(ContextCompat.getColor(this, R.color.colorPrimary))

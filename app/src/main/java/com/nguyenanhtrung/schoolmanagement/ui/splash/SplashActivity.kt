@@ -18,6 +18,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.util.openActivity
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.android.synthetic.main.include_error_state.*
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity() {
@@ -34,10 +35,17 @@ class SplashActivity : BaseActivity() {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         //
+        setupUiEvents()
         subscribeCheckLogin()
         subscribeNavigateToLoginScreen()
         subscribeNavigateToMainScreen()
 
+    }
+
+    private fun setupUiEvents() {
+        button_retry.setOnClickListener {
+            splashViewModel.onClickButtonRetry()
+        }
     }
 
     override fun inflateLayout(): Int = R.layout.activity_splash
@@ -47,11 +55,26 @@ class SplashActivity : BaseActivity() {
         myApp.appComponent.inject(this)
     }
 
+    override fun showError(message: String) {
+        view_switcher.displayedChild = 1
+        if (view_switcher.currentView != layout_error_state) {
+            view_switcher.showNext()
+        }
+        text_error_content.text = message
+    }
+
+    override fun clearError() {
+        view_switcher.displayedChild = 0
+        if (view_switcher.currentView != layout_main) {
+            view_switcher.showPrevious()
+        }
+    }
+
     override fun getLoadingBar(): ProgressBar = progress_loading
 
     override fun createViewModel(): BaseActivityViewModel = splashViewModel
 
-    override fun getViewForSnackbar(): View = root_layout
+    override fun getViewForSnackbar(): View = view_switcher
 
     private fun subscribeNavigateToMainScreen() {
         splashViewModel.navigateMainScreen.observe(this, Observer {

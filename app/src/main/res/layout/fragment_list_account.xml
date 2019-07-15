@@ -1,28 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_accounts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:listitem="@layout/item_account"
         android:layout_marginStart="@dimen/margin_normal_100"
         android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_marginEnd="@dimen/margin_normal_100" />
 
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottom_app_bar_accounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:navigationIcon="@drawable/ic_back_white"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/float_button_create_account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
         android:src="@drawable/ic_add"
-        app:shapeAppearanceOverlay="@style/FloatButtonShapeAppearance"
+        app:layout_anchor="@id/bottom_app_bar_accounts"
         android:layout_marginEnd="@dimen/margin_normal_100"
-        android:layout_marginBottom="@dimen/margin_large_100"
         />
 
-</FrameLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

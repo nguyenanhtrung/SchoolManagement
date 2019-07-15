@@ -32,6 +32,7 @@ class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: 
     internal val navigateMainScreen: LiveData<Event<Boolean>>
         get() = _navigateMainScreen
 
+
     init {
         checkAlreadyLoginUseCase.invoke(viewModelScope, Unit, _checkLoginLiveData)
     }
@@ -50,10 +51,13 @@ class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: 
         }
     }
 
+    internal fun onClickButtonRetry() {
+        showError(ErrorState.Empty)
+        checkAlreadyLoginUseCase.invoke(viewModelScope, Unit, _checkLoginLiveData)
+    }
+
     override fun handleErrorState(resource: Resource<*>) {
-        showError(ErrorState.WithAction(resource.error, R.string.retry) {
-            checkAlreadyLoginUseCase.invoke(viewModelScope,Unit, _checkLoginLiveData)
-        })
+        showError(ErrorState.NoAction(resource.error))
     }
 
 }

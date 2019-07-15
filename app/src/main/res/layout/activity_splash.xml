@@ -2,14 +2,17 @@
 <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/root_layout"
+    android:id="@+id/view_switcher"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
+    android:inAnimation="@android:anim/slide_in_left"
+    android:outAnimation="@android:anim/slide_out_right"
     android:background="@android:color/white"
     tools:context=".ui.splash.SplashActivity">
 
     <LinearLayout
+        android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -33,6 +36,11 @@
 
     </LinearLayout>
 
-    <include layout="@layout/include_error_state" />
+    <include
+        android:id="@+id/layout_error_state"
+        layout="@layout/include_error_state"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
 
 </ViewSwitcher>

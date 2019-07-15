@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/card_radius"
-    android:foregroundTint="@color/colorSurface">
+    android:backgroundTint="#FFFFFF"
+    android:foregroundTint="#FFFFFF">
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"

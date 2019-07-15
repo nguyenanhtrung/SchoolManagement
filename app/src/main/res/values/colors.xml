@@ -7,7 +7,7 @@
     <color name="colorOnSecondary">#000000</color>
     <color name="colorOnBackground">#000000</color>
     <color name="colorOnError">#EF5350</color>
-    <color name="colorSurface">#FFFFFF</color>
+    <color name="colorSurface">#ede7f6</color>
     <color name="colorOnSurface">#000000</color>
     <color name="colorBackground">#EDFFFFFF</color>
     <color name="colorResultPass">#4CAF50</color>
