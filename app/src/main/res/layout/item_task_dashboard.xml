@@ -4,7 +4,6 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
     android:foregroundTint="@color/colorSurface">
 
     <TextView
@@ -13,6 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_normal_100"
         android:layout_marginEnd="@dimen/margin_normal_100"
+        android:paddingBottom="@dimen/padding_normal_100"
         android:textAppearance="@style/TitleNormal"
         android:textColor="@color/colorPrimary"
         android:gravity="center_horizontal"

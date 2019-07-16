@@ -9,6 +9,6 @@
     <color name="colorOnError">#EF5350</color>
     <color name="colorSurface">#ede7f6</color>
     <color name="colorOnSurface">#000000</color>
-    <color name="colorBackground">#EDFFFFFF</color>
+    <color name="colorBackground">#FFFFFF</color>
     <color name="colorResultPass">#4CAF50</color>
 </resources>
