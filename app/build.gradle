@@ -52,6 +52,7 @@ dependencies {
     def circle_image_version = "3.0.0"
     def dagger_version = "2.23.2"
     def firebase_auth_version = "18.0.0"
+    def firebase_firestore_version = "20.1.0"
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -124,8 +125,8 @@ dependencies {
 
     //Firebase
     implementation 'com.google.firebase:firebase-core:17.0.0'
-
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
+    implementation "com.google.firebase:firebase-firestore:$firebase_firestore_version"
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:$coroutines_version"
 

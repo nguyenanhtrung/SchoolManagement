@@ -1,4 +1,4 @@
-package com.nguyenanhtrung.schoolmanagement.data.remote.datasource
+package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login
 
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.LoginState

@@ -60,4 +60,6 @@
     <string name="title_error_state">Có lỗi đã xảy ra</string>
     <string name="title_dash_board">Bảng chính</string>
     <string name="title_message">Tin nhắn</string>
+    <string name="error_not_found_user">Không tìm thấy thông tin người dùng.</string>
+    <string name="error_parse_data">Lỗi thao tác với dữ liệu từ máy chủ</string>
 </resources>

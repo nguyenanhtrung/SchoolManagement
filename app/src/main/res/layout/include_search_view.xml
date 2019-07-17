@@ -10,24 +10,16 @@
     android:foregroundTint="#FFFFFF">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_small_100"
         android:hint=""
+        android:drawableStart="@drawable/ic_search_black"
         android:background="@android:color/transparent"
         android:layout_marginEnd="@dimen/margin_normal_250"
         />
 
-    <ImageButton
-        android:id="@+id/button_search"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_search_black"
-        android:background="?attr/selectableItemBackgroundBorderless"
-        android:layout_gravity="start|center"
-        android:layout_marginStart="@dimen/margin_normal_100"
-        android:layout_marginEnd="@dimen/margin_small_100"
-        tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/button_clear"

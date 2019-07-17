@@ -2,8 +2,11 @@ package com.nguyenanhtrung.schoolmanagement.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.nguyenanhtrung.schoolmanagement.R
 
 fun TextInputEditText.getString(): String {
     return text.toString()
@@ -24,4 +27,16 @@ fun TextInputEditText.clearErrorWhenFocus(inputLayout: TextInputLayout) {
         }
 
     })
+}
+
+fun ImageView.loadImageIfEmptyPath(imagePath: String) {
+    if (imagePath.isEmpty()) {
+        Glide.with(this)
+            .load(R.drawable.image_empty)
+            .into(this)
+        return
+    }
+    Glide.with(this)
+        .load(imagePath)
+        .into(this)
 }

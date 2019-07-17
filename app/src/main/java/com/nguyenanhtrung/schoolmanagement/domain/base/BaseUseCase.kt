@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.domain.base
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
@@ -17,6 +18,7 @@ abstract class BaseUseCase<in Params, Output> where Output : Any{
         resultLiveData: MutableLiveData<Resource<Output>>
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
+            Log.d("Exception",exception.toString())
             resultLiveData.value = Resource.exception(exception)
         }
 

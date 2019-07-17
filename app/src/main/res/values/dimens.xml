@@ -11,8 +11,6 @@
     <dimen name="margin_large_100">64dp</dimen>
 
     <dimen name="radius_diamond_button">28dp</dimen>
-    <dimen name="width_circle_user_image">64dp</dimen>
-    <dimen name="height_circle_user_image">64dp</dimen>
     <dimen name="card_radius">4dp</dimen>
     <dimen name="width_image_square">100dp</dimen>
     <dimen name="height_image_square">120dp</dimen>
@@ -22,4 +20,6 @@
     <dimen name="width_image_logo">200dp</dimen>
     <dimen name="height_image_logo">120dp</dimen>
     <dimen name="padding_normal_150">24dp</dimen>
+    <dimen name="width_circle_user_image">64dp</dimen>
+    <dimen name="height_circle_user_image">64dp</dimen>
 </resources>

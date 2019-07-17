@@ -1,14 +1,11 @@
-package com.nguyenanhtrung.schoolmanagement.data.remote.datasource
+package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.LoginState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
 import kotlinx.coroutines.tasks.await
