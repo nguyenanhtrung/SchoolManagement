@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.ui.dashboard
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -7,6 +8,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(private val getUserInfoUseCase: GetUserInfoUseCase) : BaseViewModel() {
@@ -21,6 +23,7 @@ class DashboardViewModel @Inject constructor(private val getUserInfoUseCase: Get
         if (_userInfoLiveData.value != null) {
             return
         }
+
         getUserInfoUseCase.invoke(viewModelScope,Unit, _userInfoLiveData)
     }
 }

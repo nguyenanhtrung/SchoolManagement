@@ -16,7 +16,7 @@
         android:textAppearance="@style/TitleNormal"
         android:textColor="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:drawableTop="@drawable/ic_create"
+        android:drawableTop="@drawable/ic_account"
         android:drawablePadding="@dimen/padding_small_100"
         tools:text="@tools:sample/full_names"
         />

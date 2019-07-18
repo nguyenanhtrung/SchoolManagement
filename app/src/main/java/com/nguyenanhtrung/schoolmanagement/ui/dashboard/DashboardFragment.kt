@@ -17,6 +17,8 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
@@ -60,13 +62,14 @@ class DashboardFragment : BaseFragment() {
     private fun subscribeUserInfo() {
         dashboardViewModel.userInfoLiveData.observe(viewLifecycleOwner, Observer {
             showUserInfo(it.data)
+
         })
     }
 
     private fun showUserInfo(user: User?) {
         user?.let {
             text_account_name.text = it.name
-            text_account_type.text = it.type
+            text_account_type.text = it.typeName
             circle_image_user.loadImageIfEmptyPath(it.avatarPath)
         }
     }

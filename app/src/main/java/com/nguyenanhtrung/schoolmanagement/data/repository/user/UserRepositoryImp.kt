@@ -10,9 +10,7 @@ class UserRepositoryImp @Inject constructor(private val userRemoteDataSource: Us
 
 
     override suspend fun loadUserInfo(result: MutableLiveData<Resource<User>>) {
-        result.value = Resource.loading()
-        val userInfoResult = userRemoteDataSource.getUserInfo()
-        result.value = userInfoResult
+        userRemoteDataSource.loadUserInfoAsync(result)
     }
 
 
