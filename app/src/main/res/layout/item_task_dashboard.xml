@@ -7,17 +7,18 @@
     android:foregroundTint="@color/colorSurface">
 
     <TextView
-        android:layout_marginTop="@dimen/margin_normal_100"
+        android:id="@+id/text_task_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="120dp"
         android:layout_marginStart="@dimen/margin_normal_100"
         android:layout_marginEnd="@dimen/margin_normal_100"
-        android:paddingBottom="@dimen/padding_normal_100"
-        android:textAppearance="@style/TitleNormal"
+        android:drawablePadding="@dimen/padding_small_100"
+        android:paddingBottom="@dimen/padding_small_100"
+        android:paddingTop="@dimen/padding_small_100"
+        android:textAppearance="@style/TextNormalBold"
         android:textColor="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:drawableTop="@drawable/ic_account"
-        android:drawablePadding="@dimen/padding_small_100"
+        android:drawableTop="@drawable/ic_task_500"
         tools:text="@tools:sample/full_names"
         />
 

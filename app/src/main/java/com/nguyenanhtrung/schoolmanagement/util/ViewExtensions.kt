@@ -40,3 +40,9 @@ fun ImageView.loadImageIfEmptyPath(imagePath: String) {
         .load(imagePath)
         .into(this)
 }
+
+fun ImageView.loadImageResource(imageResId: Int) {
+    Glide.with(this)
+        .load(imageResId)
+        .into(this)
+}

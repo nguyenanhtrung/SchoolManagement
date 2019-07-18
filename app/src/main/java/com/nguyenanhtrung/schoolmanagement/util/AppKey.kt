@@ -3,7 +3,12 @@ package com.nguyenanhtrung.schoolmanagement.util
 class AppKey private constructor(){
 
     companion object {
-        const val USERS_PATH_FIREBASE = "users"
-        const val USER_TYPES_PATH_FIREBASE = "user_types"
+        const val USERS_PATH_FIRE_STORE = "users"
+        const val USER_TYPES_PATH_FIRE_STORE = "user_types"
+        const val TASKS_PATH_FIRE_STORE = "tasks"
+        const val TASK_PERMISSIONS_PATH = "task_permissions"
+
+
+
     }
 }

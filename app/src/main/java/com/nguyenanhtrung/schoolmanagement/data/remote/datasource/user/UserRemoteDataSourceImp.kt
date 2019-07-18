@@ -10,8 +10,8 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserStatus
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
-import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIREBASE
-import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_TYPES_PATH_FIREBASE
+import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
+import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_TYPES_PATH_FIRE_STORE
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class UserRemoteDataSourceImp @Inject constructor(
                 val currentUser =
                     firebaseAuth.currentUser ?: return Resource.failure(R.string.error_not_found_user)
                 val userId = currentUser.uid
-                val userSnapshot = firestore.collection(USERS_PATH_FIREBASE).document(userId).get().await()
+                val userSnapshot = firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
                 val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
                     ?: return Resource.failure(R.string.error_parse_data)
                 val userMapped = User(
@@ -46,7 +46,7 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     private suspend fun getUserAccountType(typeId: String): String {
         val accountTypeSnapshot =
-            firestore.collection(USER_TYPES_PATH_FIREBASE).document(typeId).get().await()
+            firestore.collection(USER_TYPES_PATH_FIRE_STORE).document(typeId).get().await()
         return accountTypeSnapshot.get("name") as String
     }
 
