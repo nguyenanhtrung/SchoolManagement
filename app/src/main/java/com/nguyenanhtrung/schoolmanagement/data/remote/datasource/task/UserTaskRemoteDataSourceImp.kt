@@ -21,29 +21,21 @@ class UserTaskRemoteDataSourceImp @Inject constructor(
 ) : UserTaskRemoteDataSource {
 
 
-    override suspend fun loadUserTasksAsync(
-        userTypeId: String,
-        result: MutableLiveData<Resource<MutableList<UserTaskItem>>>
-    ) {
-        object :
-            NetworkBoundResources<String, MutableList<UserTaskItem>>(context, userTypeId, result) {
-            override suspend fun callApi(): Resource<MutableList<UserTaskItem>> {
-                val taskResult = firestore.collection(AppKey.TASKS_PATH_FIRE_STORE)
-                    .document(userTypeId)
-                    .collection(AppKey.TASK_PERMISSIONS_PATH)
-                    .get().await()
-                val mappedTasks = taskResult.map {
-                    UserTask(
-                        it.id,
-                        it["name"] as String,
-                        getIconId(it.id)
-                    )
-                }.reversed()
-                return Resource.success(mappedTasks.map {
-                    UserTaskItem(it)
-                }.toMutableList())
-            }
-        }.createCall()
+    override suspend fun loadUserTasksAsync(userTypeId: String): Resource<List<UserTaskItem>> {
+        val taskResult = firestore.collection(AppKey.TASKS_PATH_FIRE_STORE)
+            .document(userTypeId)
+            .collection(AppKey.TASK_PERMISSIONS_PATH)
+            .get().await()
+        val mappedTasks = taskResult.map {
+            UserTask(
+                it.id,
+                it["name"] as String,
+                getIconId(it.id)
+            )
+        }.reversed()
+        return Resource.success(mappedTasks.map {
+            UserTaskItem(it)
+        })
     }
 
     private fun getIconId(taskId: String): Int {

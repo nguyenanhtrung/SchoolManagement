@@ -45,7 +45,7 @@ class DashboardFragment : BaseFragment() {
     }
 
     override fun injectDependencies(application: Application) {
-        val myApp  = application as MyApplication
+        val myApp = application as MyApplication
         myApp.appComponent.inject(this)
     }
 
@@ -67,7 +67,16 @@ class DashboardFragment : BaseFragment() {
         setupTasksRecyclerView()
         subscribeUserInfo()
         subscribeUserTasks()
+        setupTasksEvent()
         dashboardViewModel.loadUserInfo()
+    }
+
+    private fun setupTasksEvent() {
+        tasksAdapter.setOnItemClickListener { item, _ ->
+            if (item is UserTaskItem) {
+                dashboardViewModel.onClickTaskItem(item.userTask)
+            }
+        }
     }
 
     private fun subscribeUserTasks() {
@@ -78,7 +87,7 @@ class DashboardFragment : BaseFragment() {
         })
     }
 
-    private fun showUserTasks(userTasks: MutableList<UserTaskItem>) {
+    private fun showUserTasks(userTasks: List<UserTaskItem>) {
         recycler_view_tasks.layoutManager = GridLayoutManager(requireContext(), 3)
         recycler_view_tasks.addItemDecoration(MyGridDividerItemDecoration(32, 3))
         if (tasksAdapter.itemCount > 0) {

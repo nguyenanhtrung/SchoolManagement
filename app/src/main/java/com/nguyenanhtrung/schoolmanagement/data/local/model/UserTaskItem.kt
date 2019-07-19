@@ -6,7 +6,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_task_dashboard.*
 
-class UserTaskItem(private val userTask: UserTask) : Item() {
+class UserTaskItem(val userTask: UserTask) : Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.text_task_name.text = userTask.name

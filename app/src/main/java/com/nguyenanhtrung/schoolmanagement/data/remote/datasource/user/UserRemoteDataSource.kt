@@ -5,5 +5,6 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 
 interface UserRemoteDataSource {
-    suspend fun loadUserInfoAsync(result: MutableLiveData<Resource<User>>)
+    suspend fun loadUserInfoAsync(): Resource<User>
+    suspend fun getUserId(): String
 }

@@ -1,5 +1,9 @@
 package com.nguyenanhtrung.schoolmanagement.di.module
 
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSourceImp
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertasks.UserTasksLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertasks.UserTasksLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSource
@@ -39,6 +43,12 @@ class RepositoryModule {
 
     @Singleton
     @Provides
+    fun provideUserLocalDataSource(userLocalDataSourceImp: UserLocalDataSourceImp): UserLocalDataSource {
+        return userLocalDataSourceImp
+    }
+
+    @Singleton
+    @Provides
     fun provideUserRepository(userRepository: UserRepositoryImp): UserRepository {
         return userRepository
     }
@@ -47,6 +57,12 @@ class RepositoryModule {
     @Provides
     fun provideUserTaskRemoteDataSource(userTaskRemoteDataSource: UserTaskRemoteDataSourceImp): UserTaskRemoteDataSource {
         return userTaskRemoteDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserTaskLocalDataSource(userTasksLocalDataSourceImp: UserTasksLocalDataSourceImp): UserTasksLocalDataSource {
+        return userTasksLocalDataSourceImp
     }
 
     @Singleton

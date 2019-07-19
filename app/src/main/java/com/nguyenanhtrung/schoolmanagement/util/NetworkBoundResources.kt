@@ -27,6 +27,8 @@ constructor(
             result.value = Resource.failure(R.string.error_network)
             return
         }
+
+
         if (shouldFetchFromServer(params)) {
             result.value = Resource.loading()
             //call api
@@ -45,23 +47,24 @@ constructor(
                 loadFromLocal(params)
             }
             result.value = dataFromLocal
+            return
         }
 
 
     }
 
     @MainThread
-    protected fun shouldFetchFromServer(params: Params): Boolean = true
+    protected open suspend fun shouldFetchFromServer(params: Params): Boolean = true
 
     @WorkerThread
     protected abstract suspend fun callApi(): Resource<Output>
 
     @MainThread
-    protected fun shouldSaveToLocal(params: Params): Boolean = false
+    protected open fun shouldSaveToLocal(params: Params): Boolean = false
 
     @WorkerThread
-    protected suspend fun saveToLocal(output: Output) = Unit
+    protected open suspend fun saveToLocal(output: Output) = Unit
 
     @WorkerThread
-    protected suspend fun loadFromLocal(params: Params): Resource<Output> = Resource.loading()
+    protected open suspend fun loadFromLocal(params: Params): Resource<Output> = Resource.loading()
 }

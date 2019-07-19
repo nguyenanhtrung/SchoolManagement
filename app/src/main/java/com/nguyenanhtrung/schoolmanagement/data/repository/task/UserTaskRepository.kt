@@ -7,5 +7,5 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
 
 interface UserTaskRepository {
 
-    suspend fun loadUserTasks(taskId: String, result: MutableLiveData<Resource<MutableList<UserTaskItem>>>)
+    suspend fun loadUserTasks(taskId: String, result: MutableLiveData<Resource<List<UserTaskItem>>>)
 }

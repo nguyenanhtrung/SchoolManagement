@@ -9,12 +9,12 @@ import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import javax.inject.Inject
 
 class GetUserTasksUseCase @Inject constructor(private val userTaskRepository: UserTaskRepository) :
-    BaseUseCase<String, MutableList<UserTaskItem>>() {
+    BaseUseCase<String, List<UserTaskItem>>() {
 
 
     override suspend fun execute(
         params: String,
-        resultLiveData: MutableLiveData<Resource<MutableList<UserTaskItem>>>
+        resultLiveData: MutableLiveData<Resource<List<UserTaskItem>>>
     ) {
         userTaskRepository.loadUserTasks(params, resultLiveData)
     }

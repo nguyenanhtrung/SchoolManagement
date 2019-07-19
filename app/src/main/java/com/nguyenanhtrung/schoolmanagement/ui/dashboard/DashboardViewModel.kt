@@ -23,9 +23,9 @@ class DashboardViewModel @Inject constructor(
         get() = _userInfoLiveData
 
     private val _userTasksLiveData by lazy {
-        createApiResultLiveData<MutableList<UserTaskItem>>()
+        createApiResultLiveData<List<UserTaskItem>>()
     }
-    internal val userTaskLiveData: LiveData<Resource<MutableList<UserTaskItem>>>
+    internal val userTaskLiveData: LiveData<Resource<List<UserTaskItem>>>
         get() = _userTasksLiveData
 
 
@@ -33,7 +33,6 @@ class DashboardViewModel @Inject constructor(
         if (_userInfoLiveData.value != null) {
             return
         }
-
         getUserInfoUseCase.invoke(viewModelScope, Unit, _userInfoLiveData)
     }
 
@@ -52,5 +51,9 @@ class DashboardViewModel @Inject constructor(
             return userInfo.typeId
         }
         return ""
+    }
+
+    internal fun onClickTaskItem(userTask: UserTask) {
+
     }
 }

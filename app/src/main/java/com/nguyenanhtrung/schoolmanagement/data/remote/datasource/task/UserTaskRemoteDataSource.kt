@@ -6,8 +6,5 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
 
 interface UserTaskRemoteDataSource {
 
-    suspend fun loadUserTasksAsync(
-        userTypeId: String,
-        result: MutableLiveData<Resource<MutableList<UserTaskItem>>>
-    )
+    suspend fun loadUserTasksAsync(userTypeId: String): Resource<List<UserTaskItem>>
 }

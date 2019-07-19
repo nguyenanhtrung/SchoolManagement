@@ -1,23 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:paddingStart="@dimen/padding_normal_100"
-    android:paddingEnd="@dimen/padding_normal_100"
-    android:paddingTop="@dimen/padding_normal_100"
     android:layout_height="match_parent">
 
+
+
+
+    <!--    <TextView-->
+    <!--        android:id="@+id/title_result"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/margin_normal_100"-->
+    <!--        android:text="@string/title_result"-->
+    <!--        android:textAppearance="@style/TitleNormal"-->
+    <!--        />-->
+
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        android:id="@+id/recycler_view_results"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="match_parent"-->
+    <!--        android:layout_marginBottom="@dimen/margin_normal_100"-->
+    <!--        android:layout_marginTop="@dimen/margin_normal_100"-->
+    <!--        />-->
+
+
     <include
+        android:id="@+id/include"
         layout="@layout/include_search_view"
-        />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginEnd="@dimen/margin_normal_100"
+        app:layout_constraintBottom_toBottomOf="@+id/button_back"
+        app:layout_constraintEnd_toStartOf="@+id/button_filter"
+        app:layout_constraintStart_toEndOf="@+id/button_back"
+        app:layout_constraintTop_toTopOf="@+id/button_back" />
+
+    <ImageButton
+        android:id="@+id/button_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_back"
+        tools:ignore="ContentDescription" />
+
+    <ImageButton
+        android:id="@+id/button_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_normal_100"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/button_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/button_back"
+        app:srcCompat="@drawable/ic_filter"
+        tools:ignore="ContentDescription" />
 
     <HorizontalScrollView
-        android:layout_width="match_parent"
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_normal_100"
         android:scrollbars="none"
-        >
+        app:layout_constraintEnd_toEndOf="@id/button_filter"
+        app:layout_constraintStart_toStartOf="@+id/button_back"
+        app:layout_constraintTop_toBottomOf="@+id/include">
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chip_group_search_category"
@@ -30,7 +83,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                tools:text="Class"/>
+                tools:text="Class" />
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.Chip"
@@ -38,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                tools:text="Class"/>
+                tools:text="Class" />
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.Chip"
@@ -46,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                tools:text="Class"/>
+                tools:text="Class" />
 
             <com.google.android.material.chip.Chip
                 style="@style/Widget.Chip"
@@ -54,11 +107,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAlignment="center"
-                tools:text="Class"/>
+                tools:text="Class" />
 
 
         </com.google.android.material.chip.ChipGroup>
-
     </HorizontalScrollView>
 
     <TextView
@@ -68,15 +120,17 @@
         android:layout_marginTop="@dimen/margin_normal_100"
         android:text="@string/title_result"
         android:textAppearance="@style/TitleNormal"
-        />
+        app:layout_constraintStart_toStartOf="@+id/button_back"
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_results"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/margin_normal_100"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_normal_100"
-        />
-
-
-</LinearLayout>
+        android:layout_marginBottom="@dimen/margin_normal_100"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/button_filter"
+        app:layout_constraintStart_toStartOf="@+id/title_result"
+        app:layout_constraintTop_toBottomOf="@+id/title_result" />
+</androidx.constraintlayout.widget.ConstraintLayout>
