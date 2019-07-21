@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.ForgotPasswordViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
@@ -43,4 +44,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DashboardViewModel::class)
     abstract fun bindDashboardViewModel(dashboardViewModel: DashboardViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountManagementViewModel::class)
+    abstract fun bindAccountManagementViewModel(accountManagementViewModel: AccountManagementViewModel) : ViewModel
 }

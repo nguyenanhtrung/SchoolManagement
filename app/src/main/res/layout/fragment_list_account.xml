@@ -32,6 +32,7 @@
         android:src="@drawable/ic_add"
         app:layout_anchor="@id/bottom_app_bar_accounts"
         android:layout_marginEnd="@dimen/margin_normal_100"
+        app:shapeAppearance="@style/FloatButtonShapeAppearance"
         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
