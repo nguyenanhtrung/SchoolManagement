@@ -22,7 +22,7 @@ abstract class BaseViewModel : ViewModel() {
     internal val loadingLiveData: LiveData<Boolean>
         get() = _loadingLiveData
 
-    private val _errorLiveData by lazy {
+    protected val _errorLiveData by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val errorLiveData: LiveData<ErrorState>

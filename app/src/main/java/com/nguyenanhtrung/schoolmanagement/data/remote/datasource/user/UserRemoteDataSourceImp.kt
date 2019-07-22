@@ -16,6 +16,16 @@ class UserRemoteDataSourceImp @Inject constructor(
     private val firestore: FirebaseFirestore
 ) : UserRemoteDataSource {
 
+    override suspend fun sendResetPassword(email: String): Resource<Int> {
+        return try {
+            firebaseAuth.sendPasswordResetEmail(email).await()
+            return Resource.success(R.string.title_send_password_success)
+        }catch (ex: Exception) {
+            Resource.exception(ex)
+        }
+    }
+
+
     override suspend fun getUserId(): String {
         val currentUser =
             firebaseAuth.currentUser ?: return ""

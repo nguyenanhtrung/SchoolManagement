@@ -3,10 +3,14 @@ package com.nguyenanhtrung.schoolmanagement.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDestination
+import androidx.navigation.NavDirections
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
+import com.nguyenanhtrung.schoolmanagement.domain.navigation.GetDestinationIdUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertask.GetUserTasksUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -14,7 +18,8 @@ import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val getUserTasksUseCase: GetUserTasksUseCase
+    private val getUserTasksUseCase: GetUserTasksUseCase,
+    private val getDestinationIdUseCase: GetDestinationIdUseCase
 ) : BaseViewModel() {
 
     private val _userInfoLiveData by lazy {
@@ -28,6 +33,12 @@ class DashboardViewModel @Inject constructor(
     }
     internal val userTaskLiveData: LiveData<Resource<List<UserTaskItem>>>
         get() = _userTasksLiveData
+
+    private val _navigationLiveData by lazy {
+        MutableLiveData<Resource<Event<NavDirections>>>()
+    }
+    internal val navigationLiveData: LiveData<Resource<Event<NavDirections>>>
+        get() = _navigationLiveData
 
 
     internal fun loadUserInfo() {
@@ -55,6 +66,6 @@ class DashboardViewModel @Inject constructor(
     }
 
     internal fun onClickTaskItem(userTask: UserTask) {
-
+        getDestinationIdUseCase.invoke(viewModelScope, userTask.id.toInt(), _navigationLiveData)
     }
 }

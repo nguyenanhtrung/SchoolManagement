@@ -6,10 +6,14 @@ import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.*
+import android.widget.ProgressBar
 import androidx.annotation.DimenRes
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
+import kotlinx.android.synthetic.main.dialog_forgot_password_fragment.*
 import javax.inject.Inject
 
 
@@ -21,6 +25,7 @@ abstract class BaseDialogFragment : DialogFragment() {
 
     private lateinit var dialogViewModel: BaseViewModel
     private lateinit var activityViewModel: BaseActivityViewModel
+    private lateinit var progressLoading: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +44,50 @@ abstract class BaseDialogFragment : DialogFragment() {
         setDefaultBackgroundDialog()
         setCancelableOutside()
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        progressLoading = getProgressLoading()
+        edit_text_email.clearErrorWhenFocus(input_layout_email)
+        subscribeLoading()
+        dialogViewModel.viewStateLiveData.observe(this, Observer {
+            dialogViewModel.handleViewState(it)
+        })
+    }
+
+    private fun disableInteraction() {
+        dialog?.window?.setFlags(
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+        )
+    }
+
+    private fun enableInteraction() {
+        dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+
+    private fun subscribeLoading() {
+        dialogViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                true -> showLoading()
+                else -> hideLoading()
+            }
+        })
+    }
+
+    private fun showLoading() {
+        if (::progressLoading.isInitialized) {
+            disableInteraction()
+            progressLoading.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideLoading() {
+        if (progressLoading.visibility == View.VISIBLE) {
+            enableInteraction()
+            progressLoading.visibility = View.GONE
+        }
     }
 
     private fun setCancelableOutside() {
@@ -117,4 +166,5 @@ abstract class BaseDialogFragment : DialogFragment() {
     protected abstract fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View?
     protected abstract fun createDialogViewModel(): BaseViewModel
     protected abstract fun bindActivityViewModel(): BaseActivityViewModel
+    protected abstract fun getProgressLoading(): ProgressBar
 }

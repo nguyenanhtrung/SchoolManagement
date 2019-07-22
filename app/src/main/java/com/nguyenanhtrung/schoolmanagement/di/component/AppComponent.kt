@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.di.component
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.di.module.*
 import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementFragment
+import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountFragment
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardFragment
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
@@ -27,4 +28,5 @@ interface AppComponent {
     fun inject(splashActivity: SplashActivity)
     fun inject(dashboardFragment: DashboardFragment)
     fun inject(accountManagementFragment: AccountManagementFragment)
+    fun inject(createAccountFragment: CreateAccountFragment)
 }

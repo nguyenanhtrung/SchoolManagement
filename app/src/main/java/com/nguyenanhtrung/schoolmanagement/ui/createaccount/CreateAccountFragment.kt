@@ -1,10 +1,9 @@
-package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
+package com.nguyenanhtrung.schoolmanagement.ui.createaccount
 
 import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
@@ -14,16 +13,14 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
-import kotlinx.android.synthetic.main.fragment_list_account.*
 import javax.inject.Inject
 
-class AccountManagementFragment : BaseFragment() {
+class CreateAccountFragment : BaseFragment() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private val accountViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[AccountManagementViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[CreateAccountViewModel::class.java]
     }
 
     override fun injectDependencies(application: Application) {
@@ -33,26 +30,12 @@ class AccountManagementFragment : BaseFragment() {
 
     override fun createFragmentViewModel(): BaseViewModel = accountViewModel
 
-    override fun bindActivityViewModel(): BaseActivityViewModel {
-        return ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
-    }
+    override fun bindActivityViewModel(): BaseActivityViewModel = ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
-        return inflater.inflate(R.layout.fragment_list_account, container, false)
+       return inflater.inflate(R.layout.fragment_create_new_account, container,false)
     }
 
     override fun setupUiEvents() {
-        subscribeNavigateToCreateAccount()
-        float_button_create_account.setOnClickListener {
-            accountViewModel.onClickButtonCreateAccount()
-        }
-    }
-
-    private fun subscribeNavigateToCreateAccount() {
-        accountViewModel.navToCreateAccountFragment.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let {
-                findNavController().navigate(AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest())
-            }
-        })
     }
 }

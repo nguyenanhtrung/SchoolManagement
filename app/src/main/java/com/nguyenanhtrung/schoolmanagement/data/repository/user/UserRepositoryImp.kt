@@ -16,6 +16,16 @@ class UserRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserRepository {
 
+    override suspend fun sendResetPasswordToEmail(
+        email: String,
+        result: MutableLiveData<Resource<Int>>
+    ) {
+        object : NetworkBoundResources<String, Int>(context, email, result) {
+            override suspend fun callApi(): Resource<Int> {
+               return userRemoteDataSource.sendResetPassword(email)
+            }
+        }.createCall()
+    }
 
     override suspend fun loadUserInfo(result: MutableLiveData<Resource<User>>) {
         object : NetworkBoundResources<Unit, User>(context, Unit, result) {

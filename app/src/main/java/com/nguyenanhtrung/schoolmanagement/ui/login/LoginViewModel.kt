@@ -17,15 +17,15 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : BaseActivityViewModel() {
 
     private val _emailErrorLiveData by lazy {
-        MutableLiveData<Int>()
+        MutableLiveData<ErrorState>()
     }
-    internal val emailErrorLiveData: LiveData<Int>
+    internal val emailErrorLiveData: LiveData<ErrorState>
         get() = _emailErrorLiveData
 
     private val _passwordErrorLiveData by lazy {
-        MutableLiveData<Int>()
+        MutableLiveData<ErrorState>()
     }
-    internal val passwordErrorLiveData: LiveData<Int>
+    internal val passwordErrorLiveData: LiveData<ErrorState>
         get() = _passwordErrorLiveData
 
     private val _showForgotPasswordDialog by lazy {
@@ -61,7 +61,6 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     }
 
     internal fun onCheckLogin(isLoginSuccess: Boolean) {
-        Log.d("LoginViewModel", "LoginStatus = " + isLoginSuccess)
         if (isLoginSuccess) {
             //open main screen
             _mainScreenLiveData.value = Event(true)

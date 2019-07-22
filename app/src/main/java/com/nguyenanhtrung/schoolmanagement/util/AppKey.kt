@@ -8,7 +8,7 @@ class AppKey private constructor(){
         const val TASKS_PATH_FIRE_STORE = "tasks"
         const val TASK_PERMISSIONS_PATH = "task_permissions"
 
-
+        const val ID_TASK_ACCOUNT = 500
 
     }
 }

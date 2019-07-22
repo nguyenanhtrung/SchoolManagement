@@ -7,4 +7,5 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 interface UserRemoteDataSource {
     suspend fun loadUserInfoAsync(): Resource<User>
     suspend fun getUserId(): String
+    suspend fun sendResetPassword(email: String): Resource<Int>
 }

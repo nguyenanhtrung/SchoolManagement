@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.LoadingItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
@@ -66,10 +67,26 @@ class DashboardFragment : BaseFragment() {
     override fun setupUiEvents() {
         edit_text_search.inputType = InputType.TYPE_NULL
         setupTasksRecyclerView()
-        subscribeUserInfo()
-        subscribeUserTasks()
+        subscribeEvents()
         setupTasksEvent()
         dashboardViewModel.loadUserInfo()
+    }
+
+    private fun subscribeEvents() {
+        subscribeUserInfo()
+        subscribeUserTasks()
+        subscribeNavigation()
+    }
+
+    private fun subscribeNavigation() {
+        dashboardViewModel.navigationLiveData.observe(viewLifecycleOwner, Observer {
+            if (it.status == Status.SUCCESS) {
+                val event = it.data
+                event?.getContentIfNotHandled()?.let { direction ->
+                    findNavController().navigate(direction)
+                }
+            }
+        })
     }
 
     private fun setupTasksEvent() {
@@ -91,17 +108,26 @@ class DashboardFragment : BaseFragment() {
     private fun showUserTasks(userTasks: List<UserTaskItem>) {
         recycler_view_tasks.layoutManager = GridLayoutManager(requireContext(), 3)
         recycler_view_tasks.addItemDecoration(MyGridDividerItemDecoration(32, 3))
+        addTasks(userTasks)
+    }
+
+    private fun addTasks(userTasks: List<UserTaskItem>) {
+        if (tasksAdapter.itemCount > 1) {
+            return
+        }
         if (tasksAdapter.itemCount > 0) {
             tasksAdapter.removeGroup(0)
         }
         tasksAdapter.addAll(userTasks)
-
     }
 
     private fun setupTasksRecyclerView() {
         recycler_view_tasks.layoutManager = LinearLayoutManager(requireActivity())
         recycler_view_tasks.adapter = tasksAdapter
-        tasksAdapter.add(LoadingItem())
+        if (tasksAdapter.itemCount == 0) {
+            tasksAdapter.add(LoadingItem())
+        }
+
     }
 
     private fun subscribeUserInfo() {

@@ -11,8 +11,11 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -67,25 +70,34 @@ class LoginActivity : BaseActivity() {
 
     private fun subscribeForgotPasswordDialog() {
         loginViewModel.showForgotPasswordDialog.observe(this, Observer {
-           it.getContentIfNotHandled()?.let { isShow ->
-               if (isShow) {
+            it.getContentIfNotHandled()?.let { isShow ->
+                if (isShow) {
                     showForgotPasswordDialog()
-               }
-           }
+                }
+            }
         })
+    }
+
+    private fun handleInputError(errorState: ErrorState, input: TextInputLayout) {
+        when (errorState) {
+            is ErrorState.NoAction -> input.error = getString(errorState.messageId)
+            is ErrorState.Empty -> {
+                if (input.error != null) {
+                    input.error = null
+                }
+            }
+        }
     }
 
     private fun subscribePasswordError() {
         loginViewModel.passwordErrorLiveData.observe(this, Observer {
-            val message = getString(it)
-            input_layout_password.error = message
+            handleInputError(it, input_layout_password)
         })
     }
 
     private fun subscribeEmailError() {
         loginViewModel.emailErrorLiveData.observe(this, Observer {
-            val message = getString(it)
-            input_layout_email.error = message
+            handleInputError(it, input_layout_email)
         })
     }
 

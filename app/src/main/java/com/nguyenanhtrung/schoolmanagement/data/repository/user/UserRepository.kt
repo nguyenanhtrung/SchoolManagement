@@ -6,4 +6,5 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 
 interface UserRepository{
     suspend fun loadUserInfo(result: MutableLiveData<Resource<User>>)
+    suspend fun sendResetPasswordToEmail(email: String, result: MutableLiveData<Resource<Int>>)
 }

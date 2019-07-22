@@ -1,7 +1,9 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
@@ -33,6 +35,7 @@ class UserTaskRemoteDataSourceImp @Inject constructor(
                 getIconId(it.id)
             )
         }.reversed()
+
         return Resource.success(mappedTasks.map {
             UserTaskItem(it)
         })
@@ -40,7 +43,7 @@ class UserTaskRemoteDataSourceImp @Inject constructor(
 
     private fun getIconId(taskId: String): Int {
         return try {
-            val convertedTaskId = taskId.toInt()
+            val convertedTaskId = taskId.trim().toInt()
             ResourceUtil.getDrawableId(context, "ic_task_$convertedTaskId")
         } catch (ex: Exception) {
             Timber.e(ex)
