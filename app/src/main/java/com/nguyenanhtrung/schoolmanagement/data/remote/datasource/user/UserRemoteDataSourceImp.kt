@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class UserRemoteDataSourceImp @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
-    private val firestore: FirebaseFirestore
+    private val firestore: FirebaseFirestore,
+    private val userTypeLocalDataSource: UserTypeLocalDataSource
 ) : UserRemoteDataSource {
 
     override suspend fun sendResetPassword(email: String): Resource<Int> {
@@ -39,10 +41,12 @@ class UserRemoteDataSourceImp @Inject constructor(
         val userSnapshot = firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
         val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
             ?: return Resource.failure(R.string.error_parse_data)
+
+        val typeName = getUserAccountType(userCloudStore.typeId)
         val userMapped = User(
             userId,
             userCloudStore.name,
-            getUserAccountType(userCloudStore.typeId),
+            typeName,
             userCloudStore.typeId,
             userCloudStore.avatarPath
         )
@@ -50,9 +54,8 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
     private suspend fun getUserAccountType(typeId: String): String {
-        val accountTypeSnapshot =
-            firestore.collection(USER_TYPES_PATH_FIRE_STORE).document(typeId).get().await()
-        return accountTypeSnapshot.get("name") as String
+        val userType = userTypeLocalDataSource.getUserTypeById(typeId)
+        return userType.name
     }
 
 

@@ -9,6 +9,11 @@ class Resource<T> private constructor(
     val exception: Throwable? = null
 ){
     companion object {
+
+        fun <T> completed(): Resource<T> {
+            return Resource(Status.COMPLETE, data = null)
+        }
+
         fun <T> success(@NonNull data: T): Resource<T> {
             return Resource(Status.SUCCESS, data)
         }

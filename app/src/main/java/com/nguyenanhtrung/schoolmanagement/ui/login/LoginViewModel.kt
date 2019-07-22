@@ -5,16 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.login.LoginUseCase
+import com.nguyenanhtrung.schoolmanagement.domain.usertype.GetUserTypesUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.util.Validator
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase) : BaseActivityViewModel() {
+class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
+                                         private val getUserTypesUseCase: GetUserTypesUseCase) : BaseActivityViewModel() {
 
     private val _emailErrorLiveData by lazy {
         MutableLiveData<ErrorState>()
@@ -46,6 +45,12 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     internal val mainScreenLiveData: LiveData<Event<Boolean>>
         get() = _mainScreenLiveData
 
+    private val _userTypesLiveData by lazy {
+        createApiResultLiveData<List<UserType>>()
+    }
+    internal val userTypeLiveData: LiveData<Resource<List<UserType>>>
+        get() = _userTypesLiveData
+
 
     internal fun onClickButtonLogin(email: String, password: String) {
         val isLoginValid = Validator.isEmailValid(email, _emailErrorLiveData) && Validator.isPasswordValid(password, _passwordErrorLiveData)
@@ -63,11 +68,15 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase)
     internal fun onCheckLogin(isLoginSuccess: Boolean) {
         if (isLoginSuccess) {
             //open main screen
-            _mainScreenLiveData.value = Event(true)
+            getUserTypesUseCase.invoke(viewModelScope, false, _userTypesLiveData)
         } else {
             //show login error
             showError(ErrorState.NoAction(R.string.error_wrong_login))
         }
+    }
+
+    internal fun onCompletedLoadUserTypes() {
+        _mainScreenLiveData.value = Event(true)
     }
 
 }

@@ -8,10 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.login.CheckAlreadyLoginUseCase
+import com.nguyenanhtrung.schoolmanagement.domain.usertype.GetUserTypesUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import javax.inject.Inject
 
-class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: CheckAlreadyLoginUseCase) :
+class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: CheckAlreadyLoginUseCase,
+                                          private val getUserTypesUseCase: GetUserTypesUseCase) :
     BaseActivityViewModel() {
 
     private val _checkLoginLiveData by lazy {
@@ -19,6 +21,12 @@ class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: 
     }
     internal val checkLoginLiveData: LiveData<Resource<LoginState>>
         get() = _checkLoginLiveData
+
+    private val _userTypeLiveData by lazy {
+        createApiResultLiveData<List<UserType>>()
+    }
+    internal val userTypeLiveData: LiveData<Resource<List<UserType>>>
+        get() = _userTypeLiveData
 
     private val _navigateLoginScreen by lazy {
         MutableLiveData<Event<Boolean>>()
@@ -45,7 +53,14 @@ class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: 
                 //open login screen
                 _navigateLoginScreen.value = Event(true)
             } else if (it == LoginState.ALREADY_LOGIN) {
-                //open main screen
+                getUserTypesUseCase.invoke(viewModelScope,false, _userTypeLiveData)
+            }
+        }
+    }
+
+    internal fun onCompletedLoadUserTypes() {
+        _checkLoginLiveData.value?.data?.let {
+            if (it == LoginState.ALREADY_LOGIN) {
                 _navigateMainScreen.value = Event(true)
             }
         }

@@ -17,6 +17,7 @@ import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
@@ -50,7 +51,16 @@ class LoginActivity : BaseActivity() {
         subscribeForgotPasswordDialog()
         subscribeLoginResult()
         subscribeOpenMainScreen()
+        subscribeUserTypes()
 
+    }
+
+    private fun subscribeUserTypes() {
+        loginViewModel.userTypeLiveData.observe(this, Observer {
+            if (it.status == Status.COMPLETE || it.status == Status.SUCCESS) {
+                loginViewModel.onCompletedLoadUserTypes()
+            }
+        })
     }
 
     private fun subscribeOpenMainScreen() {

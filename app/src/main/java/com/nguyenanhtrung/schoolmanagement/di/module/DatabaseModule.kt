@@ -6,6 +6,7 @@ import androidx.room.RoomDatabase
 import com.nguyenanhtrung.schoolmanagement.data.local.database.AppDatabase
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.user.UserDao
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.usertasks.UserTaskDao
+import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.usertype.UserTypeDao
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import dagger.Module
 import dagger.Provides
@@ -27,5 +28,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideUserTasksDao(appDatabase: AppDatabase): UserTaskDao = appDatabase.userTaskDao()
+
+    @Singleton
+    @Provides
+    fun provideUserTypeDao(appDatabase: AppDatabase): UserTypeDao = appDatabase.userTypeDao()
 
 }

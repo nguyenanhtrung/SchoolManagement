@@ -34,15 +34,17 @@ constructor(
             //call api
             val response: Resource<Output> = callApi()
             if (response.status == Status.SUCCESS && shouldSaveToLocal(params)) {
-                withContext(Dispatchers.IO) {
-                    val data = response.data
-                    if (data != null) {
-                        saveToLocal(response.data)
-                    }
+                val data = response.data
+                if (data != null) {
+                    saveToLocal(response.data)
                 }
             }
             result.value = response
         } else {
+            if (!shouldLoadFromLocal(params)) {
+                result.value = Resource.completed()
+                return
+            }
             val dataFromLocal = withContext(Dispatchers.IO) {
                 loadFromLocal(params)
             }
@@ -52,6 +54,9 @@ constructor(
 
 
     }
+
+    @MainThread
+    protected open fun shouldLoadFromLocal(params: Params): Boolean = true
 
     @MainThread
     protected open suspend fun shouldFetchFromServer(params: Params): Boolean = true

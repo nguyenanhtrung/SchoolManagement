@@ -1,17 +1,15 @@
 package com.nguyenanhtrung.schoolmanagement.ui.splash
 
 import android.app.Application
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ProgressBar
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
@@ -39,8 +37,17 @@ class SplashActivity : BaseActivity() {
         subscribeCheckLogin()
         subscribeNavigateToLoginScreen()
         subscribeNavigateToMainScreen()
-
+        subscribeUserType()
     }
+
+    private fun subscribeUserType() {
+        splashViewModel.userTypeLiveData.observe(this, Observer {
+            if (it.status == Status.COMPLETE || it.status == Status.SUCCESS) {
+                splashViewModel.onCompletedLoadUserTypes()
+            }
+        })
+    }
+
 
     private fun setupUiEvents() {
         button_retry.setOnClickListener {

@@ -55,7 +55,7 @@ dependencies {
     def material_component_version = "1.1.0-alpha08"
     def circle_image_version = "3.0.0"
     def dagger_version = "2.23.2"
-    def firebase_auth_version = "18.0.0"
+    def firebase_auth_version = "18.1.0"
     def firebase_firestore_version = "20.1.0"
 
 
@@ -128,7 +128,7 @@ dependencies {
     api 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0-alpha02'
 
     //Firebase
-    implementation 'com.google.firebase:firebase-core:17.0.0'
+    implementation 'com.google.firebase:firebase-core:17.0.1'
     implementation "com.google.firebase:firebase-auth:$firebase_auth_version"
     implementation "com.google.firebase:firebase-firestore:$firebase_firestore_version"
     //Coroutines with firebase
@@ -136,6 +136,8 @@ dependencies {
 
     //spinner
     implementation 'com.github.arcadefire:nice-spinner:1.4.3'
+
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
 
 
 }

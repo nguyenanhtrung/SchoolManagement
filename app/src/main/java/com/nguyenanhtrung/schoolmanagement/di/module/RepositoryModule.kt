@@ -4,18 +4,24 @@ import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalD
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertasks.UserTasksLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertasks.UserTasksLocalDataSourceImp
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSourceImp
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserTypeRemoteDataSource
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserTypeRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepositoryImp
+import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepository
+import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepositoryImp
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -71,4 +77,21 @@ class RepositoryModule {
         return userTaskRepository
     }
 
+    @Singleton
+    @Provides
+    fun provideUserTypeLocalDataSource(userTypeLocalDataSourceImp: UserTypeLocalDataSourceImp): UserTypeLocalDataSource {
+        return userTypeLocalDataSourceImp
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserTypeRemoteDataSource(userTypeRemoteDataSourceImp: UserTypeRemoteDataSourceImp): UserTypeRemoteDataSource {
+        return userTypeRemoteDataSourceImp
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserTypeRepository(userTypeRepository: UserTypeRepositoryImp): UserTypeRepository {
+        return userTypeRepository
+    }
 }

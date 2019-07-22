@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
         }
     }
 
-    fun showToolbar() {
+    internal fun showToolbar() {
         if (_toolbarVisibility.value == null || _toolbarVisibility.value == false) {
             _toolbarVisibility.value =  true
         }

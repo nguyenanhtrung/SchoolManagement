@@ -26,6 +26,10 @@ class AccountManagementFragment : BaseFragment() {
         ViewModelProviders.of(this, viewModelFactory)[AccountManagementViewModel::class.java]
     }
 
+    private val mainViewModel by lazy {
+        ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
+    }
+
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
         myApp.appComponent.inject(this)
@@ -33,9 +37,7 @@ class AccountManagementFragment : BaseFragment() {
 
     override fun createFragmentViewModel(): BaseViewModel = accountViewModel
 
-    override fun bindActivityViewModel(): BaseActivityViewModel {
-        return ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
-    }
+    override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
         return inflater.inflate(R.layout.fragment_list_account, container, false)
@@ -52,6 +54,7 @@ class AccountManagementFragment : BaseFragment() {
         accountViewModel.navToCreateAccountFragment.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let {
                 findNavController().navigate(AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest())
+                mainViewModel.showToolbar()
             }
         })
     }
