@@ -12,6 +12,8 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskR
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSourceImp
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSource
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserTypeRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserTypeRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepository
@@ -20,6 +22,8 @@ import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskReposito
 import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepositoryImp
+import com.nguyenanhtrung.schoolmanagement.data.repository.userid.UserIdRepository
+import com.nguyenanhtrung.schoolmanagement.data.repository.userid.UserIdRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepositoryImp
 import dagger.Module
@@ -93,5 +97,17 @@ class RepositoryModule {
     @Provides
     fun provideUserTypeRepository(userTypeRepository: UserTypeRepositoryImp): UserTypeRepository {
         return userTypeRepository
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserIdRemoteDataSource(userIdRemoteDataSource: UserIdRemoteDataSourceImp): UserIdRemoteDataSource {
+        return userIdRemoteDataSource
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserIdRepository(userIdRepositoryImp: UserIdRepositoryImp): UserIdRepository {
+        return userIdRepositoryImp
     }
 }

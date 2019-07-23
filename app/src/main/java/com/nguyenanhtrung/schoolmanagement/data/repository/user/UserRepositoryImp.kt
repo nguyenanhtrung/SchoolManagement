@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
@@ -22,7 +23,7 @@ class UserRepositoryImp @Inject constructor(
     ) {
         object : NetworkBoundResources<String, Int>(context, email, result) {
             override suspend fun callApi(): Resource<Int> {
-               return userRemoteDataSource.sendResetPassword(email)
+                return userRemoteDataSource.sendResetPassword(email)
             }
         }.createCall()
     }
@@ -48,6 +49,23 @@ class UserRepositoryImp @Inject constructor(
                 val userId = userRemoteDataSource.getUserId()
                 return userLocalDataSource.getUserInfo(userId)
             }
+        }.createCall()
+    }
+
+    override suspend fun createUser(
+        createAccountParam: CreateAccountParam,
+        result: MutableLiveData<Resource<Unit>>
+    ) {
+        object :
+            NetworkBoundResources<CreateAccountParam, Unit>(context, createAccountParam, result) {
+
+            override fun shouldLoadFromLocal(params: CreateAccountParam): Boolean = false
+            override fun shouldSaveToLocal(params: CreateAccountParam): Boolean = false
+
+            override suspend fun callApi(): Resource<Unit> {
+                return userRemoteDataSource.createNewUser(createAccountParam)
+            }
+
         }.createCall()
     }
 

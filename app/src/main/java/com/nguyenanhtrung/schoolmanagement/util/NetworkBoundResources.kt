@@ -71,5 +71,5 @@ constructor(
     protected open suspend fun saveToLocal(output: Output) = Unit
 
     @WorkerThread
-    protected open suspend fun loadFromLocal(params: Params): Resource<Output> = Resource.loading()
+    protected open suspend fun loadFromLocal(params: Params): Resource<Output> = Resource.completed()
 }

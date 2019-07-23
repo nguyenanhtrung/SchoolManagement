@@ -1,14 +1,16 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 
+import android.util.ArrayMap
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
+import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
-import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_TYPES_PATH_FIRE_STORE
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -22,7 +24,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return try {
             firebaseAuth.sendPasswordResetEmail(email).await()
             return Resource.success(R.string.title_send_password_success)
-        }catch (ex: Exception) {
+        } catch (ex: Exception) {
             Resource.exception(ex)
         }
     }
@@ -38,7 +40,8 @@ class UserRemoteDataSourceImp @Inject constructor(
         val currentUser =
             firebaseAuth.currentUser ?: return Resource.failure(R.string.error_not_found_user)
         val userId = currentUser.uid
-        val userSnapshot = firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
+        val userSnapshot =
+            firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
         val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
             ?: return Resource.failure(R.string.error_parse_data)
 
@@ -58,6 +61,29 @@ class UserRemoteDataSourceImp @Inject constructor(
         return userType.name
     }
 
+    override suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<Unit> {
+        return try {
+            val email = createAccountParam.email
+            val password = createAccountParam.password
+            firebaseAuth.signInWithEmailAndPassword(email, password).await()
 
+            val userInfo = ArrayMap<String, String>()
+            with(userInfo) {
+                put(AppKey.USER_AVATAR_PATH_FIELD, "")
+                put(AppKey.USER_NAME_FIELD, createAccountParam.name)
+                put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
+                put(AppKey.USER_ACCOUNT_NAME_FIELD, email)
+            }
+            firestore.collection(USERS_PATH_FIRE_STORE)
+                .document(createAccountParam.id)
+                .set(userInfo)
+                .await()
+            return Resource.success(Unit)
+        } catch (ex: Exception) {
+            Resource.failure(R.string.error_create_user)
+        }
+
+
+    }
 
 }

@@ -25,6 +25,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
 import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.openActivity
+import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
 import kotlinx.android.synthetic.main.activity_login.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -88,26 +89,16 @@ class LoginActivity : BaseActivity() {
         })
     }
 
-    private fun handleInputError(errorState: ErrorState, input: TextInputLayout) {
-        when (errorState) {
-            is ErrorState.NoAction -> input.error = getString(errorState.messageId)
-            is ErrorState.Empty -> {
-                if (input.error != null) {
-                    input.error = null
-                }
-            }
-        }
-    }
 
     private fun subscribePasswordError() {
         loginViewModel.passwordErrorLiveData.observe(this, Observer {
-            handleInputError(it, input_layout_password)
+            input_layout_password.setErrorWithState(it)
         })
     }
 
     private fun subscribeEmailError() {
         loginViewModel.emailErrorLiveData.observe(this, Observer {
-            handleInputError(it, input_layout_email)
+            input_layout_email.setErrorWithState(it)
         })
     }
 

@@ -10,12 +10,12 @@ import javax.inject.Inject
 class UserIdRemoteDataSourceImp @Inject constructor(private val fireStore: FirebaseFirestore)  : UserIdRemoteDataSource {
 
 
-    override suspend fun getMaxUserId(): Resource<Int> {
+    override suspend fun getMaxUserId(): Resource<Long> {
         val querySnapshot = fireStore.collection(AppKey.ID_PATH_FIRE_STORE)
             .orderBy("id", Query.Direction.DESCENDING)
             .limit(1)
             .get().await()
-        val maxId = querySnapshot.documents[0]["id"] as Int
+        val maxId = querySnapshot.documents[0]["id"] as Long
         return Resource.success(maxId)
     }
 }

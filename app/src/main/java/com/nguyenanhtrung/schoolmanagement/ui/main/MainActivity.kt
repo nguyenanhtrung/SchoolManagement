@@ -9,6 +9,9 @@ import androidx.activity.addCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
@@ -20,13 +23,21 @@ class MainActivity : BaseActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
-
     private lateinit var mainViewModel: MainViewModel
+
+    private val appBarConfiguration by lazy {
+        AppBarConfiguration(findNavController(R.id.fragment_host).graph)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //
+        setupToolbar()
         subscribeToolbarVisibility()
+    }
+
+    private fun setupToolbar() {
+        tool_bar_main.setupWithNavController(findNavController(R.id.fragment_host), appBarConfiguration)
     }
 
     private fun subscribeToolbarVisibility() {

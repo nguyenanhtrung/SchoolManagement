@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
 
 import android.app.Application
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +44,11 @@ class AccountManagementFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_list_account, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        subscribeMaxUserId()
+    }
+
     override fun setupUiEvents() {
         subscribeNavigateToCreateAccount()
         float_button_create_account.setOnClickListener {
@@ -50,10 +56,22 @@ class AccountManagementFragment : BaseFragment() {
         }
     }
 
+    private fun subscribeMaxUserId() {
+        accountViewModel.maxUserIdLiveData.observe(this, Observer {
+            it.data?.let { id ->
+                accountViewModel.onSuccessGetMaxUserId(id)
+            }
+        })
+    }
+
     private fun subscribeNavigateToCreateAccount() {
         accountViewModel.navToCreateAccountFragment.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let {
-                findNavController().navigate(AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest())
+            it.getContentIfNotHandled()?.let { id ->
+                findNavController().navigate(
+                    AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest(
+                        id
+                    )
+                )
                 mainViewModel.showToolbar()
             }
         })
