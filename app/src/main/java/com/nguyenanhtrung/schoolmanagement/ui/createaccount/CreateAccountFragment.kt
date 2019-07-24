@@ -13,13 +13,13 @@ import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountInput
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserType
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
+import com.nguyenanhtrung.schoolmanagement.util.clearText
 import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
 import kotlinx.android.synthetic.main.fragment_create_new_account.*
@@ -61,9 +61,17 @@ class CreateAccountFragment : BaseFragment() {
     private fun subscribeCreateUser() {
         accountViewModel.createUserLiveData.observe(this, Observer {
             it.data?.let {
+                clearAllInput()
+                edit_text_name.requestFocus()
                 findNavController().navigate(CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment())
             }
         })
+    }
+
+    private fun clearAllInput() {
+        edit_text_email.clearText()
+        edit_text_name.clearText()
+        edit_text_password.clearText()
     }
 
 

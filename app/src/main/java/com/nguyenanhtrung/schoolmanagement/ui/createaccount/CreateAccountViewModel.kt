@@ -74,9 +74,9 @@ class CreateAccountViewModel @Inject constructor(
         }
 
         val userTypeIdSelected = getUserTypeId(createAccountInput.userTypeIndex)
-        val userId = maxId + 1
+        increaseUserId()
         val createAccountParam = CreateAccountParam(
-            userId.toString(),
+            maxId.toString(),
             createAccountInput.fullName,
             createAccountInput.email,
             createAccountInput.password,
@@ -84,6 +84,10 @@ class CreateAccountViewModel @Inject constructor(
         )
         createUserUseCase.invoke(viewModelScope, createAccountParam, _createUserLiveData)
 
+    }
+
+    private fun increaseUserId() {
+        maxId++
     }
 
     private fun getUserTypeId(index: Int): String {

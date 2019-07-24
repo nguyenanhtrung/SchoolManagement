@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.ui.flowstatus
 
 import android.app.Application
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseDialogFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import kotlinx.android.synthetic.main.dialog_flow_status_fragment.*
 import javax.inject.Inject
 
 class DialogFlowStatusFragment : BaseDialogFragment() {
@@ -42,4 +44,11 @@ class DialogFlowStatusFragment : BaseDialogFragment() {
     override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
 
     override fun getProgressLoading(): ProgressBar? = null
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        button_close_dialog.setOnClickListener {
+            dismiss()
+        }
+    }
 }

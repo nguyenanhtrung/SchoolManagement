@@ -28,6 +28,13 @@ fun TextInputEditText.clearErrorWhenFocus(inputLayout: TextInputLayout) {
     })
 }
 
+fun TextInputEditText.clearText() {
+    if (text.isNullOrEmpty()) {
+        return
+    }
+    setText("")
+}
+
 fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
     when(errorState) {
         is ErrorState.NoAction -> error = context.getString(errorState.messageId)

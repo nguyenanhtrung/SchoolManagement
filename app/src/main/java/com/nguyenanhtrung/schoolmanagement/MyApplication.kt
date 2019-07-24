@@ -9,6 +9,9 @@ import com.nguyenanhtrung.schoolmanagement.di.module.DatabaseModule
 import com.nguyenanhtrung.schoolmanagement.di.module.NetworkModule
 import com.nguyenanhtrung.schoolmanagement.di.module.ViewModelModule
 import timber.log.Timber
+import com.google.firebase.FirebaseOptions
+
+
 
 class MyApplication : Application() {
 
@@ -25,7 +28,15 @@ class MyApplication : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        FirebaseApp.initializeApp(this)
+        setupFireBase()
         appComponent.inject(this)
+    }
+
+    private fun setupFireBase() {
+        val firebaseOptions = FirebaseOptions.Builder()
+            .setDatabaseUrl("https://schoolmanagement-f6cb0.firebaseio.com/")
+            .setApiKey("AIzaSyDeGp0J-M3qGeh95vs4KgpJiwGodcrabvg")
+            .setApplicationId("schoolmanagement-f6cb0").build()
+        FirebaseApp.initializeApp(this, firebaseOptions, "MySchoolApp")
     }
 }
