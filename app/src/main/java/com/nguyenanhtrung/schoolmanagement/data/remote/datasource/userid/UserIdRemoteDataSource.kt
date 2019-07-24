@@ -5,4 +5,5 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 interface UserIdRemoteDataSource {
 
     suspend fun getMaxUserId(): Resource<Long>
+    suspend fun setMaxUserId(id: Long): Resource<Unit>
 }

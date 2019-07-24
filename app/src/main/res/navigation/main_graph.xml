@@ -13,6 +13,7 @@
     <fragment
         android:id="@+id/dashboardDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardFragment"
+        tools:layout="@layout/fragment_dashboard"
         android:label="DashboardFragment" >
         <action
             android:id="@+id/action_dashboardFragment_to_accountManagementFragment"
@@ -26,6 +27,7 @@
     <fragment
         android:id="@+id/accountManagementDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementFragment"
+        tools:layout="@layout/fragment_list_account"
         android:label="AccountManagementFragment" >
         <action
             android:id="@+id/action_accountManagementDest_to_createAccountDest"
@@ -39,9 +41,18 @@
     <fragment
         android:id="@+id/createAccountDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountFragment"
+        tools:layout="@layout/fragment_create_new_account"
         android:label="CreateAccountFragment" >
         <argument
             android:name="maxUserId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_createAccountDest_to_dialogFlowStatusFragment"
+            app:destination="@id/dialogFlowStatusDest" />
     </fragment>
+    <dialog
+        android:id="@+id/dialogFlowStatusDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragment"
+        tools:layout="@layout/dialog_flow_status_fragment"
+        android:label="DialogFlowStatusFragment" />
 </navigation>

@@ -8,16 +8,19 @@ import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTy
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserRemoteDataSourceImp @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
     private val firestore: FirebaseFirestore,
-    private val userTypeLocalDataSource: UserTypeLocalDataSource
+    private val userTypeLocalDataSource: UserTypeLocalDataSource,
+    private val userIdRemoteDataSource: UserIdRemoteDataSource
 ) : UserRemoteDataSource {
 
     override suspend fun sendResetPassword(email: String): Resource<Int> {
@@ -40,6 +43,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         val currentUser =
             firebaseAuth.currentUser ?: return Resource.failure(R.string.error_not_found_user)
         val userId = currentUser.uid
+        Timber.d("FirebaseUserId = $userId")
         val userSnapshot =
             firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
         val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
@@ -65,8 +69,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return try {
             val email = createAccountParam.email
             val password = createAccountParam.password
-            firebaseAuth.signInWithEmailAndPassword(email, password).await()
-
+            firebaseAuth.createUserWithEmailAndPassword(email, password).await()
             val userInfo = ArrayMap<String, String>()
             with(userInfo) {
                 put(AppKey.USER_AVATAR_PATH_FIELD, "")
@@ -78,8 +81,11 @@ class UserRemoteDataSourceImp @Inject constructor(
                 .document(createAccountParam.id)
                 .set(userInfo)
                 .await()
-            return Resource.success(Unit)
+            return userIdRemoteDataSource.setMaxUserId(createAccountParam.id.toLong())
+        } catch (collisionEx: com.google.firebase.auth.FirebaseAuthUserCollisionException) {
+            Resource.failure(R.string.error_registered_email)
         } catch (ex: Exception) {
+            Timber.d(ex)
             Resource.failure(R.string.error_create_user)
         }
 

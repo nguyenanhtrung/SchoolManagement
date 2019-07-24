@@ -60,7 +60,9 @@ class CreateAccountFragment : BaseFragment() {
 
     private fun subscribeCreateUser() {
         accountViewModel.createUserLiveData.observe(this, Observer {
-
+            it.data?.let {
+                findNavController().navigate(CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment())
+            }
         })
     }
 

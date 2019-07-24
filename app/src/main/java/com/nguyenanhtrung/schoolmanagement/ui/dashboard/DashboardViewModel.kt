@@ -14,6 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.domain.navigation.GetDestinationIdUse
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertask.GetUserTasksUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import timber.log.Timber
 import javax.inject.Inject
 
 class DashboardViewModel @Inject constructor(
@@ -62,6 +63,7 @@ class DashboardViewModel @Inject constructor(
         if (userInfoResult != null && userInfo != null) {
             return userInfo.typeId
         }
+        Timber.d("UserTypeId = ${userInfo?.typeId}")
         return ""
     }
 

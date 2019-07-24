@@ -25,7 +25,7 @@ abstract class BaseDialogFragment : DialogFragment() {
 
     private lateinit var dialogViewModel: BaseViewModel
     private lateinit var activityViewModel: BaseActivityViewModel
-    private lateinit var progressLoading: ProgressBar
+    private var progressLoading: ProgressBar? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,7 +49,6 @@ abstract class BaseDialogFragment : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         progressLoading = getProgressLoading()
-        edit_text_email.clearErrorWhenFocus(input_layout_email)
         subscribeLoading()
         dialogViewModel.viewStateLiveData.observe(this, Observer {
             dialogViewModel.handleViewState(it)
@@ -77,16 +76,16 @@ abstract class BaseDialogFragment : DialogFragment() {
     }
 
     private fun showLoading() {
-        if (::progressLoading.isInitialized) {
+        if (progressLoading != null) {
             disableInteraction()
-            progressLoading.visibility = View.VISIBLE
+            progressLoading!!.visibility = View.VISIBLE
         }
     }
 
     private fun hideLoading() {
-        if (progressLoading.visibility == View.VISIBLE) {
+        if (progressLoading != null && progressLoading!!.visibility == View.VISIBLE) {
             enableInteraction()
-            progressLoading.visibility = View.GONE
+            progressLoading!!.visibility = View.GONE
         }
     }
 
@@ -166,5 +165,5 @@ abstract class BaseDialogFragment : DialogFragment() {
     protected abstract fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View?
     protected abstract fun createDialogViewModel(): BaseViewModel
     protected abstract fun bindActivityViewModel(): BaseActivityViewModel
-    protected abstract fun getProgressLoading(): ProgressBar
+    protected abstract fun getProgressLoading(): ProgressBar?
 }

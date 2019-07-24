@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/background_round_dialog"
     android:padding="@dimen/padding_normal_100">
@@ -18,9 +19,11 @@
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottie_anim_status"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
+        app:lottie_rawRes="@raw/status_success"
+        app:lottie_autoPlay="true"
         android:layout_marginTop="@dimen/margin_normal_100" />
 
     <TextView
@@ -41,7 +44,7 @@
         android:layout_marginTop="@dimen/margin_normal_100"
         android:gravity="center_horizontal"
         android:textAppearance="@style/TextNormal"
-        tools:text="Create account success.Please click button update to update profile." />
+        android:text="Create account success.Please click button update to update profile." />
 
     <Button
         android:id="@+id/button_status_action"
@@ -51,7 +54,7 @@
         android:textColor="@color/colorSurface"
         android:layout_marginTop="@dimen/margin_normal_200"
         android:layout_gravity="center_horizontal"
-        tools:text="Update"
+        android:text="Update"
         />
 
 </LinearLayout>

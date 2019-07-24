@@ -9,6 +9,7 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 abstract class BaseUseCase<in Params, Output> where Output : Any{
 
@@ -18,7 +19,7 @@ abstract class BaseUseCase<in Params, Output> where Output : Any{
         resultLiveData: MutableLiveData<Resource<Output>>
     ) {
         val handler = CoroutineExceptionHandler { _, exception ->
-            Log.d("Exception",exception.toString())
+            Timber.d(exception)
             resultLiveData.value = Resource.exception(exception)
         }
 
