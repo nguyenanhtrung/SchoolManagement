@@ -7,12 +7,14 @@ import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
@@ -29,6 +31,10 @@ class UserRemoteDataSourceImp @Inject constructor(
     private val userTypeLocalDataSource: UserTypeLocalDataSource,
     private val userIdRemoteDataSource: UserIdRemoteDataSource
 ) : UserRemoteDataSource {
+
+    companion object {
+        private const val USERS_LIMIT = 10L
+    }
 
     override suspend fun sendResetPassword(email: String): Resource<Int> {
         return try {
@@ -50,7 +56,6 @@ class UserRemoteDataSourceImp @Inject constructor(
         val currentUser =
             firebaseAuth.currentUser ?: return Resource.failure(R.string.error_not_found_user)
         val userId = currentUser.uid
-        Timber.d("FirebaseUserId = $userId")
         val userSnapshot =
             firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
         val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
@@ -62,7 +67,8 @@ class UserRemoteDataSourceImp @Inject constructor(
             userCloudStore.name,
             typeName,
             userCloudStore.typeId,
-            userCloudStore.avatarPath
+            userCloudStore.avatarPath,
+            userCloudStore.userName
         )
         return Resource.success(userMapped)
     }
@@ -74,11 +80,9 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     override suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<Unit> {
         return try {
-            val secondFirebaseAuth = createSecondFirebaseAuth()
             val email = createAccountParam.email
             val password = createAccountParam.password
-            secondFirebaseAuth.createUserWithEmailAndPassword(email, password).await()
-            secondFirebaseAuth.signOut()
+            registerNewUser(email, password)
             val userInfo = ArrayMap<String, String>()
             with(userInfo) {
                 put(AppKey.USER_AVATAR_PATH_FIELD, "")
@@ -98,6 +102,12 @@ class UserRemoteDataSourceImp @Inject constructor(
             Timber.d(ex)
             Resource.failure(R.string.error_create_user)
         }
+    }
+
+    private suspend fun registerNewUser(email: String, password: String) {
+        val secondFirebaseAuth = createSecondFirebaseAuth()
+        secondFirebaseAuth.createUserWithEmailAndPassword(email, password).await()
+        secondFirebaseAuth.signOut()
     }
 
     private suspend fun updateUserStatus(userId: String) {
@@ -120,7 +130,35 @@ class UserRemoteDataSourceImp @Inject constructor(
         return FirebaseAuth.getInstance(firebaseApp)
     }
 
-    override suspend fun getUsers(lastUserId: String): Resource<List<UserTaskItem>> {
-        
+    override suspend fun getUsers(): Resource<List<UserItem>> {
+        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+            .orderBy(FieldPath.documentId(), Query.Direction.ASCENDING)
+            .limit(USERS_LIMIT)
+            .get()
+            .await()
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.failure(R.string.title_empty_accounts)
+        }
+        val userItems = mapToUserItems(querySnapshot)
+        return Resource.success(userItems)
+    }
+
+    private suspend fun mapToUserItems(querySnapshot: QuerySnapshot): List<UserItem> {
+        return querySnapshot.map {
+            val userTypeId = it["typeId"] as String
+            val userType = userTypeLocalDataSource.getUserTypeById(userTypeId)
+            UserItem(
+                User(
+                    it.id,
+                    it["name"] as String,
+                    userType.name,
+                    userTypeId,
+                    it["avatarPath"] as String,
+                    it["userName"] as String
+                )
+            )
+        }
+
     }
 }

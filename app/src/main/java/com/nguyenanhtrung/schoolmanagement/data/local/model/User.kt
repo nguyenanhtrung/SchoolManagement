@@ -5,5 +5,6 @@ data class User(
     val name: String,
     val typeName: String,
     val typeId: String,
-    val avatarPath: String
+    val avatarPath: String,
+    val accountName: String
 )

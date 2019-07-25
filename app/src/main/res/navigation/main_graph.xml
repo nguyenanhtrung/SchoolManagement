@@ -54,5 +54,9 @@
         android:id="@+id/dialogFlowStatusDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragment"
         tools:layout="@layout/dialog_flow_status_fragment"
-        android:label="DialogFlowStatusFragment" />
+        android:label="DialogFlowStatusFragment" >
+        <argument
+            android:name="flowStatusInfo"
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo" />
+    </dialog>
 </navigation>
