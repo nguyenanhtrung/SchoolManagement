@@ -6,6 +6,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalD
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
+import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
@@ -69,5 +70,27 @@ class UserRepositoryImp @Inject constructor(
         }.createCall()
     }
 
+    override suspend fun getUsers(
+        lastUserId: String?,
+        userTypes: Map<String, String>,
+        result: MutableLiveData<Resource<MutableList<UserItem>>>
+    ) {
 
+        object : NetworkBoundResources<Map<String, String>, MutableList<UserItem>>(
+            context,
+            userTypes,
+            result
+        ) {
+
+            override fun shouldLoadFromLocal(params: Map<String, String>): Boolean = false
+            override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
+
+            override suspend fun callApi(): Resource<MutableList<UserItem>> {
+                if (lastUserId == null) {
+                    return userRemoteDataSource.getUsers(userTypes)
+                }
+                return userRemoteDataSource.getPagingUsers(lastUserId, userTypes)
+            }
+        }.createCall()
+    }
 }

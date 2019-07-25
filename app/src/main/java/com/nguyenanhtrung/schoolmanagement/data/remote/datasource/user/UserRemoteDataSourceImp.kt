@@ -130,35 +130,56 @@ class UserRemoteDataSourceImp @Inject constructor(
         return FirebaseAuth.getInstance(firebaseApp)
     }
 
-    override suspend fun getUsers(): Resource<List<UserItem>> {
+    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
             .orderBy(FieldPath.documentId(), Query.Direction.ASCENDING)
+            .whereEqualTo("typeId", "")
             .limit(USERS_LIMIT)
             .get()
             .await()
         val querySize = querySnapshot.size()
         if (querySize == 0) {
-            return Resource.failure(R.string.title_empty_accounts)
+            return Resource.empty(R.string.title_empty_accounts)
         }
-        val userItems = mapToUserItems(querySnapshot)
-        return Resource.success(userItems)
+        val userItems = mapToUserItems(querySnapshot, userTypes)
+        return Resource.success(userItems.toMutableList())
     }
 
-    private suspend fun mapToUserItems(querySnapshot: QuerySnapshot): List<UserItem> {
+    private fun mapToUserItems(
+        querySnapshot: QuerySnapshot,
+        userTypes: Map<String, String>
+    ): List<UserItem> {
         return querySnapshot.map {
             val userTypeId = it["typeId"] as String
-            val userType = userTypeLocalDataSource.getUserTypeById(userTypeId)
+            val userTypeName = userTypes[userTypeId] ?: ""
             UserItem(
                 User(
                     it.id,
                     it["name"] as String,
-                    userType.name,
+                    userTypeName,
                     userTypeId,
                     it["avatarPath"] as String,
                     it["userName"] as String
                 )
             )
         }
+    }
 
+    override suspend fun getPagingUsers(
+        lastUserId: String,
+        userTypes: Map<String, String>
+    ): Resource<MutableList<UserItem>> {
+        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+            .orderBy(FieldPath.documentId(), Query.Direction.ASCENDING)
+            .limit(USERS_LIMIT)
+            .startAfter(firestore.document(lastUserId))
+            .get()
+            .await()
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.completed()
+        }
+        val userItems = mapToUserItems(querySnapshot, userTypes)
+        return Resource.success(userItems.toMutableList())
     }
 }

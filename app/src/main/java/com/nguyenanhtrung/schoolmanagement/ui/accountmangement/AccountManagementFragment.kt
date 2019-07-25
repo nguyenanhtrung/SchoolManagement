@@ -9,12 +9,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.xwray.groupie.Group
+import com.xwray.groupie.GroupAdapter
+import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.android.synthetic.main.fragment_list_account.*
 import javax.inject.Inject
 
@@ -29,6 +35,10 @@ class AccountManagementFragment : BaseFragment() {
 
     private val mainViewModel by lazy {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
+    }
+
+    private val usersAdapter by lazy {
+        GroupAdapter<ViewHolder>()
     }
 
     override fun injectDependencies(application: Application) {
@@ -54,6 +64,41 @@ class AccountManagementFragment : BaseFragment() {
         float_button_create_account.setOnClickListener {
             accountViewModel.onClickButtonCreateAccount()
         }
+        setupRecyclerViewUsers()
+        subscribeUsers()
+        subscribeStateUsers()
+        subscribeErrorUsers()
+        accountViewModel.loadUsers()
+    }
+
+    private fun subscribeErrorUsers() {
+        accountViewModel.errorUsersLiveData.observe(viewLifecycleOwner, Observer {
+
+        })
+    }
+
+    private fun subscribeStateUsers() {
+        accountViewModel.stateUsersLiveData.observe(viewLifecycleOwner, Observer {
+            addUserItems(it)
+        })
+    }
+
+    private fun addUserItems(users: MutableList<Item>) {
+        if (usersAdapter.itemCount > 0) {
+            usersAdapter.removeGroup(0)
+        }
+        usersAdapter.addAll(users)
+    }
+
+    private fun subscribeUsers() {
+        accountViewModel.getUsersLiveData.observe(viewLifecycleOwner, Observer {
+            accountViewModel.handleStatusGetUsers(it)
+        })
+    }
+
+    private fun setupRecyclerViewUsers() {
+        recycler_view_accounts.layoutManager = LinearLayoutManager(requireActivity())
+        recycler_view_accounts.adapter = usersAdapter
     }
 
     private fun subscribeMaxUserId() {

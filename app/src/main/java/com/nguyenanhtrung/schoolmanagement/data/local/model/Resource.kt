@@ -10,6 +10,10 @@ class Resource<T> private constructor(
 ){
     companion object {
 
+        fun <T> empty(messageId: Int): Resource<T> {
+            return Resource(Status.EMPTY, data = null, error = messageId)
+        }
+
         fun <T> completed(): Resource<T> {
             return Resource(Status.COMPLETE, data = null)
         }

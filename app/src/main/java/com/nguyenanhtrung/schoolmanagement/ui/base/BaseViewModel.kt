@@ -47,6 +47,7 @@ abstract class BaseViewModel : ViewModel() {
 
     internal fun handleViewState(resource: Resource<*>) {
         when(resource.status) {
+            Status.EMPTY -> _loadingLiveData.value = false
             Status.SUCCESS -> _loadingLiveData.value = false
             Status.LOADING -> _loadingLiveData.value = true
             Status.FAILURE -> {
@@ -56,6 +57,7 @@ abstract class BaseViewModel : ViewModel() {
             Status.EXCEPTION -> {
                 _loadingLiveData.value = false
             }
+            else -> _loadingLiveData.value = false
         }
     }
 
