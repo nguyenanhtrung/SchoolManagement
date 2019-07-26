@@ -17,7 +17,7 @@ interface UserRemoteDataSource {
     suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>>
 
     suspend fun getPagingUsers(
-        lastUserId: String,
+        lastUserId: Long,
         userTypes: Map<String, String>
     ): Resource<MutableList<UserItem>>
 }

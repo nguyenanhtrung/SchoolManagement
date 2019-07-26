@@ -33,8 +33,8 @@ class UserRepositoryImp @Inject constructor(
         object : NetworkBoundResources<Unit, User>(context, Unit, result) {
 
             override suspend fun shouldFetchFromServer(params: Unit): Boolean {
-                val userId = userRemoteDataSource.getUserId()
-                val isUserInfoExist = userLocalDataSource.checkExistUserInfo(userId)
+                val firebaseUserId = userRemoteDataSource.getUserId()
+                val isUserInfoExist = userLocalDataSource.checkExistUserInfo(firebaseUserId)
                 return !isUserInfoExist
             }
 
@@ -71,7 +71,7 @@ class UserRepositoryImp @Inject constructor(
     }
 
     override suspend fun getUsers(
-        lastUserId: String?,
+        lastUserId: Long,
         userTypes: Map<String, String>,
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
@@ -86,7 +86,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
 
             override suspend fun callApi(): Resource<MutableList<UserItem>> {
-                if (lastUserId == null) {
+                if (lastUserId < 0) {
                     return userRemoteDataSource.getUsers(userTypes)
                 }
                 return userRemoteDataSource.getPagingUsers(lastUserId, userTypes)

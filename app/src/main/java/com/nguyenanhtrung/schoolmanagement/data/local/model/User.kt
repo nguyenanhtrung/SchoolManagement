@@ -1,7 +1,8 @@
 package com.nguyenanhtrung.schoolmanagement.data.local.model
 
 data class User(
-    val id: String,
+    val id: Long,
+    val firebaseUserId: String,
     val name: String,
     val typeName: String,
     val typeId: String,

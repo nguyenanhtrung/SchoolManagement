@@ -63,7 +63,7 @@ class CreateAccountFragment : BaseFragment() {
             it.data?.let {
                 clearAllInput()
                 edit_text_name.requestFocus()
-                findNavController().navigate(CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment())
+               // findNavController().navigate(CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment())
             }
         })
     }

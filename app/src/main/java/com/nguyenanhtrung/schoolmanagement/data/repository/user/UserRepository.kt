@@ -17,7 +17,7 @@ interface UserRepository {
     )
 
     suspend fun getUsers(
-        lastUserId: String? = null,
+        lastUserId: Long,
         userTypes: Map<String, String>,
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     )

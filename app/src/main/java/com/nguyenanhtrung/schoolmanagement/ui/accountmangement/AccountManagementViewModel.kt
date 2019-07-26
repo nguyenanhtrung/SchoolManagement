@@ -33,11 +33,11 @@ class AccountManagementViewModel @Inject constructor(
     internal val getUsersLiveData: LiveData<Resource<MutableList<UserItem>>>
         get() = _getUsersLiveData
 
-    private val _stateUsersLiveData by lazy {
-        MutableLiveData<MutableList<Item>>()
+    private val _emptyUsersLiveData by lazy {
+        MutableLiveData<EmptyItem>()
     }
-    internal val stateUsersLiveData: LiveData<MutableList<Item>>
-        get() = _stateUsersLiveData
+    internal val emptyUsersLiveData: LiveData<EmptyItem>
+        get() = _emptyUsersLiveData
 
     private val _errorUsersLiveData by lazy {
         MutableLiveData<Int>()
@@ -45,30 +45,68 @@ class AccountManagementViewModel @Inject constructor(
     internal val errorUsersLiveData: LiveData<Int>
         get() = _errorUsersLiveData
 
+    private val _usersLiveData by lazy {
+        MutableLiveData<MutableList<UserItem>>()
+    }
+    internal val usersLiveData: LiveData<MutableList<UserItem>>
+        get() = _usersLiveData
+
+    private val _stateLoadMoreUsersLiveData by lazy {
+        MutableLiveData<Status>()
+    }
+    internal val stateLoadMoreUsersLiveData: LiveData<Status>
+        get() = _stateLoadMoreUsersLiveData
+
     internal fun loadUsers() {
         val getUsersResult = _getUsersLiveData.value
         if (getUsersResult != null) {
             return
         }
-        getUsersUseCase.invoke(viewModelScope, null, _getUsersLiveData)
+        getUsersUseCase.invoke(viewModelScope, -1, _getUsersLiveData)
     }
 
     internal fun handleStatusGetUsers(resource: Resource<MutableList<UserItem>>) {
         when (resource.status) {
             Status.EMPTY -> {
-                _stateUsersLiveData.value = mutableListOf(EmptyItem(resource.error))
+                _emptyUsersLiveData.value = EmptyItem(resource.error)
             }
             Status.FAILURE, Status.EXCEPTION -> {
-                _errorUsersLiveData.value = resource.error
+                if (_errorUsersLiveData.value == null) {
+                    _errorUsersLiveData.value = resource.error
+                }
             }
             Status.SUCCESS -> {
+                if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
+                    _stateLoadMoreUsersLiveData.value = Status.COMPLETE
+                }
+
+
+
                 val users = resource.data
                 users?.let {
-                    _stateUsersLiveData.value?.addAll(users)
+                    _usersLiveData.value = it
+                }
+            }
+            Status.COMPLETE -> {
+                if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
+                    _stateLoadMoreUsersLiveData.value = Status.COMPLETE
                 }
             }
             else -> Unit
         }
+    }
+
+    internal fun onLoadMoreUsers(lastUserId: Long) {
+        if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
+            return
+        }
+        _stateLoadMoreUsersLiveData.value = Status.LOADING
+        getUsersUseCase.invoke(viewModelScope, lastUserId, _getUsersLiveData)
+
+    }
+
+    internal fun onClickButtonRetry() {
+        getUsersUseCase.invoke(viewModelScope, -1, _getUsersLiveData)
     }
 
     internal fun onClickButtonCreateAccount() {

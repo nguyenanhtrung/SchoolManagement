@@ -6,6 +6,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserType
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import kotlinx.coroutines.tasks.await
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserTypeRemoteDataSourceImp @Inject constructor(
@@ -17,7 +18,7 @@ class UserTypeRemoteDataSourceImp @Inject constructor(
             .get()
             .await()
         val mappedUserTypes = userTypesTask.map {
-            Log.d("MyID" ,"Name = ${it["name"].toString()}")
+            Timber.d("Name = ${it["name"].toString()}")
             UserType(it.id, it["name"].toString())
         }
         return Resource.success(mappedUserTypes)

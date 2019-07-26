@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_account"
+        android:layout_marginBottom="56dp"
         android:layout_marginStart="@dimen/margin_normal_100"
         android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_marginEnd="@dimen/margin_normal_100" />
@@ -21,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:hideOnScroll="true"
+        app:fabAlignmentMode="end"
         app:navigationIcon="@drawable/ic_back_white"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         />

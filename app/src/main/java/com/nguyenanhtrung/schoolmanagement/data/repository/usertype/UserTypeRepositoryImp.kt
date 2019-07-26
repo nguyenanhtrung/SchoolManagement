@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.usertype
 
 import android.content.Context
+import android.util.ArrayMap
 import android.util.LruCache
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
@@ -21,11 +22,11 @@ class UserTypeRepositoryImp @Inject constructor(
 
 
     override fun getUserTypes(): Map<String, String> {
-        return userTypeCache.snapshot()
+        return ArrayMap(userTypeCache)
     }
 
     private val userTypeCache by lazy {
-        LruCache<String, String>(8)
+        ArrayMap<String, String>()
     }
 
     override suspend fun loadUserTypes(
@@ -67,17 +68,15 @@ class UserTypeRepositoryImp @Inject constructor(
     }
 
     private fun saveToMemoryCache(userTypes: List<UserType>) {
-        if (userTypeCache.maxSize() < userTypes.size) {
-            userTypeCache.resize(userTypes.size)
-        }
-        if (userTypeCache.size() == 0) {
+
+        if (userTypeCache.size == 0) {
             userTypes.forEach {
-                userTypeCache.put(it.id, it.name)
+                userTypeCache[it.id] = it.name
             }
         } else {
-            userTypeCache.evictAll()
+            userTypeCache.clear()
             userTypes.forEach {
-                userTypeCache.put(it.id, it.name)
+                userTypeCache[it.id] = it.name
             }
         }
     }

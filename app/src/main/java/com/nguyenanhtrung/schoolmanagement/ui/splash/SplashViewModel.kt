@@ -53,7 +53,7 @@ class SplashViewModel @Inject constructor(private val checkAlreadyLoginUseCase: 
                 //open login screen
                 _navigateLoginScreen.value = Event(true)
             } else if (it == LoginState.ALREADY_LOGIN) {
-                getUserTypesUseCase.invoke(viewModelScope,false, _userTypeLiveData)
+                getUserTypesUseCase.invoke(viewModelScope,true, _userTypeLiveData)
             }
         }
     }

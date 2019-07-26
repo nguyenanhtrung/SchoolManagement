@@ -13,10 +13,12 @@ class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) :
     override suspend fun saveUserInfo(user: User) {
         val userInfoEntity = UserInfoEntity(
             user.id,
+            user.firebaseUserId,
             user.name,
             user.avatarPath,
             user.typeId,
-            user.typeName
+            user.typeName,
+            user.accountName
         )
         userDao.insertData(userInfoEntity)
     }
@@ -28,10 +30,12 @@ class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) :
         val userInfoEntity = userDao.getUserInfo(userId)
         val mappedUser = User(
             userInfoEntity.id,
+            userInfoEntity.firebaseUserId,
             userInfoEntity.name,
             userInfoEntity.typeName,
             userInfoEntity.typeId,
-            userInfoEntity.avatarPath
+            userInfoEntity.avatarPath,
+            userInfoEntity.accountName
         )
         return Resource.success(mappedUser)
     }

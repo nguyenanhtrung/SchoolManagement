@@ -10,13 +10,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
 import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -57,6 +59,11 @@ class AccountManagementFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeMaxUserId()
+        subscribeUsers()
+        subscribeGetUsers()
+        subscribeStateLoadingMoreUsers()
+        subscribeEmptyStateGetUsers()
+        subscribeErrorUsers()
     }
 
     override fun setupUiEvents() {
@@ -65,33 +72,65 @@ class AccountManagementFragment : BaseFragment() {
             accountViewModel.onClickButtonCreateAccount()
         }
         setupRecyclerViewUsers()
-        subscribeUsers()
-        subscribeStateUsers()
-        subscribeErrorUsers()
+        setupLoadMoreUsersEvent()
+
         accountViewModel.loadUsers()
     }
 
-    private fun subscribeErrorUsers() {
-        accountViewModel.errorUsersLiveData.observe(viewLifecycleOwner, Observer {
-
+    private fun subscribeStateLoadingMoreUsers() {
+        accountViewModel.stateLoadMoreUsersLiveData.observe(this, Observer {
+            when (it) {
+                Status.LOADING -> usersAdapter.add(LoadMoreItem())
+                else -> usersAdapter.removeGroup(
+                    usersAdapter.itemCount - 1
+                )
+            }
         })
     }
 
-    private fun subscribeStateUsers() {
-        accountViewModel.stateUsersLiveData.observe(viewLifecycleOwner, Observer {
+    private fun setupLoadMoreUsersEvent() {
+        recycler_view_accounts.addOnScrollListener(object :
+            EndlessScrollListener(recycler_view_accounts.layoutManager as LinearLayoutManager) {
+            override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
+                val lastUserItem = usersAdapter.getItem(usersAdapter.itemCount - 1)
+                if (lastUserItem is UserItem) {
+                    val lastUser = lastUserItem.user
+                    accountViewModel.onLoadMoreUsers(lastUser.id)
+                }
+            }
+        })
+    }
+
+    private fun subscribeUsers() {
+        accountViewModel.usersLiveData.observe(this, Observer {
             addUserItems(it)
         })
     }
 
-    private fun addUserItems(users: MutableList<Item>) {
-        if (usersAdapter.itemCount > 0) {
-            usersAdapter.removeGroup(0)
-        }
+    private fun subscribeErrorUsers() {
+        accountViewModel.errorUsersLiveData.observe(this, Observer {
+            usersAdapter.add(ErrorItem(it, object : ErrorItem.OnClickButtonRetryListener {
+                override fun onClickButtonRetry(view: View) {
+                    accountViewModel.onClickButtonRetry()
+                }
+
+            }))
+        })
+    }
+
+    private fun subscribeEmptyStateGetUsers() {
+        accountViewModel.emptyUsersLiveData.observe(this, Observer {
+            usersAdapter.add(it)
+        })
+    }
+
+
+    private fun addUserItems(users: MutableList<UserItem>) {
         usersAdapter.addAll(users)
     }
 
-    private fun subscribeUsers() {
-        accountViewModel.getUsersLiveData.observe(viewLifecycleOwner, Observer {
+    private fun subscribeGetUsers() {
+        accountViewModel.getUsersLiveData.observe(this, Observer {
             accountViewModel.handleStatusGetUsers(it)
         })
     }

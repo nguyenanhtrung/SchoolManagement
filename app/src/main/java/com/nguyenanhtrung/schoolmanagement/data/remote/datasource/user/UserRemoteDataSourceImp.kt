@@ -33,7 +33,7 @@ class UserRemoteDataSourceImp @Inject constructor(
 ) : UserRemoteDataSource {
 
     companion object {
-        private const val USERS_LIMIT = 10L
+        private const val USERS_LIMIT = 8L
     }
 
     override suspend fun sendResetPassword(email: String): Resource<Int> {
@@ -63,6 +63,7 @@ class UserRemoteDataSourceImp @Inject constructor(
 
         val typeName = getUserAccountType(userCloudStore.typeId)
         val userMapped = User(
+            userCloudStore.id,
             userId,
             userCloudStore.name,
             typeName,
@@ -80,20 +81,7 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     override suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<Unit> {
         return try {
-            val email = createAccountParam.email
-            val password = createAccountParam.password
-            registerNewUser(email, password)
-            val userInfo = ArrayMap<String, String>()
-            with(userInfo) {
-                put(AppKey.USER_AVATAR_PATH_FIELD, "")
-                put(AppKey.USER_NAME_FIELD, createAccountParam.name)
-                put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
-                put(AppKey.USER_ACCOUNT_NAME_FIELD, email)
-            }
-            firestore.collection(USERS_PATH_FIRE_STORE)
-                .document(createAccountParam.id)
-                .set(userInfo)
-                .await()
+            registerNewUser(createAccountParam)
             updateUserStatus(createAccountParam.id)
             return userIdRemoteDataSource.setMaxUserId(createAccountParam.id.toLong())
         } catch (collisionEx: com.google.firebase.auth.FirebaseAuthUserCollisionException) {
@@ -104,10 +92,26 @@ class UserRemoteDataSourceImp @Inject constructor(
         }
     }
 
-    private suspend fun registerNewUser(email: String, password: String) {
-        val secondFirebaseAuth = createSecondFirebaseAuth()
-        secondFirebaseAuth.createUserWithEmailAndPassword(email, password).await()
+    private suspend fun registerNewUser(createAccountParam: CreateAccountParam) {
+        val secondFirebaseAuth = createSecondFirebaseAuth(createAccountParam.id)
+        secondFirebaseAuth.createUserWithEmailAndPassword(
+            createAccountParam.email,
+            createAccountParam.password
+        ).await()
+        val newUserId = secondFirebaseAuth.currentUser?.uid ?: ""
         secondFirebaseAuth.signOut()
+        val userInfo = ArrayMap<String, Any>()
+        with(userInfo) {
+            put(AppKey.USER_ID_FIELD, createAccountParam.id.toLong())
+            put(AppKey.USER_AVATAR_PATH_FIELD, "")
+            put(AppKey.USER_NAME_FIELD, createAccountParam.name)
+            put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
+            put(AppKey.USER_ACCOUNT_NAME_FIELD, createAccountParam.email)
+        }
+        firestore.collection(USERS_PATH_FIRE_STORE)
+            .document(newUserId)
+            .set(userInfo)
+            .await()
     }
 
     private suspend fun updateUserStatus(userId: String) {
@@ -120,20 +124,19 @@ class UserRemoteDataSourceImp @Inject constructor(
             .await()
     }
 
-    private fun createSecondFirebaseAuth(): FirebaseAuth {
+    private fun createSecondFirebaseAuth(newUserId: String): FirebaseAuth {
         val firebaseOptions = FirebaseOptions.Builder()
             .setDatabaseUrl("https://schoolmanagement-f6cb0.firebaseio.com/")
             .setApiKey("AIzaSyDeGp0J-M3qGeh95vs4KgpJiwGodcrabvg")
             .setApplicationId("schoolmanagement-f6cb0").build()
 
-        val firebaseApp = FirebaseApp.initializeApp(context, firebaseOptions, "SecondAuth")
+        val firebaseApp = FirebaseApp.initializeApp(context, firebaseOptions, newUserId)
         return FirebaseAuth.getInstance(firebaseApp)
     }
 
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy(FieldPath.documentId(), Query.Direction.ASCENDING)
-            .whereEqualTo("typeId", "")
+            .orderBy("id")
             .limit(USERS_LIMIT)
             .get()
             .await()
@@ -150,29 +153,32 @@ class UserRemoteDataSourceImp @Inject constructor(
         userTypes: Map<String, String>
     ): List<UserItem> {
         return querySnapshot.map {
-            val userTypeId = it["typeId"] as String
+            val userTypeId = it[AppKey.USER_TYPE_ID_FIELD] as String
             val userTypeName = userTypes[userTypeId] ?: ""
             UserItem(
                 User(
+                    it[AppKey.USER_ID_FIELD] as Long,
                     it.id,
-                    it["name"] as String,
+                    it[AppKey.USER_NAME_FIELD] as String,
                     userTypeName,
                     userTypeId,
-                    it["avatarPath"] as String,
-                    it["userName"] as String
+                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
+                    it[AppKey.USER_ACCOUNT_NAME_FIELD] as String
                 )
             )
         }
     }
 
     override suspend fun getPagingUsers(
-        lastUserId: String,
+        lastUserId: Long,
         userTypes: Map<String, String>
     ): Resource<MutableList<UserItem>> {
+        val lastDocument =
+            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo("id",lastUserId).get().await().documents[0]
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy(FieldPath.documentId(), Query.Direction.ASCENDING)
+            .orderBy("id", Query.Direction.ASCENDING)
             .limit(USERS_LIMIT)
-            .startAfter(firestore.document(lastUserId))
+            .startAfter(lastDocument)
             .get()
             .await()
         val querySize = querySnapshot.size()

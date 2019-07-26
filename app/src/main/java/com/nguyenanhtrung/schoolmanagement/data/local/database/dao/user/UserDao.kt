@@ -8,10 +8,10 @@ import com.nguyenanhtrung.schoolmanagement.data.local.entity.UserInfoEntity
 @Dao
 interface UserDao : BaseDao<UserInfoEntity> {
 
-    @Query(value = "SELECT * FROM User WHERE id LIKE :userId")
+    @Query(value = "SELECT * FROM User WHERE firebase_user_id LIKE :userId")
     suspend fun getUserInfo(userId: String): UserInfoEntity
 
-    @Query(value = "SELECT EXISTS(SELECT 1 FROM User WHERE id LIKE (:userId)  LIMIT 1)")
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM User WHERE firebase_user_id LIKE (:userId)  LIMIT 1)")
     suspend fun checkExistUserInfo(userId: String): Int
 
 }

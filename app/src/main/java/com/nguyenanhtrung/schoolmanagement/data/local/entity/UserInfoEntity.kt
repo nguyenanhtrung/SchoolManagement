@@ -8,7 +8,10 @@ import androidx.room.PrimaryKey
 class UserInfoEntity(
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id")
-    val id: String,
+    val id: Long,
+
+    @ColumnInfo(name = "firebase_user_id")
+    val firebaseUserId: String,
 
     @ColumnInfo(name = "name")
     val name: String,
@@ -20,6 +23,8 @@ class UserInfoEntity(
     val typeId: String,
 
     @ColumnInfo(name = "type_name")
-    val typeName: String
+    val typeName: String,
 
+    @ColumnInfo(name = "account_name")
+    val accountName: String
 )
