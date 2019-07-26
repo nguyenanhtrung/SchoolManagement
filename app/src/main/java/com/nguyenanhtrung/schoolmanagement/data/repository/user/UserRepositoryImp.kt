@@ -71,7 +71,6 @@ class UserRepositoryImp @Inject constructor(
     }
 
     override suspend fun getUsers(
-        lastUserId: Long,
         userTypes: Map<String, String>,
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
@@ -86,10 +85,30 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
 
             override suspend fun callApi(): Resource<MutableList<UserItem>> {
-                if (lastUserId < 0) {
-                    return userRemoteDataSource.getUsers(userTypes)
-                }
-                return userRemoteDataSource.getPagingUsers(lastUserId, userTypes)
+                return userRemoteDataSource.getUsers(userTypes)
+            }
+        }.createCall()
+    }
+
+    override suspend fun getUsersByLimit(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        result: MutableLiveData<Resource<MutableList<UserItem>>>
+    ) {
+        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<UserItem>>(
+            context,
+            Pair(lastUserId, userTypes),
+            result
+        ) {
+
+            override fun shouldLoadFromLocal(params: Pair<Long, Map<String, String>>): Boolean =
+                false
+
+            override fun shouldSaveToLocal(params: Pair<Long, Map<String, String>>): Boolean = false
+            override fun shouldShowLoading(): Boolean = false
+
+            override suspend fun callApi(): Resource<MutableList<UserItem>> {
+                return userRemoteDataSource.getPagingUsers(params.first, params.second)
             }
         }.createCall()
     }

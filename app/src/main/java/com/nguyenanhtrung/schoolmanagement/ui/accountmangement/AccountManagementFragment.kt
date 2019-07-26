@@ -2,9 +2,8 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
 
 import android.app.Application
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -58,6 +57,7 @@ class AccountManagementFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         subscribeMaxUserId()
         subscribeUsers()
         subscribeGetUsers()
@@ -66,8 +66,15 @@ class AccountManagementFragment : BaseFragment() {
         subscribeErrorUsers()
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val activity = (requireActivity() as AppCompatActivity)
+        activity.setSupportActionBar(bottom_app_bar_accounts)
+    }
+
     override fun setupUiEvents() {
         subscribeNavigateToCreateAccount()
+        setupNavigationBottomAppBarEvent()
         float_button_create_account.setOnClickListener {
             accountViewModel.onClickButtonCreateAccount()
         }
@@ -75,6 +82,16 @@ class AccountManagementFragment : BaseFragment() {
         setupLoadMoreUsersEvent()
 
         accountViewModel.loadUsers()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_accounts_management,menu)
+    }
+
+    private fun setupNavigationBottomAppBarEvent() {
+        bottom_app_bar_accounts.setNavigationOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun subscribeStateLoadingMoreUsers() {
@@ -109,12 +126,16 @@ class AccountManagementFragment : BaseFragment() {
 
     private fun subscribeErrorUsers() {
         accountViewModel.errorUsersLiveData.observe(this, Observer {
-            usersAdapter.add(ErrorItem(it, object : ErrorItem.OnClickButtonRetryListener {
-                override fun onClickButtonRetry(view: View) {
-                    accountViewModel.onClickButtonRetry()
+            when(it) {
+                is ErrorState.Empty -> usersAdapter.removeGroup(0)
+                is ErrorState.NoAction -> {
+                    usersAdapter.add(ErrorItem(it.messageId, object : ErrorItem.OnClickButtonRetryListener {
+                        override fun onClickButtonRetry(view: View) {
+                            accountViewModel.onClickButtonRetry()
+                        }
+                    }))
                 }
-
-            }))
+            }
         })
     }
 

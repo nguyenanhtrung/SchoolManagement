@@ -7,7 +7,6 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.userid.GetMaxUserIdUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
-import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
 class AccountManagementViewModel @Inject constructor(
@@ -40,9 +39,9 @@ class AccountManagementViewModel @Inject constructor(
         get() = _emptyUsersLiveData
 
     private val _errorUsersLiveData by lazy {
-        MutableLiveData<Int>()
+        MutableLiveData<ErrorState>()
     }
-    internal val errorUsersLiveData: LiveData<Int>
+    internal val errorUsersLiveData: LiveData<ErrorState>
         get() = _errorUsersLiveData
 
     private val _usersLiveData by lazy {
@@ -67,12 +66,13 @@ class AccountManagementViewModel @Inject constructor(
 
     internal fun handleStatusGetUsers(resource: Resource<MutableList<UserItem>>) {
         when (resource.status) {
+
             Status.EMPTY -> {
                 _emptyUsersLiveData.value = EmptyItem(resource.error)
             }
             Status.FAILURE, Status.EXCEPTION -> {
                 if (_errorUsersLiveData.value == null) {
-                    _errorUsersLiveData.value = resource.error
+                    _errorUsersLiveData.value = ErrorState.NoAction(resource.error)
                 }
             }
             Status.SUCCESS -> {
@@ -80,7 +80,9 @@ class AccountManagementViewModel @Inject constructor(
                     _stateLoadMoreUsersLiveData.value = Status.COMPLETE
                 }
 
-
+                if (_errorUsersLiveData.value is ErrorState.NoAction) {
+                    _errorUsersLiveData.value = ErrorState.Empty
+                }
 
                 val users = resource.data
                 users?.let {

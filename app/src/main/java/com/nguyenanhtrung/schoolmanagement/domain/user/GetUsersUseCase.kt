@@ -22,6 +22,10 @@ class GetUsersUseCase @Inject constructor(
         resultLiveData: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
         userTypes
-        userRepository.getUsers(params,userTypes, resultLiveData)
+        if (params < 0) {
+            userRepository.getUsers(userTypes, resultLiveData)
+        } else {
+            userRepository.getUsersByLimit(params, userTypes, resultLiveData)
+        }
     }
 }

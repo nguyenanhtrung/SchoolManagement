@@ -30,7 +30,9 @@ constructor(
 
 
         if (shouldFetchFromServer(params)) {
-            result.value = Resource.loading()
+            if (shouldShowLoading()) {
+                result.value = Resource.loading()
+            }
             //call api
             val response: Resource<Output> = callApi()
             if (response.status == Status.SUCCESS && shouldSaveToLocal(params)) {
@@ -72,4 +74,7 @@ constructor(
 
     @WorkerThread
     protected open suspend fun loadFromLocal(params: Params): Resource<Output> = Resource.completed()
+
+    @MainThread
+    protected open fun shouldShowLoading(): Boolean = true
 }

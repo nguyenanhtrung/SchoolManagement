@@ -71,4 +71,8 @@
     <string name="error_create_user">Tạo tài khoản thất bại.Vui lòng kiểm tra lại server</string>
     <string name="error_registered_email">Email đã được đăng ký để tạo tài khoản.</string>
     <string name="title_empty_accounts">Danh sách tài khoản đang trống</string>
+    <string name="title_search">Tìm kiếm</string>
+    <string name="title_information">Thông tin</string>
+    <string name="title_full_name">Họ tên</string>
+    <string name="title_password">Mật khẩu</string>
 </resources>

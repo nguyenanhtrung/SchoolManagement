@@ -16,7 +16,7 @@ abstract class BaseViewModel : ViewModel() {
         MediatorLiveData<Resource<*>>()
     }
 
-    private val _loadingLiveData by lazy {
+    protected val _loadingLiveData by lazy {
         MutableLiveData<Boolean>()
     }
     internal val loadingLiveData: LiveData<Boolean>
