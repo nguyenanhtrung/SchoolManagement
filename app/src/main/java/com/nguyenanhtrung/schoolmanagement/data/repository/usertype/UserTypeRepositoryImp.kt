@@ -49,12 +49,20 @@ class UserTypeRepositoryImp @Inject constructor(
                         saveToMemoryCache(userTypes)
                     }
                 }
-                return userTypeRemoteDataSource.getUserTypes()
+                return userTypesResource
             }
 
             override suspend fun loadFromLocal(params: Unit): Resource<List<UserType>> {
-                val userTypes = userTypeLocalDataSource.getUserTypes()
-                saveToMemoryCache(userTypes)
+                if (userTypeCache.size == 0) {
+                    val userTypes = userTypeLocalDataSource.getUserTypes()
+                    saveToMemoryCache(userTypes)
+                    return Resource.success(userTypes)
+                }
+                val userTypes = mutableListOf<UserType>()
+                userTypeCache.forEach {
+                    val userType = UserType(it.key, it.value)
+                    userTypes += userType
+                }
                 return Resource.success(userTypes)
             }
 
@@ -68,13 +76,7 @@ class UserTypeRepositoryImp @Inject constructor(
     }
 
     private fun saveToMemoryCache(userTypes: List<UserType>) {
-
         if (userTypeCache.size == 0) {
-            userTypes.forEach {
-                userTypeCache[it.id] = it.name
-            }
-        } else {
-            userTypeCache.clear()
             userTypes.forEach {
                 userTypeCache[it.id] = it.name
             }

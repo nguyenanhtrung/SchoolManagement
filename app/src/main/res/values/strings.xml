@@ -75,4 +75,7 @@
     <string name="title_information">Thông tin</string>
     <string name="title_full_name">Họ tên</string>
     <string name="title_password">Mật khẩu</string>
+    <string name="transition_name_image_account">account_circle_image</string>
+    <string name="transition_name_account_email">text_account_email</string>
+    <string name="transition_name_account_type">text_account_type</string>
 </resources>

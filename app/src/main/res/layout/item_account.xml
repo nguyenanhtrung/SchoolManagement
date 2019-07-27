@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/margin_normal_100"
-    android:foregroundTint="@color/colorSurface">
+    android:foregroundTint="@color/colorSurface"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_normal_100"
-        >
+        android:padding="@dimen/padding_normal_100">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/image_account"
             android:layout_width="@dimen/width_circle_user_image"
             android:layout_height="@dimen/height_circle_user_image"
-            tools:src="@tools:sample/avatars"
-        />
+            android:transitionName="@string/transition_name_image_account"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/text_account_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:text="nguyenanhtrung2495@gmail.com"
-            android:layout_toEndOf="@id/image_account"
             android:layout_marginStart="@dimen/margin_small_100"
+            android:transitionName="@string/transition_name_account_email"
+            android:layout_toEndOf="@id/image_account"
             android:maxLines="1"
             android:textAppearance="@style/TitleNormal"
-            />
+            tools:text="nguyenanhtrung2495@gmail.com" />
 
         <TextView
             android:id="@+id/text_account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_account_email"
-            android:layout_toEndOf="@id/image_account"
             android:layout_marginStart="@dimen/margin_small_100"
             android:layout_marginTop="@dimen/margin_small_100"
+            android:transitionName="@string/transition_name_account_type"
+            android:layout_toEndOf="@id/image_account"
             android:textAppearance="@style/TextAccountType"
-            tools:text="Student"
-            />
+            tools:text="Student" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/check_box_account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:visibility="gone"
             android:layout_alignTop="@id/image_account"
             android:layout_alignBottom="@id/image_account"
-            />
+            android:layout_alignParentEnd="true"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

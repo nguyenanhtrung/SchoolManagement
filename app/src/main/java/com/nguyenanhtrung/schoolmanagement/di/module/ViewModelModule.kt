@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.nguyenanhtrung.schoolmanagement.ui.accountdetail.AccountDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardViewModel
@@ -61,4 +62,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FlowStatusViewModel::class)
     abstract fun bindFlowStatusViewModel(flowStatusViewModel: FlowStatusViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountDetailViewModel::class)
+    abstract fun bindAccountDetailViewModel(accountDetailViewModel: AccountDetailViewModel) : ViewModel
 }

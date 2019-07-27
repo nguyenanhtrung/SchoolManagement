@@ -3,10 +3,12 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
 import android.app.Application
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,10 +20,9 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
-import com.xwray.groupie.Group
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
-import com.xwray.groupie.kotlinandroidextensions.Item
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_list_account.*
 import javax.inject.Inject
 
@@ -79,13 +80,48 @@ class AccountManagementFragment : BaseFragment() {
             accountViewModel.onClickButtonCreateAccount()
         }
         setupRecyclerViewUsers()
+        setupUserItemClickEvent()
         setupLoadMoreUsersEvent()
+        subscribeNavigateToAccountDetail()
 
         accountViewModel.loadUsers()
     }
 
+    private fun subscribeNavigateToAccountDetail() {
+        accountViewModel.navToAccountDetail.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { position ->
+                openAccountDetailFragment(position)
+            }
+        })
+    }
+
+    private fun setupUserItemClickEvent() {
+        usersAdapter.setOnItemClickListener { item, view ->
+            accountViewModel.onClickUserItem(usersAdapter.getAdapterPosition(item))
+        }
+    }
+
+    private fun openAccountDetailFragment(position: Int) {
+        val layoutManager = recycler_view_accounts.layoutManager
+        val itemView = layoutManager?.findViewByPosition(position) ?: return
+        val imageViewAcc = itemView.findViewById<CircleImageView>(R.id.image_account)
+        val textNameAcc = itemView.findViewById<TextView>(R.id.text_account_email)
+
+        val shareViews = FragmentNavigatorExtras(
+            imageViewAcc to getString(R.string.transition_name_image_account),
+            textNameAcc to getString(R.string.transition_name_account_email)
+        )
+
+        val userItem = usersAdapter.getItem(position) as UserItem
+        findNavController().navigate(
+            AccountManagementFragmentDirections.actionAccountManagementDestToAccountDetailFragment(
+                userItem.user
+            ), shareViews
+        )
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_accounts_management,menu)
+        inflater.inflate(R.menu.fragment_accounts_management, menu)
     }
 
     private fun setupNavigationBottomAppBarEvent() {
@@ -126,14 +162,18 @@ class AccountManagementFragment : BaseFragment() {
 
     private fun subscribeErrorUsers() {
         accountViewModel.errorUsersLiveData.observe(this, Observer {
-            when(it) {
+            when (it) {
                 is ErrorState.Empty -> usersAdapter.removeGroup(0)
                 is ErrorState.NoAction -> {
-                    usersAdapter.add(ErrorItem(it.messageId, object : ErrorItem.OnClickButtonRetryListener {
-                        override fun onClickButtonRetry(view: View) {
-                            accountViewModel.onClickButtonRetry()
-                        }
-                    }))
+                    usersAdapter.add(
+                        ErrorItem(
+                            it.messageId,
+                            object : ErrorItem.OnClickButtonRetryListener {
+                                override fun onClickButtonRetry(view: View) {
+                                    accountViewModel.onClickButtonRetry()
+                                }
+                            })
+                    )
                 }
             }
         })

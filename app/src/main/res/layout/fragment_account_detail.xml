@@ -26,25 +26,13 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
 
-    <TextView
-        android:id="@+id/title_account"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintTop_toTopOf="@id/guideline_hori_top"
-        android:text="@string/title_account"
-        android:textAppearance="@style/TitleNormal"
-        />
-
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view_account_basic_info"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_normal_100"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toBottomOf="@id/title_account">
+        app:layout_constraintTop_toBottomOf="@id/guideline_hori_top">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -52,14 +40,14 @@
             android:paddingBottom="@dimen/padding_normal_100">
 
 
-
             <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/circleImageView"
+                android:id="@+id/image_account_detail"
                 android:layout_width="@dimen/width_circle_user_image"
                 android:layout_height="@dimen/height_circle_user_image"
                 android:layout_marginStart="@dimen/margin_normal_100"
                 android:layout_marginTop="@dimen/margin_normal_100"
                 android:src="@drawable/image_empty"
+                android:transitionName="@string/transition_name_image_account"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,9 +58,10 @@
                 android:layout_marginStart="@dimen/margin_normal_100"
                 android:layout_marginEnd="@dimen/margin_normal_100"
                 android:textAppearance="@style/TitleNormal"
+                android:transitionName="@string/transition_name_account_email"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/circleImageView"
-                app:layout_constraintTop_toTopOf="@+id/circleImageView"
+                app:layout_constraintStart_toEndOf="@+id/image_account_detail"
+                app:layout_constraintTop_toTopOf="@+id/image_account_detail"
                 tools:text="trung2495@gmail.com" />
 
             <TextView
@@ -91,76 +80,102 @@
 
     <TextView
         android:id="@+id/title_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_150"
+        android:text="@string/title_information"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/card_view_account_basic_info" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_ver_end"
-        app:layout_constraintTop_toBottomOf="@id/card_view_account_basic_info"
-        android:text="@string/title_information"
+        app:endIconMode="none"
         android:layout_marginTop="@dimen/margin_normal_100"
-        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_start"
+        app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
+        app:layout_constraintTop_toBottomOf="@id/title_info"
+        android:hint="@string/title_full_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            tools:text="Nguyen Anh Trung" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    <org.angmarch.views.NiceSpinner
+        android:id="@+id/spinner_account_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        app:fontFamily="@font/roboto_medium"
+        app:layout_constraintStart_toEndOf="@id/guideline_ver_start"
+        app:layout_constraintEnd_toStartOf="@id/guideline_ver_end"
+        app:layout_constraintTop_toBottomOf="@id/input_layout_name"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginEnd="@dimen/margin_normal_100"
         />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_view_info_editable"
+
+    <TextView
+        android:id="@+id/title_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_change_password"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@id/spinner_account_type" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_password"
+        style="@style/Widget.OutLinePasswordInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_marginTop="@dimen/margin_normal_100"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-        app:layout_constraintTop_toBottomOf="@+id/title_info" >
+        app:layout_constraintTop_toBottomOf="@+id/title_change_password"
+        android:hint="@string/title_password">
 
-        <LinearLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_text_password"
+            style="@style/Widget.EditTextPassword"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingBottom="@dimen/margin_normal_100"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            tools:text="123123" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_layout_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal_100"
-                android:layout_marginStart="@dimen/margin_normal_100"
-                android:layout_marginEnd="@dimen/margin_normal_100"
-                android:hint="@string/title_full_name">
+    </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    tools:text="Nguyen Anh Trung" />
-            </com.google.android.material.textfield.TextInputLayout>
+    <ImageButton
+        android:id="@+id/button_status_mofidy_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/title_info"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintTop_toTopOf="@+id/title_info"
+        app:srcCompat="@drawable/ic_edit" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/input_layout_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal_100"
-                android:layout_marginStart="@dimen/margin_normal_100"
-                android:layout_marginEnd="@dimen/margin_normal_100"
-                style="@style/Widget.OutLinePasswordInputLayout"
-                android:hint="@string/title_password">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_text_password"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    style="@style/Widget.EditTextPassword"
-                    tools:text="123123" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <org.angmarch.views.NiceSpinner
-                android:id="@+id/spinner_account_type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal_100"
-                android:layout_marginStart="@dimen/margin_normal_100"
-                android:layout_marginEnd="@dimen/margin_normal_100"
-                />
-
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    <ImageButton
+        android:id="@+id/button_status_change_password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/title_change_password"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintTop_toTopOf="@+id/title_change_password"
+        app:srcCompat="@drawable/ic_edit" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -20,6 +20,12 @@ class AccountManagementViewModel @Inject constructor(
     internal val navToCreateAccountFragment: LiveData<Event<Long>>
         get() = _navToCreateAccountFragment
 
+    private val _navToAccountDetail by lazy {
+        MutableLiveData<Event<Int>>()
+    }
+    internal val navToAccountDetail: LiveData<Event<Int>>
+        get() = _navToAccountDetail
+
     private val _maxUserIdLiveData by lazy {
         createApiResultLiveData<Long>()
     }
@@ -105,6 +111,10 @@ class AccountManagementViewModel @Inject constructor(
         _stateLoadMoreUsersLiveData.value = Status.LOADING
         getUsersUseCase.invoke(viewModelScope, lastUserId, _getUsersLiveData)
 
+    }
+
+    internal fun onClickUserItem(position: Int) {
+        _navToAccountDetail.value = Event(position)
     }
 
     internal fun onClickButtonRetry() {
