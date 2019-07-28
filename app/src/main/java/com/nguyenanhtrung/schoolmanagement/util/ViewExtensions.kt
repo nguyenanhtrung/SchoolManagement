@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.util
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
@@ -34,6 +35,27 @@ fun TextInputEditText.clearText() {
     }
     setText("")
 }
+
+fun TextInputEditText.enableInput(inputLayout: TextInputLayout) {
+    isFocusable = true
+    isFocusableInTouchMode = true
+    if (inputLayout.visibility != View.VISIBLE) {
+        inputLayout.visibility = View.VISIBLE
+    }
+    if (inputLayout.endIconMode == TextInputLayout.END_ICON_NONE) {
+        inputLayout.endIconMode = TextInputLayout.END_ICON_CLEAR_TEXT
+    }
+
+}
+
+fun TextInputEditText.disableInput(inputLayout: TextInputLayout) {
+    isFocusable = false
+    isFocusableInTouchMode = false
+    if (inputLayout.endIconMode == TextInputLayout.END_ICON_CLEAR_TEXT) {
+        inputLayout.endIconMode = TextInputLayout.END_ICON_NONE
+    }
+}
+
 
 fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
     when(errorState) {

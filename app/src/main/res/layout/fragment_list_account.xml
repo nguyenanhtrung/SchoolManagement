@@ -25,6 +25,7 @@
         app:hideOnScroll="true"
         app:fabAlignmentMode="end"
         app:navigationIcon="@drawable/ic_back_white"
+
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         />
 

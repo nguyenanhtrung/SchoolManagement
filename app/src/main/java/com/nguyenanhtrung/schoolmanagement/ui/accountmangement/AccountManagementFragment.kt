@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
@@ -75,7 +76,6 @@ class AccountManagementFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         subscribeNavigateToCreateAccount()
-        setupNavigationBottomAppBarEvent()
         float_button_create_account.setOnClickListener {
             accountViewModel.onClickButtonCreateAccount()
         }
@@ -124,10 +124,9 @@ class AccountManagementFragment : BaseFragment() {
         inflater.inflate(R.menu.fragment_accounts_management, menu)
     }
 
-    private fun setupNavigationBottomAppBarEvent() {
-        bottom_app_bar_accounts.setNavigationOnClickListener {
-            findNavController().popBackStack()
-        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+        android.R.id.home -> findNavController().popBackStack()
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun subscribeStateLoadingMoreUsers() {
