@@ -5,7 +5,6 @@ import android.util.ArrayMap
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -36,6 +35,27 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     companion object {
         private const val USERS_LIMIT = 8L
+    }
+
+    override suspend fun changeUserPassword(
+        fireBaseUserId: String,
+        accountName: String,
+        newPassword: String
+    ): Resource<Unit> {
+        val accCurrentPassword = firestore.collection(AppKey.AUTHENTICATION_PATH)
+            .document(fireBaseUserId)
+            .get()
+            .await()
+        val secondFireBaseAuth = createSecondFirebaseAuth(fireBaseUserId)
+        secondFireBaseAuth.signInWithEmailAndPassword(
+            accountName,
+            accCurrentPassword["password"] as String
+        ).await()
+        val user = secondFireBaseAuth.currentUser
+        user?.updatePassword(newPassword)
+            ?.await()
+        secondFireBaseAuth.signOut()
+        return Resource.success(Unit)
     }
 
     override suspend fun updateUserInfo(userInfos: Pair<String, androidx.collection.ArrayMap<String, String>>): Resource<Unit> {
@@ -122,7 +142,15 @@ class UserRemoteDataSourceImp @Inject constructor(
             .document(newUserId)
             .set(userInfo)
             .await()
+        updateUserPassword(newUserId, password = createAccountParam.password)
         updateUserProfileStatus(newUserId, false)
+    }
+
+    private suspend fun updateUserPassword(fireBaseUserId: String, password: String) {
+        firestore.collection(AppKey.AUTHENTICATION_PATH)
+            .document(fireBaseUserId)
+            .update("password", password)
+            .await()
     }
 
     private suspend fun updateUserProfileStatus(fireBaseUserId: String, isUpdated: Boolean) {

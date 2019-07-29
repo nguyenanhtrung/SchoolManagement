@@ -22,7 +22,11 @@ interface UserRemoteDataSource {
         userTypes: Map<String, String>
     ): Resource<MutableList<UserItem>>
 
-    suspend fun updateUserInfo(userInfos: Pair<String,ArrayMap<String, String>>): Resource<Unit>
+    suspend fun updateUserInfo(userInfos: Pair<String, ArrayMap<String, String>>): Resource<Unit>
 
-
+    suspend fun changeUserPassword(
+        fireBaseUserId: String,
+        accountName: String,
+        newPassword: String
+    ): Resource<Unit>
 }

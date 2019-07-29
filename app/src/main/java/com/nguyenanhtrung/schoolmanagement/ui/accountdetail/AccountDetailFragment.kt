@@ -63,19 +63,38 @@ class AccountDetailFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainViewModel.showToolbar()
+        edit_text_password.clearErrorWhenFocus(input_layout_password)
+        edit_text_name.clearErrorWhenFocus(input_layout_name)
     }
 
     override fun setupUiEvents() {
+        setupNavigationEvent()
+        setupModifyInfoButtonEvent()
         subscribeUserTypes()
         detailViewModel.loadUserTypes()
         subscribeStateModifyInfo()
         subscribeStateUpdateBasicInfo()
         subscribeErrorName()
         subscribeStateChangePassword()
-        setupNavigationEvent()
-        setupModifyInfoButtonEvent()
         subscribeUserInfo()
         subscribeSelectedUserType()
+        subscribeErrorPassword()
+        subscribeResultChangePassword()
+    }
+
+    private fun subscribeResultChangePassword() {
+        detailViewModel.resultChangePassword.observe(viewLifecycleOwner, Observer {
+            if (it.status == Status.SUCCESS) {
+                button_status_change_password.setImageResource(R.drawable.ic_edit)
+                mainViewModel.showMessage(R.string.success_change_password)
+            }
+        })
+    }
+
+    private fun subscribeErrorPassword() {
+        detailViewModel.errorPasswordLiveData.observe(viewLifecycleOwner, Observer {
+            input_layout_password.setErrorWithState(it)
+        })
     }
 
     private fun subscribeErrorName() {
@@ -87,6 +106,7 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeStateUpdateBasicInfo() {
         detailViewModel.stateUpdateBasicInfo.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS) {
+                button_status_mofidy_info.setImageResource(R.drawable.ic_edit)
                 mainViewModel.showMessage(R.string.success_modify_info)
             }
         })
@@ -104,10 +124,10 @@ class AccountDetailFragment : BaseFragment() {
                 }
                 ModificationState.Save -> {
                     disableEditInput(
-                        button_status_change_password,
                         input_layout_password,
                         edit_text_password
                     )
+                    detailViewModel.savePasswordModification(edit_text_password.getString())
                 }
             }
         })
@@ -126,7 +146,7 @@ class AccountDetailFragment : BaseFragment() {
                 }
                 ModificationState.Save -> {
                     spinner_account_type.isEnabled = false
-                    disableEditInput(button_status_mofidy_info, input_layout_name, edit_text_name)
+                    disableEditInput(input_layout_name, edit_text_name)
                     detailViewModel.saveBasicInfoModification(
                         edit_text_name.getString(),
                         spinner_account_type.selectedIndex
@@ -147,11 +167,9 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     private fun disableEditInput(
-        buttonStatus: ImageButton,
         inputLayout: TextInputLayout,
         editText: TextInputEditText
     ) {
-        buttonStatus.setImageResource(R.drawable.ic_edit)
         editText.disableInput(inputLayout)
     }
 

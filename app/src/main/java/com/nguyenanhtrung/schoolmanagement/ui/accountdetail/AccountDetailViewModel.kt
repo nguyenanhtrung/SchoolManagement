@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.domain.user.ChangeUserPassUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.UpdateUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertype.GetUserTypesUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 class AccountDetailViewModel @Inject constructor(
     private val getUserTypesUseCase: GetUserTypesUseCase,
-    private val updateUserInfoUseCase: UpdateUserInfoUseCase
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
+    private val changeUserPassUseCase: ChangeUserPassUseCase
 ) : BaseViewModel() {
     internal lateinit var currentUserInfo: User
 
@@ -67,6 +69,12 @@ class AccountDetailViewModel @Inject constructor(
     internal val errorPasswordLiveData: LiveData<ErrorState>
         get() = _errorPasswordLiveData
 
+    private val _resultChangePassword by lazy {
+        createApiResultLiveData<Unit>()
+    }
+    internal val resultChangePassword: LiveData<Resource<Unit>>
+        get() = _resultChangePassword
+
 
     internal fun onClickModifyInfoButton() {
         if (_stateModifyInfo.value == null || _stateModifyInfo.value == ModificationState.Save) {
@@ -108,7 +116,13 @@ class AccountDetailViewModel @Inject constructor(
 
     internal fun savePasswordModification(newPassword: String) {
         if (Validator.isPasswordValid(newPassword, _errorPasswordLiveData)) {
-
+            val originUserInfo = _currentUserLiveData.value ?: return
+            val changePassParam = ChangePasswordParam(
+                originUserInfo.firebaseUserId,
+                originUserInfo.accountName,
+                newPassword
+            )
+            changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
         }
     }
 

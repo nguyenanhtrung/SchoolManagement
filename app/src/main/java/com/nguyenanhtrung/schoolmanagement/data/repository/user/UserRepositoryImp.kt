@@ -4,10 +4,7 @@ import android.content.Context
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
@@ -19,6 +16,26 @@ class UserRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserRepository {
 
+    override suspend fun changeUserPassword(
+        changePassParam: ChangePasswordParam,
+        result: MutableLiveData<Resource<Unit>>
+    ) {
+        object :
+            NetworkBoundResources<ChangePasswordParam, Unit>(context, changePassParam, result) {
+
+            override fun shouldSaveToLocal(params: ChangePasswordParam): Boolean = false
+            override fun shouldLoadFromLocal(params: ChangePasswordParam): Boolean = false
+
+            override suspend fun callApi(): Resource<Unit> {
+                return userRemoteDataSource.changeUserPassword(
+                    changePassParam.fireBaseUserId,
+                    changePassParam.accountName,
+                    changePassParam.newPassword
+                )
+            }
+
+        }.createCall()
+    }
 
     override suspend fun updateUserInfo(
         result: MutableLiveData<Resource<Unit>>,

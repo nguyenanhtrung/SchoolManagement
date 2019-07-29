@@ -2,10 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
-import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 
 interface UserRepository {
     suspend fun loadUserInfo(result: MutableLiveData<Resource<User>>)
@@ -28,5 +25,13 @@ interface UserRepository {
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     )
 
-    suspend fun updateUserInfo(result: MutableLiveData<Resource<Unit>>, userInfos: Pair<String, ArrayMap<String, String>>)
+    suspend fun updateUserInfo(
+        result: MutableLiveData<Resource<Unit>>,
+        userInfos: Pair<String, ArrayMap<String, String>>
+    )
+
+    suspend fun changeUserPassword(
+        changePassParam: ChangePasswordParam,
+        result: MutableLiveData<Resource<Unit>>
+    )
 }
