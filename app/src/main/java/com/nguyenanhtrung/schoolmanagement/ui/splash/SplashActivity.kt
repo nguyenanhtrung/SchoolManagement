@@ -62,7 +62,7 @@ class SplashActivity : BaseActivity() {
         myApp.appComponent.inject(this)
     }
 
-    override fun showError(message: String) {
+    override fun showMessage(message: String) {
         view_switcher.displayedChild = 1
         if (view_switcher.currentView != layout_error_state) {
             view_switcher.showNext()

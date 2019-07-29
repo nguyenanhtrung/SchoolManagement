@@ -32,12 +32,19 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        subscribeMessage()
         subscribeViewState()
         subscribeLoading()
         subscribeError()
         setupUiEvents()
 
 
+    }
+
+    private fun subscribeMessage() {
+        fragmentViewModel.messageLiveData.observe(viewLifecycleOwner, Observer {
+            activityViewModel.showMessage(it)
+        })
     }
 
     private fun subscribeViewState() {

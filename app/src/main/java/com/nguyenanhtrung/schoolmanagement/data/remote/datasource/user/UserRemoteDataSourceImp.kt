@@ -20,6 +20,7 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
+import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_PROFILES_PATH
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
@@ -32,8 +33,17 @@ class UserRemoteDataSourceImp @Inject constructor(
     private val userIdRemoteDataSource: UserIdRemoteDataSource
 ) : UserRemoteDataSource {
 
+
     companion object {
         private const val USERS_LIMIT = 8L
+    }
+
+    override suspend fun updateUserInfo(userInfos: Pair<String, androidx.collection.ArrayMap<String, String>>): Resource<Unit> {
+        firestore.collection(USERS_PATH_FIRE_STORE)
+            .document(userInfos.first)
+            .update(userInfos.second.toMap())
+            .await()
+        return Resource.success(Unit)
     }
 
     override suspend fun sendResetPassword(email: String): Resource<Int> {
@@ -112,6 +122,14 @@ class UserRemoteDataSourceImp @Inject constructor(
             .document(newUserId)
             .set(userInfo)
             .await()
+        updateUserProfileStatus(newUserId, false)
+    }
+
+    private suspend fun updateUserProfileStatus(fireBaseUserId: String, isUpdated: Boolean) {
+        firestore.collection(USER_PROFILES_PATH)
+            .document(fireBaseUserId)
+            .update("updated", isUpdated)
+            .await()
     }
 
     private suspend fun updateUserStatus(userId: String) {
@@ -174,7 +192,10 @@ class UserRemoteDataSourceImp @Inject constructor(
         userTypes: Map<String, String>
     ): Resource<MutableList<UserItem>> {
         val lastDocument =
-            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo("id",lastUserId).get().await().documents[0]
+            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
+                "id",
+                lastUserId
+            ).get().await().documents[0]
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
             .orderBy("id", Query.Direction.ASCENDING)
             .limit(USERS_LIMIT)

@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
 import android.content.Context
+import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
@@ -17,6 +18,31 @@ class UserRepositoryImp @Inject constructor(
     private val userLocalDataSource: UserLocalDataSource,
     @ApplicationContext private val context: Context
 ) : UserRepository {
+
+
+    override suspend fun updateUserInfo(
+        result: MutableLiveData<Resource<Unit>>,
+        userInfos: Pair<String, ArrayMap<String, String>>
+    ) {
+        object :
+            NetworkBoundResources<Pair<String, ArrayMap<String, String>>, Unit>(
+                context,
+                userInfos,
+                result
+            ) {
+
+            override fun shouldLoadFromLocal(params: Pair<String, ArrayMap<String, String>>): Boolean =
+                false
+
+            override fun shouldSaveToLocal(params: Pair<String, ArrayMap<String, String>>): Boolean =
+                false
+
+            override suspend fun callApi(): Resource<Unit> {
+                return userRemoteDataSource.updateUserInfo(params)
+            }
+
+        }.createCall()
+    }
 
     override suspend fun sendResetPasswordToEmail(
         email: String,

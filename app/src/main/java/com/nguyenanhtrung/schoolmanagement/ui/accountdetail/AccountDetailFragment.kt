@@ -16,14 +16,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ModificationState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
-import com.nguyenanhtrung.schoolmanagement.util.disableInput
-import com.nguyenanhtrung.schoolmanagement.util.enableInput
-import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
+import com.nguyenanhtrung.schoolmanagement.util.*
 import kotlinx.android.synthetic.main.fragment_account_detail.*
 import javax.inject.Inject
 
@@ -67,15 +66,30 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     override fun setupUiEvents() {
+        subscribeUserTypes()
+        detailViewModel.loadUserTypes()
         subscribeStateModifyInfo()
+        subscribeStateUpdateBasicInfo()
+        subscribeErrorName()
         subscribeStateChangePassword()
         setupNavigationEvent()
         setupModifyInfoButtonEvent()
-        subscribeUserTypes()
         subscribeUserInfo()
         subscribeSelectedUserType()
-        detailViewModel.loadUserTypes()
-        detailViewModel.loadUserInfo()
+    }
+
+    private fun subscribeErrorName() {
+        detailViewModel.errorNameLiveData.observe(viewLifecycleOwner, Observer {
+            input_layout_name.setErrorWithState(it)
+        })
+    }
+
+    private fun subscribeStateUpdateBasicInfo() {
+        detailViewModel.stateUpdateBasicInfo.observe(viewLifecycleOwner, Observer {
+            if (it.status == Status.SUCCESS) {
+                mainViewModel.showMessage(R.string.success_modify_info)
+            }
+        })
     }
 
     private fun subscribeStateChangePassword() {
@@ -102,14 +116,21 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeStateModifyInfo() {
         detailViewModel.stateModifyInfo.observe(viewLifecycleOwner, Observer {
             when (it) {
-                ModificationState.Edit -> enableEditInput(
-                    button_status_mofidy_info,
-                    input_layout_name,
-                    edit_text_name
-                )
+                ModificationState.Edit -> {
+                    enableEditInput(
+                        button_status_mofidy_info,
+                        input_layout_name,
+                        edit_text_name
+                    )
+                    spinner_account_type.isEnabled = true
+                }
                 ModificationState.Save -> {
+                    spinner_account_type.isEnabled = false
                     disableEditInput(button_status_mofidy_info, input_layout_name, edit_text_name)
-
+                    detailViewModel.saveBasicInfoModification(
+                        edit_text_name.getString(),
+                        spinner_account_type.selectedIndex
+                    )
                 }
             }
         })
@@ -173,6 +194,7 @@ class AccountDetailFragment : BaseFragment() {
                 spinner_account_type.attachDataSource(userTypes.map { userType ->
                     userType.name
                 })
+                detailViewModel.loadUserInfo()
             }
         })
     }

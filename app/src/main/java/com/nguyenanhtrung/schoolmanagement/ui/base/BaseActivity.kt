@@ -35,6 +35,7 @@ abstract class BaseActivity : AppCompatActivity() {
         injectDependencies(application)
         baseViewModel = createViewModel()
         initUiComponent()
+        subscribeMessage()
         subscribeLoading()
         subscribeError()
         subscribeNetworkStatus()
@@ -43,6 +44,12 @@ abstract class BaseActivity : AppCompatActivity() {
             baseViewModel.handleViewState(it)
         })
 
+    }
+
+    private fun subscribeMessage() {
+        baseViewModel.messageLiveData.observe(this, Observer {
+            showMessage(getString(it))
+        })
     }
 
     private fun subscribeNetworkStatus() {
@@ -55,7 +62,7 @@ abstract class BaseActivity : AppCompatActivity() {
     private fun subscribeError() {
         baseViewModel.errorLiveData.observe(this, Observer {
             when (it) {
-                is ErrorState.NoAction -> showError(getString(it.messageId))
+                is ErrorState.NoAction -> showMessage(getString(it.messageId))
                 is ErrorState.WithAction -> showErrorWithAction(
                     getString(it.messageId),
                     it.action
@@ -89,10 +96,11 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
-    protected open fun showError(message: String) {
+    protected open fun showMessage(message: String) {
         snackBar.setText(message)
         snackBar.show()
     }
+
 
     protected open fun showErrorWithAction(message: String, action: () -> Unit) {
         snackBar.setText(message)

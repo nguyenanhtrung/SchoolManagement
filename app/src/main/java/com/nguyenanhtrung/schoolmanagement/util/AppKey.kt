@@ -9,6 +9,7 @@ class AppKey private constructor(){
         const val TASK_PERMISSIONS_PATH = "task_permissions"
         const val ID_PATH_FIRE_STORE = "ids"
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"
+        const val USER_PROFILES_PATH = "profiles"
         //
         const val USER_AVATAR_PATH_FIELD = "avatarPath"
         const val USER_NAME_FIELD = "name"

@@ -13,4 +13,8 @@ abstract class BaseActivityViewModel() : BaseViewModel() {
         }
     }
 
+    fun showMessage(messageId: Int) {
+        _messageLiveData.value = messageId
+    }
+
 }

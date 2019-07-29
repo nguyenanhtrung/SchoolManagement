@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 
+import androidx.collection.ArrayMap
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
@@ -20,4 +21,8 @@ interface UserRemoteDataSource {
         lastUserId: Long,
         userTypes: Map<String, String>
     ): Resource<MutableList<UserItem>>
+
+    suspend fun updateUserInfo(userInfos: Pair<String,ArrayMap<String, String>>): Resource<Unit>
+
+
 }

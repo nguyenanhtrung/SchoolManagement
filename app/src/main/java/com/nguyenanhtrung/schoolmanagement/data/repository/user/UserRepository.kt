@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
+import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
@@ -26,4 +27,6 @@ interface UserRepository {
         userTypes: Map<String, String>,
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     )
+
+    suspend fun updateUserInfo(result: MutableLiveData<Resource<Unit>>, userInfos: Pair<String, ArrayMap<String, String>>)
 }
