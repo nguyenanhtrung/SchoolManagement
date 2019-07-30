@@ -10,10 +10,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
@@ -35,6 +32,86 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     companion object {
         private const val USERS_LIMIT = 8L
+    }
+
+    override suspend fun getPagingUsesByProfileStatus(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        profileStatus: ProfileStatus
+    ): Resource<MutableList<ProfileItem>> {
+        val lastDocument =
+            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
+                "id",
+                lastUserId
+            ).get().await().documents[0]
+        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+            .orderBy("id", Query.Direction.ASCENDING)
+            .limit(USERS_LIMIT)
+            .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, profileStatus.isUpdated)
+            .startAfter(lastDocument)
+            .get()
+            .await()
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.completed()
+        }
+        val userItems = mapToProfileItems(querySnapshot, profileStatus.isUpdated, userTypes)
+        return Resource.success(userItems.toMutableList())
+    }
+
+    override suspend fun getUserByProfileStatus(
+        userTypes: Map<String, String>,
+        profileStatus: ProfileStatus
+    ): Resource<MutableList<ProfileItem>> {
+
+        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+            .orderBy("id")
+            .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, profileStatus.isUpdated)
+            .limit(USERS_LIMIT)
+            .get()
+            .await()
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.empty(R.string.title_empty_accounts)
+        }
+        val profileItems = mapToProfileItems(querySnapshot, profileStatus.isUpdated, userTypes)
+        return Resource.success(profileItems.toMutableList())
+    }
+
+    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
+        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+            .orderBy("id")
+            .limit(USERS_LIMIT)
+            .get()
+            .await()
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.empty(R.string.title_empty_accounts)
+        }
+        val userItems = mapToUserItems(querySnapshot, userTypes)
+        return Resource.success(userItems.toMutableList())
+    }
+
+
+    private fun mapToProfileItems(
+        querySnapshot: QuerySnapshot,
+        profileStatus: Boolean,
+        userTypes: Map<String, String>
+    ): List<ProfileItem> {
+        return querySnapshot.map {
+            val userTypeId = it[AppKey.USER_TYPE_ID_FIELD] as String
+            val userTypeName = userTypes[userTypeId] ?: ""
+            ProfileItem(
+                Profile(
+                    it.id,
+                    it[AppKey.USER_ID_FIELD] as Long,
+                    it[AppKey.USER_NAME_FIELD] as String,
+                    profileStatus,
+                    userTypeName,
+                    it[AppKey.USER_AVATAR_PATH_FIELD] as String
+                )
+            )
+        }
     }
 
     override suspend fun changeUserPassword(
@@ -137,6 +214,7 @@ class UserRemoteDataSourceImp @Inject constructor(
             put(AppKey.USER_NAME_FIELD, createAccountParam.name)
             put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
             put(AppKey.USER_ACCOUNT_NAME_FIELD, createAccountParam.email)
+            put(AppKey.PROFILE_STATUS_FIELD, false)
         }
         firestore.collection(USERS_PATH_FIRE_STORE)
             .document(newUserId)
@@ -180,19 +258,6 @@ class UserRemoteDataSourceImp @Inject constructor(
         return FirebaseAuth.getInstance(firebaseApp)
     }
 
-    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
-        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy("id")
-            .limit(USERS_LIMIT)
-            .get()
-            .await()
-        val querySize = querySnapshot.size()
-        if (querySize == 0) {
-            return Resource.empty(R.string.title_empty_accounts)
-        }
-        val userItems = mapToUserItems(querySnapshot, userTypes)
-        return Resource.success(userItems.toMutableList())
-    }
 
     private fun mapToUserItems(
         querySnapshot: QuerySnapshot,

@@ -10,6 +10,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragmen
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
+import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashActivity
 import dagger.Component
 import javax.inject.Singleton
@@ -33,4 +34,5 @@ interface AppComponent {
     fun inject(createAccountFragment: CreateAccountFragment)
     fun inject(flowStatusFragment: DialogFlowStatusFragment)
     fun inject(accountDetailFragment: AccountDetailFragment)
+    fun inject(profilesFragment: ProfilesFragment)
 }

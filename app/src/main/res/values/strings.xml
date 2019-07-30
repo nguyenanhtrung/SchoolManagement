@@ -81,4 +81,6 @@
     <string name="title_account_type">Loại tài khoản</string>
     <string name="success_modify_info">Thay đổi thông tin tài khoản thành công!</string>
     <string name="success_change_password">Thay đổi mật khẩu thành công!</string>
+    <string name="title_updated">Đã cập nhật</string>
+    <string name="title_not_update">Chưa cập nhật</string>
 </resources>

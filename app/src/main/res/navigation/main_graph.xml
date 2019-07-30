@@ -23,6 +23,9 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_left"
             app:popUpTo="@+id/dashboardDest" />
+        <action
+            android:id="@+id/action_dashboardDest_to_profilesDest"
+            app:destination="@id/profilesDest" />
     </fragment>
     <fragment
         android:id="@+id/accountManagementDest"
@@ -75,4 +78,8 @@
             android:name="userInfo"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.User" />
     </fragment>
+    <fragment
+        android:id="@+id/profilesDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment"
+        android:label="ProfilesFragment" />
 </navigation>

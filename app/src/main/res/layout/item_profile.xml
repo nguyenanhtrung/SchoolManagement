@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:backgroundTint="@color/colorSurface"
+    android:foregroundTint="@color/colorSurface"
+    android:layout_marginBottom="@dimen/margin_normal_100"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal_100">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/image_account_profile"
+            android:layout_width="@dimen/width_circle_user_image"
+            android:layout_height="@dimen/height_circle_user_image"
+            android:src="@drawable/image_empty" />
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_toEndOf="@id/image_account_profile"
+            android:textAppearance="@style/TextNormalBold"
+            tools:text="Nguyen Anh Trung" />
+
+        <TextView
+            android:id="@+id/text_account_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_name"
+            android:layout_marginTop="@dimen/margin_small_50"
+            android:layout_alignStart="@id/text_name"
+            android:textAppearance="@style/TextNormal"
+            tools:text="Sv02121323" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip_status_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_account_id"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/margin_small_50"
+            tools:text="@string/title_updated"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            app:chipBackgroundColor="@color/colorPrimary"
+            android:textAppearance="@style/TextNormal"
+            android:textColor="@color/colorOnPrimary"
+            />
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

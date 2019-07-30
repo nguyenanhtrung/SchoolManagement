@@ -1,10 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 
 import androidx.collection.ArrayMap
-import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 
 interface UserRemoteDataSource {
     suspend fun loadUserInfoAsync(): Resource<User>
@@ -29,4 +26,15 @@ interface UserRemoteDataSource {
         accountName: String,
         newPassword: String
     ): Resource<Unit>
+
+    suspend fun getUserByProfileStatus(
+        userTypes: Map<String, String>,
+        profileStatus: ProfileStatus
+    ): Resource<MutableList<ProfileItem>>
+
+    suspend fun getPagingUsesByProfileStatus(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        profileStatus: ProfileStatus
+    ): Resource<MutableList<ProfileItem>>
 }

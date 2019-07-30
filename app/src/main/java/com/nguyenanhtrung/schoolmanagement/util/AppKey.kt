@@ -17,6 +17,7 @@ class AppKey private constructor(){
         const val USER_TYPE_ID_FIELD = "typeId"
         const val USER_ACCOUNT_NAME_FIELD = "userName"
         const val USER_ID_FIELD = "id"
+        const val PROFILE_STATUS_FIELD = "profileStatus"
         //
         const val ID_TASK_ACCOUNT = 500
 

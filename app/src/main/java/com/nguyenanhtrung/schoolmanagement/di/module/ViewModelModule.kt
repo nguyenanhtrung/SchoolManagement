@@ -10,6 +10,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.FlowStatusViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.ForgotPasswordViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
 import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
 import com.nguyenanhtrung.schoolmanagement.util.ViewModelKey
@@ -67,4 +68,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AccountDetailViewModel::class)
     abstract fun bindAccountDetailViewModel(accountDetailViewModel: AccountDetailViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfilesViewModel::class)
+    abstract fun bindProfileslViewModel(profilesViewModel: ProfilesViewModel) : ViewModel
 }

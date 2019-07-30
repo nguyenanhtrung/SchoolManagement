@@ -16,6 +16,63 @@ class UserRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserRepository {
 
+    override suspend fun getUsersByProfileStatus(
+        params: Pair<ProfileStatus, Map<String, String>>,
+        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+    ) {
+        object :
+            NetworkBoundResources<Pair<ProfileStatus, Map<String, String>>, MutableList<ProfileItem>>(
+                context, params, result
+            ) {
+
+            override fun shouldLoadFromLocal(params: Pair<ProfileStatus, Map<String, String>>): Boolean =
+                false
+
+            override fun shouldSaveToLocal(params: Pair<ProfileStatus, Map<String, String>>): Boolean =
+                false
+
+            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
+                return userRemoteDataSource.getUserByProfileStatus(params.second, params.first)
+            }
+
+        }.createCall()
+    }
+
+    override suspend fun getPagingUserByProfileStatus(
+        lastUserId: Long,
+        params: Pair<ProfileStatus, Map<String, String>>,
+        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+    ) {
+        val finalParams = Pair(lastUserId, params)
+        object :
+            NetworkBoundResources<Pair<Long, Pair<ProfileStatus, Map<String, String>>>, MutableList<ProfileItem>>(
+                context,
+                finalParams,
+                result
+            ) {
+
+            override fun shouldSaveToLocal(params: Pair<Long, Pair<ProfileStatus, Map<String, String>>>): Boolean =
+                false
+
+            override fun shouldLoadFromLocal(params: Pair<Long, Pair<ProfileStatus, Map<String, String>>>): Boolean =
+                false
+
+            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
+                val pair = finalParams.second
+                val lastUserId = finalParams.first
+                val profileStatus = pair.first
+                val userTypes = pair.second
+                return userRemoteDataSource.getPagingUsesByProfileStatus(
+                    lastUserId,
+                    userTypes,
+                    profileStatus
+                )
+            }
+
+        }
+    }
+
+
     override suspend fun changeUserPassword(
         changePassParam: ChangePasswordParam,
         result: MutableLiveData<Resource<Unit>>
