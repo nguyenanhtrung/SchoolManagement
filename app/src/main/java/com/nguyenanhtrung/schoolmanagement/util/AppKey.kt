@@ -19,7 +19,8 @@ class AppKey private constructor(){
         const val USER_ID_FIELD = "id"
         const val PROFILE_STATUS_FIELD = "profileStatus"
         //
-        const val ID_TASK_ACCOUNT = 500
+        const val ID_TASK_ACCOUNT = 501
+        const val ID_TASK_PROFILES = 500
 
     }
 }

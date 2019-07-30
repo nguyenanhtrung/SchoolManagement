@@ -37,6 +37,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun setupToolbar() {
+        setSupportActionBar(tool_bar_main)
         tool_bar_main.setupWithNavController(findNavController(R.id.fragment_host), appBarConfiguration)
     }
 

@@ -19,8 +19,8 @@ interface UserRepository {
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     )
 
-    suspend fun getUsersByProfileStatus(
-        params: Pair<ProfileStatus, Map<String, String>>,
+    suspend fun getUsersByProfileFilter(
+        params: Pair<ProfileFilter, Map<String, String>>,
         result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     )
 
@@ -30,9 +30,9 @@ interface UserRepository {
         result: MutableLiveData<Resource<MutableList<UserItem>>>
     )
 
-    suspend fun getPagingUserByProfileStatus(
+    suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
-        params: Pair<ProfileStatus, Map<String, String>>,
+        params: Pair<ProfileFilter, Map<String, String>>,
         result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     )
 

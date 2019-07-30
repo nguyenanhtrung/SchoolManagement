@@ -16,19 +16,19 @@ class UserRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : UserRepository {
 
-    override suspend fun getUsersByProfileStatus(
-        params: Pair<ProfileStatus, Map<String, String>>,
+    override suspend fun getUsersByProfileFilter(
+        params: Pair<ProfileFilter, Map<String, String>>,
         result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     ) {
         object :
-            NetworkBoundResources<Pair<ProfileStatus, Map<String, String>>, MutableList<ProfileItem>>(
+            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<ProfileItem>>(
                 context, params, result
             ) {
 
-            override fun shouldLoadFromLocal(params: Pair<ProfileStatus, Map<String, String>>): Boolean =
+            override fun shouldLoadFromLocal(params: Pair<ProfileFilter, Map<String, String>>): Boolean =
                 false
 
-            override fun shouldSaveToLocal(params: Pair<ProfileStatus, Map<String, String>>): Boolean =
+            override fun shouldSaveToLocal(params: Pair<ProfileFilter, Map<String, String>>): Boolean =
                 false
 
             override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
@@ -38,38 +38,38 @@ class UserRepositoryImp @Inject constructor(
         }.createCall()
     }
 
-    override suspend fun getPagingUserByProfileStatus(
+    override suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
-        params: Pair<ProfileStatus, Map<String, String>>,
+        params: Pair<ProfileFilter, Map<String, String>>,
         result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     ) {
         val finalParams = Pair(lastUserId, params)
         object :
-            NetworkBoundResources<Pair<Long, Pair<ProfileStatus, Map<String, String>>>, MutableList<ProfileItem>>(
+            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<ProfileItem>>(
                 context,
                 finalParams,
                 result
             ) {
 
-            override fun shouldSaveToLocal(params: Pair<Long, Pair<ProfileStatus, Map<String, String>>>): Boolean =
+            override fun shouldSaveToLocal(params: Pair<Long, Pair<ProfileFilter, Map<String, String>>>): Boolean =
                 false
 
-            override fun shouldLoadFromLocal(params: Pair<Long, Pair<ProfileStatus, Map<String, String>>>): Boolean =
+            override fun shouldLoadFromLocal(params: Pair<Long, Pair<ProfileFilter, Map<String, String>>>): Boolean =
                 false
 
             override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
                 val pair = finalParams.second
                 val lastUserId = finalParams.first
-                val profileStatus = pair.first
+                val profileFilter = pair.first
                 val userTypes = pair.second
                 return userRemoteDataSource.getPagingUsesByProfileStatus(
                     lastUserId,
                     userTypes,
-                    profileStatus
+                    profileFilter
                 )
             }
 
-        }
+        }.createCall()
     }
 
 

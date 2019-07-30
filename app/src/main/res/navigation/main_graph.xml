@@ -25,7 +25,11 @@
             app:popUpTo="@+id/dashboardDest" />
         <action
             android:id="@+id/action_dashboardDest_to_profilesDest"
-            app:destination="@id/profilesDest" />
+            app:destination="@id/profilesDest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <fragment
         android:id="@+id/accountManagementDest"

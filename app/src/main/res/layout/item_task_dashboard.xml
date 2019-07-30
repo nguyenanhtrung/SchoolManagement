@@ -18,7 +18,7 @@
         android:textAppearance="@style/TextNormalBold"
         android:textColor="@color/colorPrimary"
         android:gravity="center_horizontal"
-        android:drawableTop="@drawable/ic_task_500"
+        android:drawableTop="@drawable/ic_task_501"
         tools:text="@tools:sample/full_names"
         />
 

@@ -15,7 +15,7 @@ class ProfileItem constructor(val profile: Profile) : Item() {
             text_name.text = profile.name
             val context = itemView.context
             text_account_id.text =
-                "${context.getString(R.string.title_account_id)}: {profile.userId}"
+                "${context.getString(R.string.title_account_id)}: ${profile.userId}"
             if (profile.isProfileUpdated) {
                 chip_status_profile.setTextColor(
                     ContextCompat.getColor(
@@ -29,10 +29,10 @@ class ProfileItem constructor(val profile: Profile) : Item() {
                 chip_status_profile.setTextColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.colorSurface
+                        R.color.colorOnBackground
                     )
                 )
-                chip_status_profile.setChipBackgroundColorResource(R.color.colorOnSurface)
+                chip_status_profile.setChipBackgroundColorResource(R.color.colorBackground)
                 chip_status_profile.text = context.getString(R.string.title_not_update)
             }
         }

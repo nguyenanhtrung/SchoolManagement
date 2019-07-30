@@ -5,6 +5,7 @@ import android.util.ArrayMap
 import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
@@ -37,45 +38,57 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getPagingUsesByProfileStatus(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        profileStatus: ProfileStatus
+        profileFilter: ProfileFilter
     ): Resource<MutableList<ProfileItem>> {
         val lastDocument =
             firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
                 "id",
                 lastUserId
             ).get().await().documents[0]
-        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy("id", Query.Direction.ASCENDING)
-            .limit(USERS_LIMIT)
-            .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, profileStatus.isUpdated)
-            .startAfter(lastDocument)
-            .get()
-            .await()
+        val querySnapshot = getUserProfilesQuery(profileFilter, lastDocument)
         val querySize = querySnapshot.size()
         if (querySize == 0) {
             return Resource.completed()
         }
-        val userItems = mapToProfileItems(querySnapshot, profileStatus.isUpdated, userTypes)
-        return Resource.success(userItems.toMutableList())
+        val profileItems = mapToProfileItems(querySnapshot, userTypes)
+        return Resource.success(profileItems.toMutableList())
     }
 
     override suspend fun getUserByProfileStatus(
         userTypes: Map<String, String>,
-        profileStatus: ProfileStatus
+        profileFilter: ProfileFilter
     ): Resource<MutableList<ProfileItem>> {
 
-        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy("id")
-            .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, profileStatus.isUpdated)
-            .limit(USERS_LIMIT)
-            .get()
-            .await()
+        val querySnapshot = getUserProfilesQuery(profileFilter)
         val querySize = querySnapshot.size()
         if (querySize == 0) {
             return Resource.empty(R.string.title_empty_accounts)
         }
-        val profileItems = mapToProfileItems(querySnapshot, profileStatus.isUpdated, userTypes)
+        val profileItems = mapToProfileItems(querySnapshot, userTypes)
         return Resource.success(profileItems.toMutableList())
+    }
+
+    private suspend fun getUserProfilesQuery(
+        profileFilter: ProfileFilter,
+        lastDocumentSnapshot: DocumentSnapshot? = null
+    ): QuerySnapshot {
+        val querySnapshot = when (profileFilter) {
+            ProfileFilter.All -> firestore.collection(USERS_PATH_FIRE_STORE)
+                .orderBy("id")
+                .limit(USERS_LIMIT)
+            ProfileFilter.Updated -> firestore.collection(USERS_PATH_FIRE_STORE)
+                .orderBy("id")
+                .limit(USERS_LIMIT)
+                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
+            ProfileFilter.NoUpdate -> firestore.collection(USERS_PATH_FIRE_STORE)
+                .orderBy("id")
+                .limit(USERS_LIMIT)
+                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, false)
+        }
+        if (lastDocumentSnapshot == null) {
+            return querySnapshot.get().await()
+        }
+        return querySnapshot.startAfter(lastDocumentSnapshot).get().await()
     }
 
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
@@ -95,7 +108,6 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     private fun mapToProfileItems(
         querySnapshot: QuerySnapshot,
-        profileStatus: Boolean,
         userTypes: Map<String, String>
     ): List<ProfileItem> {
         return querySnapshot.map {
@@ -106,7 +118,7 @@ class UserRemoteDataSourceImp @Inject constructor(
                     it.id,
                     it[AppKey.USER_ID_FIELD] as Long,
                     it[AppKey.USER_NAME_FIELD] as String,
-                    profileStatus,
+                    it[AppKey.PROFILE_STATUS_FIELD] as Boolean,
                     userTypeName,
                     it[AppKey.USER_AVATAR_PATH_FIELD] as String
                 )
