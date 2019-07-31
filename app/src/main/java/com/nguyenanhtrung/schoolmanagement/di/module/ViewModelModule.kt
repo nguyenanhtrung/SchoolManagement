@@ -13,6 +13,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateViewModel
 import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
 import com.nguyenanhtrung.schoolmanagement.util.ViewModelKey
 import dagger.Binds
@@ -79,4 +80,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FilterSheetViewModel::class)
     abstract fun bindFilterSheetViewModel(filterSheetViewModel: FilterSheetViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileUpdateViewModel::class)
+    abstract fun bindProfileUpdateViewModel(profileUpdateViewModel: ProfileUpdateViewModel) : ViewModel
 }

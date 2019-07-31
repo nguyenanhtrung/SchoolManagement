@@ -86,4 +86,9 @@
     <string name="title_all">Tất cả</string>
     <string name="title_update_info">Cập nhật thông tin</string>
     <string name="hint_input_birthday">Chọn ngày sinh</string>
+    <string name="title_update">Cập nhật</string>
+    <string name="message_request_permission">Để truy cập vào kho ảnh của máy cần cấp quyền truy cập.Nhấn đồng ý để cấp quyền.</string>
+    <string name="title_agree">Đồng ý</string>
+    <string name="title_decline">Từ chối</string>
+    <string name="title_select_birthday">Chọn ngày sinh</string>
 </resources>

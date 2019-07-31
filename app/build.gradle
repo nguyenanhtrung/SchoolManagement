@@ -146,6 +146,12 @@ dependencies {
     //flexbox layout
     implementation 'com.google.android:flexbox:1.1.0'
 
+    //image selector
+    implementation 'com.zhihu.android:matisse:0.5.2-beta5'
+
+    //request permission
+    implementation 'pub.devrel:easypermissions:3.0.0'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

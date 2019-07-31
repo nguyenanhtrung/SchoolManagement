@@ -143,7 +143,6 @@ class ProfilesFragment : BaseFragment() {
                     errorMessageId,
                     object : ErrorItem.OnClickButtonRetryListener {
                         override fun onClickButtonRetry(view: View) {
-                            //load profile again
                             profileViewModel.loadProfiles()
                         }
                     })
@@ -153,9 +152,32 @@ class ProfilesFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         setupToolbar()
+        subscribeNavigateToProfileUpdateScreen()
         setupProfilesRecyclerView()
+        setupProfileItemClickEvent()
         setupLoadMoreProfilesEvent()
         profileViewModel.loadProfiles()
+    }
+
+    private fun subscribeNavigateToProfileUpdateScreen() {
+        profileViewModel.profileUpdateScreen.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { profile ->
+                findNavController().navigate(
+                    ProfilesFragmentDirections.actionProfilesDestToProfileUpdateFragment(
+                        profile
+                    )
+                )
+            }
+        })
+    }
+
+    private fun setupProfileItemClickEvent() {
+        profileAdapter.setOnItemClickListener { item, _ ->
+            if (item is ProfileItem) {
+                val profile = item.profile
+                profileViewModel.onClickProfileItem(profile)
+            }
+        }
     }
 
     private fun setupLoadMoreProfilesEvent() {

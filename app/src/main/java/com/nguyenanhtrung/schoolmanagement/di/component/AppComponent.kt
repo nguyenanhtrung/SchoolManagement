@@ -13,6 +13,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashActivity
+import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment
 import dagger.Component
 import javax.inject.Singleton
 
@@ -37,4 +38,5 @@ interface AppComponent {
     fun inject(accountDetailFragment: AccountDetailFragment)
     fun inject(profilesFragment: ProfilesFragment)
     fun inject(filterBottomSheetDialogFragment: FilterBottomSheetDialogFragment)
+    fun inject(profileUpdateFragment: ProfileUpdateFragment)
 }

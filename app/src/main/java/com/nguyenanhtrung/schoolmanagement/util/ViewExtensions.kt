@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.util
 
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.widget.ImageView
@@ -56,6 +57,14 @@ fun TextInputEditText.disableInput(inputLayout: TextInputLayout) {
     }
 }
 
+fun TextInputEditText.disableEdit(inputLayout: TextInputLayout) {
+    inputType = InputType.TYPE_NULL
+    isFocusable = false
+    if (inputLayout.endIconMode == TextInputLayout.END_ICON_CLEAR_TEXT) {
+        inputLayout.endIconMode = TextInputLayout.END_ICON_NONE
+    }
+}
+
 
 fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
     when(errorState) {
@@ -85,3 +94,4 @@ fun ImageView.loadImageResource(imageResId: Int) {
         .load(imageResId)
         .into(this)
 }
+
