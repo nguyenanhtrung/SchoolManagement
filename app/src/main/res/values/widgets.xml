@@ -48,4 +48,18 @@
         <item name="chipBackgroundColor">@color/colorPrimary</item>
         <item name="android:textColor">@color/colorOnPrimary</item>
     </style>
+
+    <style name="BottomSheetShapeAppearance" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8dp</item>
+        <item name="android:radius">4dp</item>
+    </style>
+
+    <style name="MyModalBottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="shapeAppearance">@style/BottomSheetShapeAppearance</item>
+    </style>
+
+    <style name="ModalBottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/MyModalBottomSheet</item>
+    </style>
 </resources>

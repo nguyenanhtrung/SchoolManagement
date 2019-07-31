@@ -6,6 +6,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.accountdetail.AccountDetailViewMod
 import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.filtersheet.FilterSheetViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.FlowStatusViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.ForgotPasswordViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
@@ -72,5 +73,10 @@ abstract class ViewModelModule {
     @Binds
     @IntoMap
     @ViewModelKey(ProfilesViewModel::class)
-    abstract fun bindProfileslViewModel(profilesViewModel: ProfilesViewModel) : ViewModel
+    abstract fun bindProfilesViewModel(profilesViewModel: ProfilesViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FilterSheetViewModel::class)
+    abstract fun bindFilterSheetViewModel(filterSheetViewModel: FilterSheetViewModel) : ViewModel
 }

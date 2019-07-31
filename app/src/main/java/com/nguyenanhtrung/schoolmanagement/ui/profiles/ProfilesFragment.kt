@@ -6,6 +6,7 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
@@ -56,6 +57,39 @@ class ProfilesFragment : BaseFragment() {
         setHasOptionsMenu(true)
         subscribeGetProfiles()
         subscribeStateLoadMoreProfiles()
+        subscribeFilterProfileDatas()
+        subscribeSelectedFilterItem()
+        subscribeClearProfileItems()
+    }
+
+    private fun subscribeClearProfileItems() {
+        profileViewModel.clearProfileItems.observe(this, Observer {
+            if (it) {
+                profileAdapter.clear()
+            }
+        })
+    }
+
+    private fun subscribeSelectedFilterItem() {
+        mainViewModel.filterItemLiveData.observe(this, Observer {
+            profileViewModel.onSelectedFilterItem(it)
+        })
+    }
+
+    private fun subscribeFilterProfileDatas() {
+        profileViewModel.filterProfileDatas.observe(this, Observer {
+            it.data?.let { filterDatas ->
+                navigateToFilterScreen(filterDatas)
+            }
+        })
+    }
+
+    private fun navigateToFilterScreen(filterDatas: Array<FilterData>) {
+        findNavController().navigate(
+            ProfilesFragmentDirections.actionProfilesDestToFilterBottomSheetDialogFragment(
+                filterDatas
+            )
+        )
     }
 
     private fun subscribeStateLoadMoreProfiles() {
@@ -72,6 +106,7 @@ class ProfilesFragment : BaseFragment() {
     private fun subscribeGetProfiles() {
         profileViewModel.userProfilesLiveData.observe(this, Observer {
             when (it.status) {
+                Status.LOADING -> Unit
                 Status.EMPTY -> {
                     profileAdapter.add(EmptyItem(it.error))
                 }
@@ -81,7 +116,7 @@ class ProfilesFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     removeErrorState()
                     profileViewModel.onLoadMoreSuccess()
-                    it.data?.let {profiles ->
+                    it.data?.let { profiles ->
                         showUserProfiles(profiles)
                     }
                 }
@@ -141,7 +176,20 @@ class ProfilesFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_profiles, menu)
-        super.onCreateOptionsMenu(menu,inflater);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.search_dest -> {
+                true
+            }
+            R.id.filter_dest -> {
+                profileViewModel.onClickItemFilterProfiles()
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun setupProfilesRecyclerView() {

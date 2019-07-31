@@ -85,5 +85,17 @@
     <fragment
         android:id="@+id/profilesDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment"
-        android:label="ProfilesFragment" />
+        android:label="ProfilesFragment" >
+        <action
+            android:id="@+id/action_profilesDest_to_filterBottomSheetDialogFragment"
+            app:destination="@id/filterBottomSheetDest" />
+    </fragment>
+    <dialog
+        android:id="@+id/filterBottomSheetDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.filtersheet.FilterBottomSheetDialogFragment"
+        android:label="FilterBottomSheetDialogFragment" >
+        <argument
+            android:name="filterDatas"
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData[]" />
+    </dialog>
 </navigation>

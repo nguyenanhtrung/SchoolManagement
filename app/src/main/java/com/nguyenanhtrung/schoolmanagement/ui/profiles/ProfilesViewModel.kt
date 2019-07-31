@@ -4,12 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.domain.profile.GetFilterProfileDatasUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersByProfileStatusUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import java.util.logging.Filter
 import javax.inject.Inject
 
-class ProfilesViewModel @Inject constructor(private val getUsersByProfileStatusUseCase: GetUsersByProfileStatusUseCase) :
+class ProfilesViewModel @Inject constructor(
+    private val getUsersByProfileStatusUseCase: GetUsersByProfileStatusUseCase,
+    private val getFilterProfileDatasUseCase: GetFilterProfileDatasUseCase
+) :
     BaseViewModel() {
+
+    private var currentProfileFilter: ProfileFilter = ProfileFilter.All
 
     private val _userProfilesLiveData by lazy {
         createApiResultLiveData<MutableList<ProfileItem>>()
@@ -23,12 +30,24 @@ class ProfilesViewModel @Inject constructor(private val getUsersByProfileStatusU
     internal val stateLoadingMoreProfiles: LiveData<Status>
         get() = _stateLoadingMoreProfiles
 
+    private val _filterProfileDatas by lazy {
+        MutableLiveData<Resource<Array<FilterData>>>()
+    }
+    internal val filterProfileDatas: LiveData<Resource<Array<FilterData>>>
+        get() = _filterProfileDatas
+
+    private val _clearProfileItems by lazy {
+        MutableLiveData<Boolean>()
+    }
+    internal val clearProfileItems: LiveData<Boolean>
+        get() = _clearProfileItems
+
     internal fun loadProfiles() {
         val profiles = _userProfilesLiveData.value
         if (profiles != null) {
             return
         }
-        val params = Pair(-1L, ProfileFilter.All)
+        val params = Pair(-1L, currentProfileFilter)
         getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
     }
 
@@ -40,9 +59,28 @@ class ProfilesViewModel @Inject constructor(private val getUsersByProfileStatusU
 
     internal fun onLoadMoreProfiles(lastProfile: Profile) {
         val profileId = lastProfile.userId
-        val params = Pair(profileId, ProfileFilter.All)
+        val params = Pair(profileId, currentProfileFilter)
         getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
     }
 
+    internal fun onClickItemFilterProfiles() {
+        getFilterProfileDatasUseCase.invoke(viewModelScope, Unit, _filterProfileDatas)
+    }
+
+    internal fun onSelectedFilterItem(filterData: FilterData) {
+        val selectedFilterState = filterData.state
+        if (selectedFilterState is FilterState.Profile) {
+            val profileStatus = selectedFilterState.status
+            if (profileStatus == currentProfileFilter) {
+                return
+            }
+            currentProfileFilter = profileStatus
+            //reload all list
+            _clearProfileItems.value = true
+            val params = Pair(-1L, currentProfileFilter)
+            getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
+        }
+
+    }
 
 }

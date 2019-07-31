@@ -83,4 +83,7 @@
     <string name="success_change_password">Thay đổi mật khẩu thành công!</string>
     <string name="title_updated">Đã cập nhật</string>
     <string name="title_not_update">Chưa cập nhật</string>
+    <string name="title_all">Tất cả</string>
+    <string name="title_update_info">Cập nhật thông tin</string>
+    <string name="hint_input_birthday">Chọn ngày sinh</string>
 </resources>

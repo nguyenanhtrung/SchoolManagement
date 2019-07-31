@@ -1,5 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.di.module
 
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.profile.ProfileLocalDataSource
+import com.nguyenanhtrung.schoolmanagement.data.local.datasource.profile.ProfileLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertasks.UserTasksLocalDataSource
@@ -18,6 +20,8 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserT
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.usertype.UserTypeRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.login.LoginRepositoryImp
+import com.nguyenanhtrung.schoolmanagement.data.repository.profile.ProfileRepository
+import com.nguyenanhtrung.schoolmanagement.data.repository.profile.ProfileRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.task.UserTaskRepositoryImp
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
@@ -109,5 +113,17 @@ class RepositoryModule {
     @Provides
     fun provideUserIdRepository(userIdRepositoryImp: UserIdRepositoryImp): UserIdRepository {
         return userIdRepositoryImp
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileLocalDataSource(profileLocalDataSourceImp: ProfileLocalDataSourceImp): ProfileLocalDataSource {
+        return profileLocalDataSourceImp
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileRepository(profileRepository: ProfileRepositoryImp): ProfileRepository {
+        return profileRepository
     }
 }

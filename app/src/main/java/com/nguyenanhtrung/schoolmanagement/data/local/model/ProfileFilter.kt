@@ -1,7 +1,10 @@
 package com.nguyenanhtrung.schoolmanagement.data.local.model
 
-sealed class ProfileFilter {
-    object All : ProfileFilter()
-    object Updated : ProfileFilter()
-    object NoUpdate : ProfileFilter()
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+sealed class ProfileFilter : Parcelable {
+    @Parcelize object All : ProfileFilter()
+    @Parcelize object Updated : ProfileFilter()
+    @Parcelize object NoUpdate : ProfileFilter()
 }

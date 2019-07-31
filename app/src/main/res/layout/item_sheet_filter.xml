@@ -5,5 +5,6 @@
     android:id="@+id/chip_item_filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipBackgroundColor="@color/colorSurface"
+    app:chipBackgroundColor="@color/bg_selector_filter_item"
+    android:textColor="@color/text_selector_filter_item"
     tools:text="Updating" />

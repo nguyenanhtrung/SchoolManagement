@@ -18,6 +18,7 @@
         <item name="checkboxStyle">@style/Widget.CheckBox</item>
         <item name="materialButtonStyle">@style/Widget.Button</item>
         <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="bottomSheetDialogTheme">@style/ModalBottomSheetDialog</item>
     </style>
 
     <style name="LaunchTheme" parent="AppTheme">

@@ -56,7 +56,7 @@ dependencies {
     def groupie_version = "2.3.0"
     def threetenbp_version = "1.2.1"
     def timber_version = "4.7.1"
-    def material_component_version = "1.1.0-alpha08"
+    def material_component_version = "1.1.0-alpha09"
     def circle_image_version = "3.0.0"
     def dagger_version = "2.23.2"
     def firebase_auth_version = "18.1.0"
@@ -142,6 +142,9 @@ dependencies {
     implementation 'com.github.arcadefire:nice-spinner:1.4.3'
 
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
+
+    //flexbox layout
+    implementation 'com.google.android:flexbox:1.1.0'
 
 
 }

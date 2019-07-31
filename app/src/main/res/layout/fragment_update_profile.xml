@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_view_profile_image"
+            android:layout_width="@dimen/width_profile_image"
+            android:layout_height="@dimen/height_profile_image"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:cardCornerRadius="@dimen/card_radius"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_ver_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_hori_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+        <ImageButton
+            android:id="@+id/button_pick_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
+            app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image"
+            app:srcCompat="@drawable/ic_camera" />
+
+        <TextView
+            android:id="@+id/text_profile_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:textAppearance="@style/TitleNormal"
+            app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
+            app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/button_pick_image"
+            tools:text="Nguyen Anh Trung" />
+
+        <TextView
+            android:id="@+id/text_profile_user_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small_100"
+            android:textAppearance="@style/TextNormalBold"
+            android:textColor="@color/colorPrimary"
+            app:layout_constraintEnd_toEndOf="@+id/text_profile_name"
+            app:layout_constraintStart_toStartOf="@+id/text_profile_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_profile_name"
+            tools:text="Sinh Vien" />
+
+        <TextView
+            android:id="@+id/title_update_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_200"
+            android:text="@string/title_update_info"
+            android:textAppearance="@style/TitleNormal"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/text_profile_user_type" />
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/toggle_group_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/title_update_info">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_male_gender"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_male" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_female_gender"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_female" />
+
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_birthday"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:hint="@string/title_birthday"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/toggle_group_gender">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_birthday"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:hint="@string/hint_input_address"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_birthday">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:hint="@string/hint_input_phone_number"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_address">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/input_layout_email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
+            android:hint="@string/hint_input_email"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toBottomOf="@+id/input_layout_phone">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>¬
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+</ScrollView>
