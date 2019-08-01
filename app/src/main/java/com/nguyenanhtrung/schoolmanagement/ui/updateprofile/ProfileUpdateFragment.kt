@@ -11,10 +11,13 @@ import android.view.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -64,7 +67,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
         return inflater.inflate(
-            com.nguyenanhtrung.schoolmanagement.R.layout.fragment_update_profile,
+            R.layout.fragment_update_profile,
             container,
             false
         )
@@ -74,6 +77,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         onReceivedArgs()
+        subscribeStateUpdateProfile()
     }
 
     private fun onReceivedArgs() {
@@ -149,9 +153,24 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
         updateViewModel.loadBasicProfileInfo()
     }
 
+    private fun subscribeStateUpdateProfile() {
+        updateViewModel.stateUpdateProfile.observe(this, Observer {
+            if (it.status == Status.SUCCESS) {
+                findNavController().navigate(
+                    ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
+                        FlowStatusInfo(
+                            Status.SUCCESS,
+                            getString(R.string.title_success_update_profile)
+                        )
+                    )
+                )
+            }
+        })
+    }
+
     private fun subscribeImageSelectedError() {
         updateViewModel.imageSelectedError.observe(viewLifecycleOwner, Observer {
-            when(it) {
+            when (it) {
                 is ErrorState.NoAction -> mainViewModel.showError(it)
             }
         })
@@ -221,7 +240,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(com.nguyenanhtrung.schoolmanagement.R.menu.fragment_profile_update, menu)
+        inflater.inflate(R.menu.fragment_profile_update, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

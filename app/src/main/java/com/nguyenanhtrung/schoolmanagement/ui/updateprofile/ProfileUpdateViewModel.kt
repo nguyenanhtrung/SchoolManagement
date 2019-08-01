@@ -2,13 +2,19 @@ package com.nguyenanhtrung.schoolmanagement.ui.updateprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nguyenanhtrung.schoolmanagement.R
+import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.domain.profile.UpdateUserProfileUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.util.Validator
 import javax.inject.Inject
+import android.provider.MediaStore
+import androidx.room.util.CursorUtil.getColumnIndexOrThrow
+
+
 
 class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase) :
     BaseViewModel() {
@@ -57,7 +63,11 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
     internal val imageSelectedError: LiveData<ErrorState>
         get() = _imageSelectedError
 
-
+    private val _stateUpdateProfile by lazy {
+        createApiResultLiveData<Unit>()
+    }
+    internal val stateUpdateProfile: LiveData<Resource<Unit>>
+        get() = _stateUpdateProfile
 
     fun loadBasicProfileInfo() {
         _basicProfileInfo.value = profile
@@ -93,7 +103,28 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
             return
         }
 
-
-
+        val profileUpdateParam = createProfileUpdateParam(birthday, phoneNumber, address, email)
+        updateUserProfileUseCase.invoke(viewModelScope, profileUpdateParam, _stateUpdateProfile)
     }
+
+    private fun createProfileUpdateParam(
+        birthday: String,
+        phoneNumber: String,
+        address: String,
+        email: String
+    ): ProfileUpdateParam {
+        val imageUri = _profileImage.value ?: ""
+        val currentUserInfo = _basicProfileInfo.value
+        val fireBaseUserId = currentUserInfo?.fireBaseUserId ?: ""
+        return ProfileUpdateParam(
+            imageUri,
+            fireBaseUserId,
+            birthday,
+            phoneNumber,
+            address,
+            email
+        )
+    }
+
+
 }

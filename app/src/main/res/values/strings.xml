@@ -95,4 +95,5 @@
     <string name="error_phone_format">Định dạng số điện thoại không hợp lệ</string>
     <string name="error_birthday_format">Định dạng ngày sinh không hợp lệ</string>
     <string name="error_profile_image_not_selected">Vui lòng chọn ảnh</string>
+    <string name="title_success_update_profile">Cập nhật thông tin thành công!</string>
 </resources>

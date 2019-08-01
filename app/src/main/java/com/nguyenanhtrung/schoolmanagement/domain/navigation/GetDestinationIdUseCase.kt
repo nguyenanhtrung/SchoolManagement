@@ -9,8 +9,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardFragmentDirecti
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import javax.inject.Inject
 
-class
-GetDestinationIdUseCase @Inject constructor() : BaseUseCase<Int, Event<NavDirections>>() {
+class GetDestinationIdUseCase @Inject constructor() : BaseUseCase<Int, Event<NavDirections>>() {
 
 
     override suspend fun execute(

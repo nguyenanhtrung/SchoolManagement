@@ -91,7 +91,11 @@
             app:destination="@id/filterBottomSheetDest" />
         <action
             android:id="@+id/action_profilesDest_to_profileUpdateFragment"
-            app:destination="@id/profileUpdateFragment" />
+            app:destination="@id/profileUpdateFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_left" />
     </fragment>
     <dialog
         android:id="@+id/filterBottomSheetDest"
@@ -108,5 +112,8 @@
         <argument
             android:name="profile"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />
+        <action
+            android:id="@+id/action_profileUpdateFragment_to_dialogFlowStatusDest"
+            app:destination="@id/dialogFlowStatusDest" />
     </fragment>
 </navigation>

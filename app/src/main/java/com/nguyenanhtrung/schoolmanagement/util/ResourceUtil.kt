@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.util
 import android.content.Context
 import android.graphics.drawable.Drawable
 
+
 class ResourceUtil private constructor(){
 
     companion object {
@@ -15,5 +16,7 @@ class ResourceUtil private constructor(){
             val resources = context.resources
             return resources.getDrawable(resId, null)
         }
+
+
     }
 }

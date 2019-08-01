@@ -1,19 +1,23 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile
 
+import android.content.Context
 import android.net.Uri
 import androidx.collection.ArrayMap
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
+import com.nguyenanhtrung.schoolmanagement.util.FileUtils
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import javax.inject.Inject
 
 class ProfileRemoteDataSourceImp @Inject constructor(
     private val firestore: FirebaseFirestore,
-    private val firebaseStorage: FirebaseStorage
+    private val firebaseStorage: FirebaseStorage,
+    @ApplicationContext private val context: Context
 ) : ProfileRemoteDataSource {
 
 
@@ -27,7 +31,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         }
         firestore.collection(AppKey.USER_PROFILES_PATH)
             .document(profileUpdateParam.fireBaseUserId)
-            .set(mappedProfileFields)
+            .update(mappedProfileFields.toMap())
             .await()
         uploadProfileImage(profileUpdateParam.fireBaseUserId, profileUpdateParam.imageUri)
         updateUserProfileStatus(profileUpdateParam.fireBaseUserId)
@@ -45,13 +49,14 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     private suspend fun uploadProfileImage(fireBaseUserId: String, imageUri: String) {
         val profileImageRef = firebaseStorage.reference.child(AppKey.PROFILE_IMAGES_PATH_STORAGE)
             .child(fireBaseUserId)
-        val uploadImageTask = profileImageRef.putFile(Uri.fromFile(File(imageUri))).await()
+        val imageStream = FileUtils.getInputStreamLocalImage(context, imageUri) ?: return
+        val uploadImageTask = profileImageRef.putStream(imageStream).await()
         val imageDownloadUri = uploadImageTask.storage.downloadUrl.await()
         val imagePathField = ArrayMap<String, String>()
         imagePathField[AppKey.IMAGE_PATH_FIELD_PROFILE] = imageDownloadUri.toString()
         firestore.collection(AppKey.USER_PROFILES_PATH)
             .document(fireBaseUserId)
-            .set(imagePathField)
+            .update(imagePathField.toMap())
             .await()
     }
 }
