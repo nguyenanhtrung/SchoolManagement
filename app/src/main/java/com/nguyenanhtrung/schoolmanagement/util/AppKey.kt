@@ -19,8 +19,16 @@ class AppKey private constructor(){
         const val USER_ID_FIELD = "id"
         const val PROFILE_STATUS_FIELD = "profileStatus"
         //
+        const val BIRTHDAY_FIELD_PROFILE_PATH = "birthday"
+        const val PHONE_NUMBER_FIELD_PROFILE_PATH = "phoneNumber"
+        const val ADDRESS_FIELD_PROFILE_PATH = "address"
+        const val EMAIL_FIELD_PROFILE_PATH = "email"
+        const val IMAGE_PATH_FIELD_PROFILE = "imagePath"
+        //
         const val ID_TASK_ACCOUNT = 501
         const val ID_TASK_PROFILES = 500
+
+        const val PROFILE_IMAGES_PATH_STORAGE = "profile_images"
 
     }
 }

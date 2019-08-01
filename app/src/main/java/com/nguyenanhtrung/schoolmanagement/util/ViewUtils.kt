@@ -21,6 +21,10 @@ class ViewUtils private constructor() {
                 context, onDateSetListener,
                 year, month, day
             )
+
+            val datePicker = datePickerDialog.datePicker
+            val maxDate = DateUtils.getCurrentDate()
+            datePicker.maxDate = maxDate
             datePickerDialog.show()
 
         }

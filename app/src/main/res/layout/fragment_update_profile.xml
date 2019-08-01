@@ -147,6 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:hint="@string/hint_input_address"
+            style="@style/Widget.AddressInputLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_birthday">
@@ -163,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:hint="@string/hint_input_phone_number"
+            style="@style/Widget.PhoneInputLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_address">

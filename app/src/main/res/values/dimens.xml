@@ -30,4 +30,5 @@
     <dimen name="margin_small_50">4dp</dimen>
     <dimen name="width_profile_image">150dp</dimen>
     <dimen name="height_profile_image">150dp</dimen>
+
 </resources>

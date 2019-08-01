@@ -52,5 +52,41 @@ class Validator private constructor() {
                 password.length in MIN_LENGTH_PASSWORD..MAX_LENGTH_PASSWORD
             }
         }
+
+        fun isAddressValid(
+            address: String,
+            addressErrorLiveData: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.error_address_format, addressErrorLiveData) {
+                address.isNotEmpty()
+            }
+        }
+
+        fun isPhoneNumberValid(
+            phoneNumber: String,
+            phoneErrorLiveData: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.error_phone_format, phoneErrorLiveData) {
+                phoneNumber.isNotEmpty()
+            }
+        }
+
+        fun isBirthdayValid(
+            birthday: String,
+            birthdayErrorLiveData: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.error_birthday_format, birthdayErrorLiveData) {
+                birthday.isNotEmpty()
+            }
+        }
+
+        fun isProfileImageSelected(
+            imageUri: String?,
+            imagePickerError: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.error_profile_image_not_selected, imagePickerError) {
+                !imageUri.isNullOrEmpty()
+            }
+        }
     }
 }

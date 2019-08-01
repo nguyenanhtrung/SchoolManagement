@@ -152,6 +152,10 @@ dependencies {
     //request permission
     implementation 'pub.devrel:easypermissions:3.0.0'
 
+    //firebase storage
+    implementation 'com.google.firebase:firebase-storage:18.1.1'
+
+
 
 }
 apply plugin: 'com.google.gms.google-services'

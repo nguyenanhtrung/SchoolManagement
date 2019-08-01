@@ -10,6 +10,8 @@ import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTy
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.login.LoginRemoteDataSourceImp
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile.ProfileRemoteDataSource
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile.ProfileRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task.UserTaskRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
@@ -119,6 +121,12 @@ class RepositoryModule {
     @Provides
     fun provideProfileLocalDataSource(profileLocalDataSourceImp: ProfileLocalDataSourceImp): ProfileLocalDataSource {
         return profileLocalDataSourceImp
+    }
+
+    @Singleton
+    @Provides
+    fun provideProfileRemoteDataSource(profileRemoteDataSource: ProfileRemoteDataSourceImp): ProfileRemoteDataSource {
+        return profileRemoteDataSource
     }
 
     @Singleton

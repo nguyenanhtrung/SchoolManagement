@@ -10,6 +10,15 @@
         <item name="endIconMode">password_toggle</item>
     </style>
 
+    <style name="Widget.AddressInputLayout" parent="Widget.OutLineTextInputLayout">
+        <item name="android:maxLength">80</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <style name="Widget.PhoneInputLayout" parent="Widget.OutLineTextInputLayout">
+        <item name="android:maxLength">12</item>
+        <item name="android:inputType">number</item>
+    </style>
 
     <style name="Widget.EditText" parent="Widget.AppCompat.EditText">
         <item name="android:inputType">text</item>

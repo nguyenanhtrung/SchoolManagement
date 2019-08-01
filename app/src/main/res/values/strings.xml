@@ -91,4 +91,8 @@
     <string name="title_agree">Đồng ý</string>
     <string name="title_decline">Từ chối</string>
     <string name="title_select_birthday">Chọn ngày sinh</string>
+    <string name="error_address_format">Định dạng địa chỉ không hợp lệ</string>
+    <string name="error_phone_format">Định dạng số điện thoại không hợp lệ</string>
+    <string name="error_birthday_format">Định dạng ngày sinh không hợp lệ</string>
+    <string name="error_profile_image_not_selected">Vui lòng chọn ảnh</string>
 </resources>

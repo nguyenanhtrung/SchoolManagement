@@ -13,6 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
+import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -133,12 +135,57 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     override fun setupUiEvents() {
+        setupClearErrorWhenFocus()
         edit_text_birthday.disableEdit(input_layout_birthday)
         subscribeBasicProfileInfo()
+        subscribeBirthdayInputError()
+        subscribePhoneInputError()
+        subscribeAddressInputError()
+        subscribeEmailInputError()
+        subscribeImageSelectedError()
         subscribeProfileImagePicked()
         setupClickEventButtonPickImage()
         setupClickEventInputBirthday()
         updateViewModel.loadBasicProfileInfo()
+    }
+
+    private fun subscribeImageSelectedError() {
+        updateViewModel.imageSelectedError.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                is ErrorState.NoAction -> mainViewModel.showError(it)
+            }
+        })
+    }
+
+    private fun subscribeEmailInputError() {
+        updateViewModel.emailInputError.observe(viewLifecycleOwner, Observer {
+            input_layout_email.setErrorWithState(it)
+        })
+    }
+
+    private fun subscribeAddressInputError() {
+        updateViewModel.addressInputError.observe(viewLifecycleOwner, Observer {
+            input_layout_address.setErrorWithState(it)
+        })
+    }
+
+    private fun subscribePhoneInputError() {
+        updateViewModel.phoneInputError.observe(viewLifecycleOwner, Observer {
+            input_layout_phone.setErrorWithState(it)
+        })
+    }
+
+    private fun setupClearErrorWhenFocus() {
+        edit_text_birthday.clearErrorWhenFocus(input_layout_birthday)
+        edit_text_phone.clearErrorWhenFocus(input_layout_phone)
+        edit_text_address.clearErrorWhenFocus(input_layout_address)
+        edit_text_email.clearErrorWhenFocus(input_layout_email)
+    }
+
+    private fun subscribeBirthdayInputError() {
+        updateViewModel.birthdayInputError.observe(viewLifecycleOwner, Observer {
+            input_layout_birthday.setErrorWithState(it)
+        })
     }
 
     private fun setupClickEventInputBirthday() {
@@ -176,5 +223,18 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(com.nguyenanhtrung.schoolmanagement.R.menu.fragment_profile_update, menu)
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.item_update_profile -> {
+            updateViewModel.onClickConfirmUpdateItem(
+                birthday = edit_text_birthday.getString(),
+                phoneNumber = edit_text_phone.getString(),
+                address = edit_text_address.getString(),
+                email = edit_text_email.getString()
+            )
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 }

@@ -10,7 +10,7 @@ import com.nguyenanhtrung.schoolmanagement.di.module.NetworkModule
 import com.nguyenanhtrung.schoolmanagement.di.module.ViewModelModule
 import timber.log.Timber
 import com.google.firebase.FirebaseOptions
-
+import com.jakewharton.threetenabp.AndroidThreeTen
 
 
 class MyApplication : Application() {
@@ -29,7 +29,9 @@ class MyApplication : Application() {
             Timber.plant(Timber.DebugTree())
         }
         setupFireBase()
+        AndroidThreeTen.init(this)
         appComponent.inject(this)
+
     }
 
     private fun setupFireBase() {
