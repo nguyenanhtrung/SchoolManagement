@@ -9,27 +9,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_normal_100">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_view_profile_image"
-            android:layout_width="@dimen/width_profile_image"
-            android:layout_height="@dimen/height_profile_image"
-            android:layout_marginTop="@dimen/margin_normal_100"
-            app:cardCornerRadius="@dimen/card_radius"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-            app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
-
-            <ImageView
-                android:id="@+id/image_profile"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/image_empty"
-                tools:ignore="ContentDescription" />
-        </androidx.cardview.widget.CardView>
+        android:animateLayoutChanges="true"
+        android:paddingBottom="@dimen/margin_normal_100"
+        >
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_ver_start"
@@ -52,18 +34,23 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_image_profile"
+            android:layout_width="@dimen/width_profile_image"
+            android:layout_height="@dimen/height_profile_image"
+            app:cardElevation="0dp"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+            app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
 
+            <ImageView
+                android:id="@+id/image_profile_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                tools:srcCompat="@tools:sample/avatars" />
 
-        <ImageButton
-            android:id="@+id/button_pick_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal_100"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
-            app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image"
-            app:srcCompat="@drawable/ic_camera" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/text_profile_name"
@@ -71,43 +58,44 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:textAppearance="@style/TitleNormal"
-            app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
-            app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
-            app:layout_constraintTop_toBottomOf="@+id/button_pick_image"
+            app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
+            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintStart_toStartOf="@+id/card_image_profile"
+            app:layout_constraintTop_toBottomOf="@+id/button_change_profile_image"
             tools:text="Nguyen Anh Trung" />
 
-        <TextView
-            android:id="@+id/text_profile_user_type"
+        <ImageButton
+            android:id="@+id/button_change_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_100"
-            android:textAppearance="@style/TextNormalBold"
-            android:textColor="@color/colorPrimary"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/card_image_profile"
+            app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
+            app:layout_constraintStart_toStartOf="@+id/card_image_profile"
+            app:layout_constraintTop_toTopOf="@+id/card_image_profile"
+            app:layout_constraintVertical_bias="1.0"
+            app:srcCompat="@drawable/ic_camera" />
+
+        <TextView
+            android:id="@+id/text_user_type_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAccountType"
             app:layout_constraintEnd_toEndOf="@+id/text_profile_name"
             app:layout_constraintStart_toStartOf="@+id/text_profile_name"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_name"
             tools:text="Sinh Vien" />
 
-        <TextView
-            android:id="@+id/title_update_info"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal_200"
-            android:text="@string/title_update_info"
-            android:textAppearance="@style/TitleNormal"
-            app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-            app:layout_constraintTop_toBottomOf="@+id/text_profile_user_type" />
-
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggle_group_gender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal_100"
-            app:singleSelection="true"
+            android:layout_marginTop="@dimen/margin_normal_150"
             app:checkedButton="@id/button_male_gender"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-            app:layout_constraintTop_toBottomOf="@+id/title_update_info">
+            app:layout_constraintTop_toBottomOf="@+id/text_user_type_name"
+            app:singleSelection="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_male_gender"
@@ -122,16 +110,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/title_female" />
-
         </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <ImageButton
+            android:id="@+id/button_modify_gender_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/toggle_group_gender"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintTop_toTopOf="@+id/toggle_group_gender"
+            app:srcCompat="@drawable/ic_edit" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/title_birthday"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintEnd_toStartOf="@+id/button_mofidy_birthday_state"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/toggle_group_gender">
 
@@ -141,14 +139,25 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:id="@+id/button_mofidy_birthday_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/input_layout_birthday"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintTop_toTopOf="@+id/input_layout_birthday"
+            app:srcCompat="@drawable/ic_edit" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_address"
+            style="@style/Widget.AddressInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_address"
-            style="@style/Widget.AddressInputLayout"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintEnd_toStartOf="@+id/button_modify_address_state"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_birthday">
 
@@ -158,14 +167,25 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ImageButton
+            android:id="@+id/button_modify_address_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            app:layout_constraintBottom_toBottomOf="@+id/input_layout_address"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintTop_toTopOf="@+id/input_layout_address"
+            app:srcCompat="@drawable/ic_edit" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_phone"
+            style="@style/Widget.PhoneInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_phone_number"
-            style="@style/Widget.PhoneInputLayout"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintEnd_toStartOf="@+id/button_modify_phone_state"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_address">
 
@@ -180,8 +200,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_email"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintEnd_toStartOf="@+id/button_modify_email_state"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_phone">
 
@@ -190,6 +211,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/button_modify_phone_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/input_layout_phone"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintTop_toTopOf="@+id/input_layout_phone"
+            app:srcCompat="@drawable/ic_edit" />
+
+        <ImageButton
+            android:id="@+id/button_modify_email_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:layout_constraintBottom_toBottomOf="@+id/input_layout_email"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+            app:layout_constraintTop_toTopOf="@+id/input_layout_email"
+            app:srcCompat="@drawable/ic_edit" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

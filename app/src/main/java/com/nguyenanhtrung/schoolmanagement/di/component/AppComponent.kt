@@ -11,6 +11,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragmen
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
+import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailFragment
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashActivity
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment
@@ -39,4 +40,5 @@ interface AppComponent {
     fun inject(profilesFragment: ProfilesFragment)
     fun inject(filterBottomSheetDialogFragment: FilterBottomSheetDialogFragment)
     fun inject(profileUpdateFragment: ProfileUpdateFragment)
+    fun inject(profileDetailFragment: ProfileDetailFragment)
 }

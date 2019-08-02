@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.collection.ArrayMap
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
@@ -19,6 +20,26 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     private val firebaseStorage: FirebaseStorage,
     @ApplicationContext private val context: Context
 ) : ProfileRemoteDataSource {
+
+    override suspend fun getProfileDetail(fireBaseUserId: String): Resource<ProfileDetail> {
+        val profileDetailTask = firestore.collection(AppKey.USER_PROFILES_PATH)
+            .document(fireBaseUserId)
+            .get()
+            .await()
+        val imageUrl = profileDetailTask[AppKey.IMAGE_PATH_FIELD_PROFILE] as String
+        val birthday = profileDetailTask[AppKey.BIRTHDAY_FIELD_PROFILE_PATH] as String
+        val phoneNumber = profileDetailTask[AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH] as String
+        val address = profileDetailTask[AppKey.ADDRESS_FIELD_PROFILE_PATH] as String
+        val email = profileDetailTask[AppKey.EMAIL_FIELD_PROFILE_PATH] as String
+        val profileDetail = ProfileDetail(
+            imageUrl,
+            birthday,
+            phoneNumber,
+            address,
+            email
+        )
+        return Resource.success(profileDetail)
+    }
 
 
     override suspend fun updateUserProfile(profileUpdateParam: ProfileUpdateParam): Resource<Unit> {

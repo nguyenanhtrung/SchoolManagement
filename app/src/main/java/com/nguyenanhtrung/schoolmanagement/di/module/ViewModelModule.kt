@@ -11,6 +11,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.FlowStatusViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.ForgotPasswordViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateViewModel
@@ -85,4 +86,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileUpdateViewModel::class)
     abstract fun bindProfileUpdateViewModel(profileUpdateViewModel: ProfileUpdateViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileDetailViewModel::class)
+    abstract fun bindProfileDetailViewModel(profileDetailViewModel: ProfileDetailViewModel) : ViewModel
 }

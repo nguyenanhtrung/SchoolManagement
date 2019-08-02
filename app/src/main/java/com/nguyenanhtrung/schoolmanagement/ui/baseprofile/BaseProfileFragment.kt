@@ -1,7 +1,9 @@
 package com.nguyenanhtrung.schoolmanagement.ui.baseprofile
 
 import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.widget.ImageButton
@@ -88,7 +90,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         bindEditTextEmail()
     }
 
-
     private val baseProfileViewModel by lazy {
         createBaseProfileViewModel()
     }
@@ -133,14 +134,14 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
                 DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
                     val correctMonth = month + 1
                     val dateResult = DateUtils.formatDate(year, correctMonth, dayOfMonth)
-                    edit_text_birthday.setText(dateResult)
+                    editTextBirthday.setText(dateResult)
                 })
         }
     }
 
     private fun subscribeProfileImagePicked() {
         baseProfileViewModel.profileImage.observe(viewLifecycleOwner, Observer {
-            image_profile.loadImageIfEmptyPath(it)
+            imageViewProfile.loadImageIfEmptyPath(it)
         })
     }
 
@@ -189,6 +190,17 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         editTextPhone.clearErrorWhenFocus(inputLayoutPhone)
         editTextAddress.clearErrorWhenFocus(inputLayoutAddress)
         editTextEmail.clearErrorWhenFocus(inputLayoutEmail)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val imageUris = Matisse.obtainResult(data)
+            if (imageUris.isEmpty()) {
+                return
+            }
+            baseProfileViewModel.onProfileImagePicked(imageUris[0].toString())
+        }
     }
 
     override fun onRequestPermissionsResult(

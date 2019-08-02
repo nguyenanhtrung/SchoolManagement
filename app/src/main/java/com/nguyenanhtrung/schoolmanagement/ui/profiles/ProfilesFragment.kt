@@ -153,10 +153,23 @@ class ProfilesFragment : BaseFragment() {
     override fun setupUiEvents() {
         setupToolbar()
         subscribeNavigateToProfileUpdateScreen()
+        subscribeNavigateToProfileDetailScreen()
         setupProfilesRecyclerView()
         setupProfileItemClickEvent()
         setupLoadMoreProfilesEvent()
         profileViewModel.loadProfiles()
+    }
+
+    private fun subscribeNavigateToProfileDetailScreen() {
+        profileViewModel.profileDetailScreen.observe(viewLifecycleOwner, Observer {
+            it.getContentIfNotHandled()?.let { profile ->
+                findNavController().navigate(
+                    ProfilesFragmentDirections.actionProfilesDestToProfileDetailFragment(
+                        profile
+                    )
+                )
+            }
+        })
     }
 
     private fun subscribeNavigateToProfileUpdateScreen() {
