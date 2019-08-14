@@ -15,6 +15,11 @@
         <item name="android:inputType">text</item>
     </style>
 
+    <style name="Widget.EmailInputLayout" parent="Widget.OutLineTextInputLayout">
+        <item name="android:maxLines">50</item>
+        <item name="android:inputType">text</item>
+    </style>
+
     <style name="Widget.PhoneInputLayout" parent="Widget.OutLineTextInputLayout">
         <item name="android:maxLength">12</item>
         <item name="android:inputType">number</item>

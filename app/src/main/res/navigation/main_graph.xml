@@ -27,9 +27,10 @@
             android:id="@+id/action_dashboardDest_to_profilesDest"
             app:destination="@id/profilesDest"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_in_right"
+            app:popUpTo="@+id/dashboardDest" />
     </fragment>
     <fragment
         android:id="@+id/accountManagementDest"
@@ -85,8 +86,8 @@
     <fragment
         android:id="@+id/profilesDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment"
-        tools:layout="@layout/fragment_profiles"
-        android:label="ProfilesFragment" >
+        android:label="Danh sách thông tin cá nhân"
+        tools:layout="@layout/fragment_profiles">
         <action
             android:id="@+id/action_profilesDest_to_filterBottomSheetDialogFragment"
             app:destination="@id/filterBottomSheetDest" />
@@ -101,9 +102,9 @@
             android:id="@+id/action_profilesDest_to_profileDetailFragment"
             app:destination="@id/profileDetailFragment"
             app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
+            app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <dialog
         android:id="@+id/filterBottomSheetDest"
@@ -116,19 +117,23 @@
     <fragment
         android:id="@+id/profileUpdateFragment"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment"
-        android:label="ProfileUpdateFragment" >
+        android:label="Cập nhật thông tin">
         <argument
             android:name="profile"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />
         <action
             android:id="@+id/action_profileUpdateFragment_to_dialogFlowStatusDest"
             app:destination="@id/dialogFlowStatusDest" />
+        <argument
+            android:name="posProfileItem"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
     <fragment
         android:id="@+id/profileDetailFragment"
-        tools:layout="@layout/fragment_profile_detail"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailFragment"
-        android:label="ProfileDetailFragment" >
+        android:label="Thông tin cá nhân chi tiết"
+        tools:layout="@layout/fragment_profile_detail">
         <argument
             android:name="profile"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />

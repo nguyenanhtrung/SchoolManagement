@@ -83,6 +83,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     private fun onReceivedArgs() {
         val profile = args.profile
         updateViewModel.profile = profile
+        updateViewModel.indexProfile = args.posProfileItem
     }
 
     override fun onRequestPermissionsResult(
@@ -156,16 +157,29 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     private fun subscribeStateUpdateProfile() {
         updateViewModel.stateUpdateProfile.observe(this, Observer {
             if (it.status == Status.SUCCESS) {
-                findNavController().navigate(
-                    ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
-                        FlowStatusInfo(
-                            Status.SUCCESS,
-                            getString(R.string.title_success_update_profile)
-                        )
-                    )
-                )
+                notifyProfileUpdated()
+                navigateToSuccessDialog()
             }
         })
+    }
+
+    private fun notifyProfileUpdated() {
+        val indexProfile = updateViewModel.indexProfile
+        if (indexProfile >= 0) {
+            val profileUpdated = mainViewModel.mutableProfileUpdated
+            profileUpdated.value = indexProfile
+        }
+    }
+
+    private fun navigateToSuccessDialog() {
+        findNavController().navigate(
+            ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
+                FlowStatusInfo(
+                    Status.SUCCESS,
+                    getString(R.string.title_success_update_profile)
+                )
+            )
+        )
     }
 
     private fun subscribeImageSelectedError() {
@@ -183,6 +197,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     private fun subscribeAddressInputError() {
+
         updateViewModel.addressInputError.observe(viewLifecycleOwner, Observer {
             input_layout_address.setErrorWithState(it)
         })
@@ -250,7 +265,8 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
                 birthday = edit_text_birthday.getString(),
                 phoneNumber = edit_text_phone.getString(),
                 address = edit_text_address.getString(),
-                email = edit_text_email.getString()
+                email = edit_text_email.getString(),
+                genderId = toggle_group_gender.checkedButtonId
             )
             true
         }

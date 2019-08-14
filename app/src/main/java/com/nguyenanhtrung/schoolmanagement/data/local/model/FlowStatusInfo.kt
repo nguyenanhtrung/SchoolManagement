@@ -5,7 +5,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class FlowStatusInfo(
-    private val status: Status,
-    private val message: String,
-    private val destinationId: Int = -1
+    val status: Status,
+    val messageId: Int,
+    val buttonNameId: Int,
+    val destinationId: Int = -1
 ) : Parcelable

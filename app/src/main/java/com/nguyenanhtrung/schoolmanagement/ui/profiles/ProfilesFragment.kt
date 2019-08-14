@@ -152,12 +152,24 @@ class ProfilesFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         setupToolbar()
+        subscribeProfileUpdated()
         subscribeNavigateToProfileUpdateScreen()
         subscribeNavigateToProfileDetailScreen()
         setupProfilesRecyclerView()
         setupProfileItemClickEvent()
         setupLoadMoreProfilesEvent()
         profileViewModel.loadProfiles()
+    }
+
+    private fun subscribeProfileUpdated() {
+        mainViewModel.profileUpdated.observe(viewLifecycleOwner, Observer {
+            val profileItem = profileAdapter.getItem(it)
+            if (profileItem is ProfileItem) {
+                val profile = profileItem.profile
+                profile.isProfileUpdated = true
+                profileAdapter.notifyItemChanged(it)
+            }
+        })
     }
 
     private fun subscribeNavigateToProfileDetailScreen() {
@@ -174,10 +186,10 @@ class ProfilesFragment : BaseFragment() {
 
     private fun subscribeNavigateToProfileUpdateScreen() {
         profileViewModel.profileUpdateScreen.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { profile ->
+            it.getContentIfNotHandled()?.let { params ->
                 findNavController().navigate(
                     ProfilesFragmentDirections.actionProfilesDestToProfileUpdateFragment(
-                        profile
+                        params.second, params.first
                     )
                 )
             }
@@ -188,14 +200,17 @@ class ProfilesFragment : BaseFragment() {
         profileAdapter.setOnItemClickListener { item, _ ->
             if (item is ProfileItem) {
                 val profile = item.profile
-                profileViewModel.onClickProfileItem(profile)
+                profileViewModel.onClickProfileItem(
+                    profile,
+                    profileAdapter.getAdapterPosition(item)
+                )
             }
         }
     }
 
     private fun setupLoadMoreProfilesEvent() {
-        val layoutMananger = recycler_view_profiles.layoutManager as LinearLayoutManager
-        recycler_view_profiles.addOnScrollListener(object : EndlessScrollListener(layoutMananger) {
+        val layoutManager = recycler_view_profiles.layoutManager as LinearLayoutManager
+        recycler_view_profiles.addOnScrollListener(object : EndlessScrollListener(layoutManager) {
             override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
                 val lastProfileItem = profileAdapter.getItem(profileAdapter.itemCount - 1)
                 if (lastProfileItem is ProfileItem) {

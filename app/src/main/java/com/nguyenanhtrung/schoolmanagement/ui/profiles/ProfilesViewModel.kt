@@ -43,9 +43,9 @@ class ProfilesViewModel @Inject constructor(
         get() = _clearProfileItems
 
     private val _profileUpdateScreen by lazy {
-        MutableLiveData<Event<Profile>>()
+        MutableLiveData<Event<Pair<Int, Profile>>>()
     }
-    internal val profileUpdateScreen: LiveData<Event<Profile>>
+    internal val profileUpdateScreen: LiveData<Event<Pair<Int, Profile>>>
         get() = _profileUpdateScreen
 
     private val _profileDetailScreen by lazy {
@@ -94,12 +94,12 @@ class ProfilesViewModel @Inject constructor(
         }
     }
 
-    internal fun onClickProfileItem(profile: Profile) {
+    internal fun onClickProfileItem(profile: Profile, index: Int) {
         val isProfileUpdated = profile.isProfileUpdated
         if (isProfileUpdated) {
             _profileDetailScreen.value = Event(profile)
         } else {
-            _profileUpdateScreen.value = Event(profile)
+            _profileUpdateScreen.value = Event(Pair(index, profile))
         }
 
     }

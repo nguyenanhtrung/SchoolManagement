@@ -14,11 +14,18 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
     internal val toolbarVisibility: LiveData<Boolean>
         get() = _toolbarVisibility
 
-    val _filterItemLiveData by lazy {
+    val mutableFilterItem by lazy {
         MutableLiveData<FilterData>()
     }
     internal val filterItemLiveData: LiveData<FilterData>
-        get() = _filterItemLiveData
+        get() = mutableFilterItem
+
+    val mutableProfileUpdated by lazy {
+        MutableLiveData<Int>()
+    }
+    internal val profileUpdated: LiveData<Int>
+        get() = mutableProfileUpdated
+
 
 
     fun hideToolbar() {

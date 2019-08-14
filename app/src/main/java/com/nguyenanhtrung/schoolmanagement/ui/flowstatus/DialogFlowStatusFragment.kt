@@ -6,9 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -19,6 +20,8 @@ import kotlinx.android.synthetic.main.dialog_flow_status_fragment.*
 import javax.inject.Inject
 
 class DialogFlowStatusFragment : BaseDialogFragment() {
+
+    private val args: DialogFlowStatusFragmentArgs by navArgs()
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -46,10 +49,38 @@ class DialogFlowStatusFragment : BaseDialogFragment() {
 
     override fun getProgressLoading(): ProgressBar? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val statusInfo = args.flowStatusInfo
+        flowStatusViewModel.flowStatusInfo = statusInfo
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupUiEvents()
+
+    }
+
+    private fun setupUiEvents() {
+        subscribeViewsData()
         button_close_dialog.setOnClickListener {
             dismiss()
         }
+        flowStatusViewModel.showViewDatas()
     }
+
+    private fun subscribeViewsData() {
+        flowStatusViewModel.viewDatas.observe(viewLifecycleOwner, Observer {
+            val messageId = it.messageId
+            text_status.text = getString(messageId)
+
+            val buttonNameId = it.buttonNameId
+            if (buttonNameId == -1) {
+                button_status_action.visibility = View.GONE
+            } else {
+                button_status_action.text = getString(buttonNameId)
+            }
+        })
+    }
+
 }

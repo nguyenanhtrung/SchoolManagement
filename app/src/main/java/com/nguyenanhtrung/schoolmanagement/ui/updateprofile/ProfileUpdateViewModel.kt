@@ -3,23 +3,19 @@ package com.nguyenanhtrung.schoolmanagement.ui.updateprofile
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.profile.UpdateUserProfileUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.util.Validator
 import javax.inject.Inject
-import android.provider.MediaStore
-import androidx.room.util.CursorUtil.getColumnIndexOrThrow
-
 
 
 class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase) :
     BaseViewModel() {
 
     lateinit var profile: Profile
+    var indexProfile: Int = 0
 
     private val _basicProfileInfo by lazy {
         MutableLiveData<Profile>()
@@ -81,7 +77,8 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         birthday: String,
         phoneNumber: String,
         address: String,
-        email: String
+        email: String,
+        genderId: Int
     ) {
         if (!Validator.isBirthdayValid(birthday, _birthdayInputError)) {
             return
@@ -103,7 +100,8 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
             return
         }
 
-        val profileUpdateParam = createProfileUpdateParam(birthday, phoneNumber, address, email)
+        val profileUpdateParam =
+            createProfileUpdateParam(birthday, phoneNumber, address, email, genderId)
         updateUserProfileUseCase.invoke(viewModelScope, profileUpdateParam, _stateUpdateProfile)
     }
 
@@ -111,18 +109,25 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         birthday: String,
         phoneNumber: String,
         address: String,
-        email: String
+        email: String,
+        genderId: Int
     ): ProfileUpdateParam {
         val imageUri = _profileImage.value ?: ""
         val currentUserInfo = _basicProfileInfo.value
         val fireBaseUserId = currentUserInfo?.fireBaseUserId ?: ""
+        val gender = when (genderId) {
+            R.id.button_male_gender -> Gender.MALE
+            R.id.button_female_gender -> Gender.FEMALE
+            else -> throw NoSuchElementException()
+        }
         return ProfileUpdateParam(
             imageUri,
             fireBaseUserId,
             birthday,
             phoneNumber,
             address,
-            email
+            email,
+            gender
         )
     }
 

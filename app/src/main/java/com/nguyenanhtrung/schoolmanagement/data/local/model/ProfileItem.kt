@@ -39,4 +39,7 @@ class ProfileItem constructor(val profile: Profile) : Item() {
     }
 
     override fun getLayout(): Int = R.layout.item_profile
+
+
+
 }

@@ -81,6 +81,7 @@ fun ImageView.loadImageIfEmptyPath(imagePath: String) {
     if (imagePath.isEmpty()) {
         Glide.with(this)
             .load(R.drawable.image_empty)
+            .override(150, 150)
             .into(this)
         return
     }

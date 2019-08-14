@@ -51,7 +51,7 @@ class FilterBottomSheetDialogFragment : BottomSheetDialogFragment() {
 
     private fun subscribeConfirmFilter() {
         filterViewModel.stateConfirmFilter.observe(this, Observer {
-            mainViewModel._filterItemLiveData.value = it
+            mainViewModel.mutableFilterItem.value = it
             findNavController().popBackStack()
         })
     }

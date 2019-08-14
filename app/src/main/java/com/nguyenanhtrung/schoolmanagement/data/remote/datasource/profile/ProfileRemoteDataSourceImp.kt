@@ -1,18 +1,19 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile
 
 import android.content.Context
-import android.net.Uri
 import androidx.collection.ArrayMap
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.FileUtils
+import kotlinx.android.synthetic.main.fragment_profile_detail.view.*
 import kotlinx.coroutines.tasks.await
-import java.io.File
 import javax.inject.Inject
 
 class ProfileRemoteDataSourceImp @Inject constructor(
@@ -31,24 +32,30 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         val phoneNumber = profileDetailTask[AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH] as String
         val address = profileDetailTask[AppKey.ADDRESS_FIELD_PROFILE_PATH] as String
         val email = profileDetailTask[AppKey.EMAIL_FIELD_PROFILE_PATH] as String
+        val genderId = profileDetailTask[AppKey.GENDER_FIELD_PROFILE_PATH] as Long
+
+        val gender = Gender.getGenreById(genderId.toInt())
         val profileDetail = ProfileDetail(
             imageUrl,
             birthday,
             phoneNumber,
             address,
-            email
+            email,
+            gender
         )
         return Resource.success(profileDetail)
     }
 
 
+
     override suspend fun updateUserProfile(profileUpdateParam: ProfileUpdateParam): Resource<Unit> {
-        val mappedProfileFields = ArrayMap<String, String>()
+        val mappedProfileFields = ArrayMap<String, Any>()
         with(mappedProfileFields) {
             put(AppKey.BIRTHDAY_FIELD_PROFILE_PATH, profileUpdateParam.birthday)
             put(AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH, profileUpdateParam.phoneNumber)
             put(AppKey.ADDRESS_FIELD_PROFILE_PATH, profileUpdateParam.address)
             put(AppKey.EMAIL_FIELD_PROFILE_PATH, profileUpdateParam.email)
+            put(AppKey.GENDER_FIELD_PROFILE_PATH, profileUpdateParam.gender.ordinal.toLong())
         }
         firestore.collection(AppKey.USER_PROFILES_PATH)
             .document(profileUpdateParam.fireBaseUserId)

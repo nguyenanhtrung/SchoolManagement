@@ -24,6 +24,7 @@ class AppKey private constructor(){
         const val ADDRESS_FIELD_PROFILE_PATH = "address"
         const val EMAIL_FIELD_PROFILE_PATH = "email"
         const val IMAGE_PATH_FIELD_PROFILE = "imagePath"
+        const val GENDER_FIELD_PROFILE_PATH = "gender"
         //
         const val ID_TASK_ACCOUNT = 501
         const val ID_TASK_PROFILES = 500

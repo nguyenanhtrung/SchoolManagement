@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -25,6 +26,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.disableEdit
 import com.nguyenanhtrung.schoolmanagement.util.disableInput
+import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
 import kotlinx.android.synthetic.main.fragment_profile_detail.*
 import javax.inject.Inject
 
@@ -103,6 +105,16 @@ class ProfileDetailFragment : BaseProfileFragment() {
             edit_text_birthday.setText(birthday)
             edit_text_phone.setText(phoneNumber)
             edit_text_address.setText(address)
+            edit_text_email.setText(email)
+            image_profile_detail.loadImageIfEmptyPath(imageUrl)
+            showSelectedGender(gender)
+        }
+    }
+
+    private fun showSelectedGender(gender: Gender) {
+        when(gender) {
+            Gender.MALE -> toggle_group_gender.check(R.id.button_male_gender)
+            Gender.FEMALE -> toggle_group_gender.check(R.id.button_female_gender)
         }
     }
 
@@ -114,6 +126,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
         edit_text_address.disableEdit(input_layout_address)
         edit_text_phone.disableEdit(input_layout_phone)
         edit_text_email.disableEdit(input_layout_email)
+        detailViewModel.loadProfileDetail()
     }
 
     private fun setGenderSelection(isEnabled: Boolean) {

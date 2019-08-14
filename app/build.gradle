@@ -60,7 +60,7 @@ dependencies {
     def circle_image_version = "3.0.0"
     def dagger_version = "2.23.2"
     def firebase_auth_version = "18.1.0"
-    def firebase_firestore_version = "20.1.0"
+    def firebase_firestore_version = "20.2.0"
 
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
