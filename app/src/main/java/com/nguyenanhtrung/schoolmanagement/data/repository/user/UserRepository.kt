@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface UserRepository {
     suspend fun loadUserInfo(result: MutableLiveData<Resource<User>>)
@@ -11,12 +12,12 @@ interface UserRepository {
 
     suspend fun createUser(
         createAccountParam: CreateAccountParam,
-        result: MutableLiveData<Resource<Unit>>
+        result: MutableLiveData<Resource<String>>
     )
 
     suspend fun getUsers(
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<UserItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     )
 
     suspend fun getUsersByProfileFilter(
@@ -27,7 +28,7 @@ interface UserRepository {
     suspend fun getUsersByLimit(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<UserItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     )
 
     suspend fun getPagingUserByProfileFilter(

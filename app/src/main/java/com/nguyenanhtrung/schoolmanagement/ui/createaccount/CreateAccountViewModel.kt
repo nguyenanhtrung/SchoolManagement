@@ -17,6 +17,7 @@ class CreateAccountViewModel @Inject constructor(
     BaseViewModel() {
 
     var maxId: Long = 0
+    var newFireBaseId = ""
 
     private val _userTypesLiveData by lazy {
         createApiResultLiveData<List<UserType>>()
@@ -43,9 +44,9 @@ class CreateAccountViewModel @Inject constructor(
         get() = _errorPasswordLiveData
 
     private val _createUserLiveData by lazy {
-        createApiResultLiveData<Unit>()
+        createApiResultLiveData<String>()
     }
-    internal val createUserLiveData: LiveData<Resource<Unit>>
+    internal val createUserLiveData: LiveData<Resource<String>>
         get() = _createUserLiveData
 
 

@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.LoadingItem
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
@@ -124,16 +121,20 @@ class DashboardFragment : BaseFragment() {
     private fun setupTasksRecyclerView() {
         recycler_view_tasks.layoutManager = LinearLayoutManager(requireActivity())
         recycler_view_tasks.adapter = tasksAdapter
-        if (tasksAdapter.itemCount == 0) {
-            tasksAdapter.add(LoadingItem())
-        }
-
     }
 
     private fun subscribeUserInfo() {
         dashboardViewModel.userInfoLiveData.observe(viewLifecycleOwner, Observer {
-            showUserInfo(it.data)
-            dashboardViewModel.loadUserTasks()
+            if (it.status == Status.SUCCESS) {
+                showUserInfo(it.data)
+                dashboardViewModel.loadUserTasks()
+            } else if (it.status == Status.FAILURE) {
+                dashboardViewModel.showError(ErrorState.WithAction(
+                    it.error,
+                    R.string.retry
+                ) { dashboardViewModel.loadUserInfo() })
+            }
+
         })
     }
 

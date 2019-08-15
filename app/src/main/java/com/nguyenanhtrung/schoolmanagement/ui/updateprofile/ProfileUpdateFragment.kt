@@ -176,7 +176,8 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
             ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
                 FlowStatusInfo(
                     Status.SUCCESS,
-                    getString(R.string.title_success_update_profile)
+                    R.string.title_success_update_profile,
+                    R.string.title_update
                 )
             )
         )

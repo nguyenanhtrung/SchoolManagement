@@ -7,12 +7,16 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.userid.GetMaxUserIdUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
+import com.xwray.groupie.Item
+import com.xwray.groupie.ViewHolder
 import javax.inject.Inject
 
 class AccountManagementViewModel @Inject constructor(
     private val getMaxUserIdUseCase: GetMaxUserIdUseCase,
     private val getUsersUseCase: GetUsersUseCase
-) : BaseViewModel() {
+) : BaseListItemViewModel() {
+
 
     private val _navToCreateAccountFragment by lazy {
         MutableLiveData<Event<Long>>()
@@ -32,93 +36,22 @@ class AccountManagementViewModel @Inject constructor(
     internal val maxUserIdLiveData: LiveData<Resource<Long>>
         get() = _maxUserIdLiveData
 
-    private val _getUsersLiveData by lazy {
-        createApiResultLiveData<MutableList<UserItem>>()
-    }
-    internal val getUsersLiveData: LiveData<Resource<MutableList<UserItem>>>
-        get() = _getUsersLiveData
 
-    private val _emptyUsersLiveData by lazy {
-        MutableLiveData<EmptyItem>()
-    }
-    internal val emptyUsersLiveData: LiveData<EmptyItem>
-        get() = _emptyUsersLiveData
-
-    private val _errorUsersLiveData by lazy {
-        MutableLiveData<ErrorState>()
-    }
-    internal val errorUsersLiveData: LiveData<ErrorState>
-        get() = _errorUsersLiveData
-
-    private val _usersLiveData by lazy {
-        MutableLiveData<MutableList<UserItem>>()
-    }
-    internal val usersLiveData: LiveData<MutableList<UserItem>>
-        get() = _usersLiveData
-
-    private val _stateLoadMoreUsersLiveData by lazy {
-        MutableLiveData<Status>()
-    }
-    internal val stateLoadMoreUsersLiveData: LiveData<Status>
-        get() = _stateLoadMoreUsersLiveData
-
-    internal fun loadUsers() {
-        val getUsersResult = _getUsersLiveData.value
-        if (getUsersResult != null) {
-            return
-        }
-        getUsersUseCase.invoke(viewModelScope, -1, _getUsersLiveData)
+    override fun loadMoreItems(
+        lastItem: Item<ViewHolder>,
+        itemsLiveData: MutableLiveData<Resource<MutableList<out com.xwray.groupie.kotlinandroidextensions.Item>>>
+    ) {
+        val userItem = lastItem as UserItem
+        val user = userItem.user
+        getUsersUseCase.invoke(viewModelScope, user.id, itemsLiveData)
     }
 
-    internal fun handleStatusGetUsers(resource: Resource<MutableList<UserItem>>) {
-        when (resource.status) {
-
-            Status.EMPTY -> {
-                _emptyUsersLiveData.value = EmptyItem(resource.error)
-            }
-            Status.FAILURE, Status.EXCEPTION -> {
-                if (_errorUsersLiveData.value == null) {
-                    _errorUsersLiveData.value = ErrorState.NoAction(resource.error)
-                }
-            }
-            Status.SUCCESS -> {
-                if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
-                    _stateLoadMoreUsersLiveData.value = Status.COMPLETE
-                }
-
-                if (_errorUsersLiveData.value is ErrorState.NoAction) {
-                    _errorUsersLiveData.value = ErrorState.Empty
-                }
-
-                val users = resource.data
-                users?.let {
-                    _usersLiveData.value = it
-                }
-            }
-            Status.COMPLETE -> {
-                if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
-                    _stateLoadMoreUsersLiveData.value = Status.COMPLETE
-                }
-            }
-            else -> Unit
-        }
+    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out com.xwray.groupie.kotlinandroidextensions.Item>>>) {
+        getUsersUseCase.invoke(viewModelScope, -1, getItemsLiveData)
     }
 
-    internal fun onLoadMoreUsers(lastUserId: Long) {
-        if (_stateLoadMoreUsersLiveData.value == Status.LOADING) {
-            return
-        }
-        _stateLoadMoreUsersLiveData.value = Status.LOADING
-        getUsersUseCase.invoke(viewModelScope, lastUserId, _getUsersLiveData)
-
-    }
-
-    internal fun onClickUserItem(position: Int) {
+    override fun onCustomClickItem(position: Int) {
         _navToAccountDetail.value = Event(position)
-    }
-
-    internal fun onClickButtonRetry() {
-        getUsersUseCase.invoke(viewModelScope, -1, _getUsersLiveData)
     }
 
     internal fun onClickButtonCreateAccount() {

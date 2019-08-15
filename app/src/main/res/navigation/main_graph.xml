@@ -50,8 +50,10 @@
             app:destination="@id/accountDetailFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_left" />
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            app:popUpTo="@+id/accountManagementDest"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/createAccountDest"

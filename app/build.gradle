@@ -53,7 +53,7 @@ dependencies {
     def image_loading_version = "4.9.0"
     def lottie_version = "3.0.7"
     def coroutines_version = "1.3.0-M2"
-    def groupie_version = "2.3.0"
+    def groupie_version = "2.4.0"
     def threetenbp_version = "1.2.1"
     def timber_version = "4.7.1"
     def material_component_version = "1.1.0-alpha09"

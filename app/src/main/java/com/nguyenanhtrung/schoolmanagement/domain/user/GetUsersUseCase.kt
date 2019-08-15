@@ -6,12 +6,13 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepository
 import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
+import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
 class GetUsersUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userTypeRepository: UserTypeRepository
-) : BaseUseCase<Long, MutableList<UserItem>>() {
+) : BaseUseCase<Long, MutableList<out Item>>() {
 
     private val userTypes by lazy {
         userTypeRepository.getUserTypes()
@@ -19,7 +20,7 @@ class GetUsersUseCase @Inject constructor(
 
     override suspend fun execute(
         params: Long,
-        resultLiveData: MutableLiveData<Resource<MutableList<UserItem>>>
+        resultLiveData: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
         userTypes
         if (params < 0) {

@@ -25,7 +25,6 @@ import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.disableEdit
-import com.nguyenanhtrung.schoolmanagement.util.disableInput
 import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
 import kotlinx.android.synthetic.main.fragment_profile_detail.*
 import javax.inject.Inject
@@ -63,7 +62,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun bindTextProfileName(): TextView = text_profile_name
 
-    override fun bindTextUserTypeName(): TextView = text_user_type_name
+    override fun bindTextUserTypeName(): TextView = text_user_type_and_id
 
     override fun bindToggleGroupGender(): MaterialButtonToggleGroup = toggle_group_gender
 

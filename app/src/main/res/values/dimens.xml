@@ -20,8 +20,8 @@
     <dimen name="width_image_logo">200dp</dimen>
     <dimen name="height_image_logo">120dp</dimen>
     <dimen name="padding_normal_150">24dp</dimen>
-    <dimen name="width_circle_user_image">64dp</dimen>
-    <dimen name="height_circle_user_image">64dp</dimen>
+    <dimen name="width_circle_user_image">80dp</dimen>
+    <dimen name="height_circle_user_image">80dp</dimen>
     <dimen name="width_icon_task_management">48dp</dimen>
     <dimen name="height_icon_task_management">48dp</dimen>
     <dimen name="width_loading_view">150dp</dimen>
@@ -30,5 +30,7 @@
     <dimen name="margin_small_50">4dp</dimen>
     <dimen name="width_profile_image">150dp</dimen>
     <dimen name="height_profile_image">150dp</dimen>
+    <dimen name="heigh_search_bar">46dp</dimen>
+
 
 </resources>

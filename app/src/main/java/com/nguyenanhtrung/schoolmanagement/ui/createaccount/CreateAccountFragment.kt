@@ -12,8 +12,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.CreateAccountInput
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserType
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -60,13 +59,25 @@ class CreateAccountFragment : BaseFragment() {
 
     private fun subscribeCreateUser() {
         accountViewModel.createUserLiveData.observe(this, Observer {
-            it.data?.let {
+            it.data?.let { userFireBaseId ->
+                accountViewModel.newFireBaseId = userFireBaseId
+                val flowStatusInfo = FlowStatusInfo(
+                    Status.SUCCESS,
+                    R.string.title_success_create_account,
+                    R.string.title_update,
+                    R.id.dialogFlowStatusDest
+                )
+                findNavController().navigate(
+                    CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment(
+                        flowStatusInfo
+                    )
+                )
                 clearAllInput()
                 edit_text_name.requestFocus()
-               // findNavController().navigate(CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment())
             }
         })
     }
+
 
     private fun clearAllInput() {
         edit_text_email.clearText()

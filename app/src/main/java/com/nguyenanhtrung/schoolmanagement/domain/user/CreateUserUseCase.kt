@@ -8,11 +8,11 @@ import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import javax.inject.Inject
 
 class CreateUserUseCase @Inject constructor(private val userRepository: UserRepository) :
-    BaseUseCase<CreateAccountParam, Unit>() {
+    BaseUseCase<CreateAccountParam, String>() {
 
     override suspend fun execute(
         params: CreateAccountParam,
-        resultLiveData: MutableLiveData<Resource<Unit>>
+        resultLiveData: MutableLiveData<Resource<String>>
     ) {
         userRepository.createUser(params, resultLiveData)
     }

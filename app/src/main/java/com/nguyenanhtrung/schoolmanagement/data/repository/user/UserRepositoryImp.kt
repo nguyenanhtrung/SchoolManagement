@@ -8,6 +8,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
+import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
 class UserRepositoryImp @Inject constructor(
@@ -56,6 +57,8 @@ class UserRepositoryImp @Inject constructor(
 
             override fun shouldLoadFromLocal(params: Pair<Long, Pair<ProfileFilter, Map<String, String>>>): Boolean =
                 false
+
+            override fun shouldShowLoading(): Boolean = false
 
             override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
                 val pair = finalParams.second
@@ -155,15 +158,15 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun createUser(
         createAccountParam: CreateAccountParam,
-        result: MutableLiveData<Resource<Unit>>
+        result: MutableLiveData<Resource<String>>
     ) {
         object :
-            NetworkBoundResources<CreateAccountParam, Unit>(context, createAccountParam, result) {
+            NetworkBoundResources<CreateAccountParam, String>(context, createAccountParam, result) {
 
             override fun shouldLoadFromLocal(params: CreateAccountParam): Boolean = false
             override fun shouldSaveToLocal(params: CreateAccountParam): Boolean = false
 
-            override suspend fun callApi(): Resource<Unit> {
+            override suspend fun callApi(): Resource<String> {
                 return userRemoteDataSource.createNewUser(createAccountParam)
             }
 
@@ -172,10 +175,10 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun getUsers(
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<UserItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
 
-        object : NetworkBoundResources<Map<String, String>, MutableList<UserItem>>(
+        object : NetworkBoundResources<Map<String, String>, MutableList<out Item>>(
             context,
             userTypes,
             result
@@ -184,7 +187,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldLoadFromLocal(params: Map<String, String>): Boolean = false
             override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<UserItem>> {
+            override suspend fun callApi(): Resource<MutableList<out Item>> {
                 return userRemoteDataSource.getUsers(userTypes)
             }
         }.createCall()
@@ -193,9 +196,9 @@ class UserRepositoryImp @Inject constructor(
     override suspend fun getUsersByLimit(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<UserItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
-        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<UserItem>>(
+        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<out Item>>(
             context,
             Pair(lastUserId, userTypes),
             result
@@ -207,7 +210,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<Long, Map<String, String>>): Boolean = false
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<UserItem>> {
+            override suspend fun callApi(): Resource<MutableList<out Item>> {
                 return userRemoteDataSource.getPagingUsers(params.first, params.second)
             }
         }.createCall()

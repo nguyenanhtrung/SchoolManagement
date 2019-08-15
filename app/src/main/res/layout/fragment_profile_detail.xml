@@ -77,14 +77,15 @@
             app:srcCompat="@drawable/ic_camera" />
 
         <TextView
-            android:id="@+id/text_user_type_name"
+            android:id="@+id/text_user_type_and_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="@style/TextAccountType"
             app:layout_constraintEnd_toEndOf="@+id/text_profile_name"
             app:layout_constraintStart_toStartOf="@+id/text_profile_name"
             app:layout_constraintTop_toBottomOf="@+id/text_profile_name"
-            tools:text="Sinh Vien" />
+            tools:text="Sinh Vien -13213123
+" />
 
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/toggle_group_gender"
@@ -94,7 +95,7 @@
             app:checkedButton="@id/button_male_gender"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-            app:layout_constraintTop_toBottomOf="@+id/text_user_type_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_user_type_and_id"
             app:singleSelection="true">
 
             <com.google.android.material.button.MaterialButton
@@ -112,24 +113,13 @@
                 android:text="@string/title_female" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <ImageButton
-            android:id="@+id/button_modify_gender_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/toggle_group_gender"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintTop_toTopOf="@+id/toggle_group_gender"
-            app:srcCompat="@drawable/ic_edit" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_birthday"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/title_birthday"
-            app:layout_constraintEnd_toStartOf="@+id/button_mofidy_birthday_state"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/toggle_group_gender">
 
@@ -139,25 +129,14 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/button_mofidy_birthday_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/input_layout_birthday"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintTop_toTopOf="@+id/input_layout_birthday"
-            app:srcCompat="@drawable/ic_edit" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_address"
             style="@style/Widget.AddressInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_address"
-            app:layout_constraintEnd_toStartOf="@+id/button_modify_address_state"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_birthday">
 
@@ -167,25 +146,14 @@
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageButton
-            android:id="@+id/button_modify_address_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="@+id/input_layout_address"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintTop_toTopOf="@+id/input_layout_address"
-            app:srcCompat="@drawable/ic_edit" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_phone"
             style="@style/Widget.PhoneInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_phone_number"
-            app:layout_constraintEnd_toStartOf="@+id/button_modify_phone_state"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_address">
 
@@ -200,9 +168,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             android:hint="@string/hint_input_email"
-            app:layout_constraintEnd_toStartOf="@+id/button_modify_email_state"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_phone">
 
@@ -211,26 +178,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageButton
-            android:id="@+id/button_modify_phone_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/input_layout_phone"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintTop_toTopOf="@+id/input_layout_phone"
-            app:srcCompat="@drawable/ic_edit" />
-
-        <ImageButton
-            android:id="@+id/button_modify_email_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/input_layout_email"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
-            app:layout_constraintTop_toTopOf="@+id/input_layout_email"
-            app:srcCompat="@drawable/ic_edit" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

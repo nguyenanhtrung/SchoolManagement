@@ -12,8 +12,10 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.util.Validator
 import javax.inject.Inject
 
-class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
-                                         private val getUserTypesUseCase: GetUserTypesUseCase) : BaseActivityViewModel() {
+class LoginViewModel @Inject constructor(
+    private val loginUseCase: LoginUseCase,
+    private val getUserTypesUseCase: GetUserTypesUseCase
+) : BaseActivityViewModel() {
 
     private val _emailErrorLiveData by lazy {
         MutableLiveData<ErrorState>()
@@ -53,11 +55,14 @@ class LoginViewModel @Inject constructor(private val loginUseCase: LoginUseCase,
 
 
     internal fun onClickButtonLogin(email: String, password: String) {
-        val isLoginValid = Validator.isEmailValid(email, _emailErrorLiveData) && Validator.isPasswordValid(password, _passwordErrorLiveData)
+        val isLoginValid = Validator.isEmailValid(
+            email,
+            _emailErrorLiveData
+        ) && Validator.isPasswordValid(password, _passwordErrorLiveData)
         if (isLoginValid) {
             //call to login
             val loginPair = email to password
-            loginUseCase.invoke(viewModelScope,loginPair,_loginResultLiveData)
+            loginUseCase.invoke(viewModelScope, loginPair, _loginResultLiveData)
         }
     }
 

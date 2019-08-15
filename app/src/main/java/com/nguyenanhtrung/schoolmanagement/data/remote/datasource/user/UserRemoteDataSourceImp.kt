@@ -18,6 +18,7 @@ import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_PROFILES_PATH
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
 import javax.inject.Inject
@@ -91,7 +92,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return querySnapshot.startAfter(lastDocumentSnapshot).get().await()
     }
 
-    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
+    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
             .orderBy("id")
             .limit(USERS_LIMIT)
@@ -198,11 +199,12 @@ class UserRemoteDataSourceImp @Inject constructor(
         return userType.name
     }
 
-    override suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<Unit> {
+    override suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<String> {
         return try {
-            registerNewUser(createAccountParam)
+            val newFirebaseUserId = registerNewUser(createAccountParam)
             updateUserStatus(createAccountParam.id)
-            return userIdRemoteDataSource.setMaxUserId(createAccountParam.id.toLong())
+            userIdRemoteDataSource.setMaxUserId(createAccountParam.id.toLong())
+            return Resource.success(newFirebaseUserId)
         } catch (collisionEx: com.google.firebase.auth.FirebaseAuthUserCollisionException) {
             Resource.failure(R.string.error_registered_email)
         } catch (ex: Exception) {
@@ -211,7 +213,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         }
     }
 
-    private suspend fun registerNewUser(createAccountParam: CreateAccountParam) {
+    private suspend fun registerNewUser(createAccountParam: CreateAccountParam): String {
         val secondFirebaseAuth = createSecondFirebaseAuth(createAccountParam.id)
         secondFirebaseAuth.createUserWithEmailAndPassword(
             createAccountParam.email,
@@ -234,6 +236,7 @@ class UserRemoteDataSourceImp @Inject constructor(
             .await()
         updateUserPassword(newUserId, password = createAccountParam.password)
         updateUserProfileStatus(newUserId, false)
+        return newUserId
     }
 
     private suspend fun updateUserPassword(fireBaseUserId: String, password: String) {
@@ -295,7 +298,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getPagingUsers(
         lastUserId: Long,
         userTypes: Map<String, String>
-    ): Resource<MutableList<UserItem>> {
+    ): Resource<MutableList<out Item>> {
         val lastDocument =
             firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
                 "id",

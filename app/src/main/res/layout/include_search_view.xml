@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foregroundTint="@color/colorSurface"
-    android:background="@drawable/background_round_dialog"
-    app:startIconDrawable="@drawable/ic_search_black">
+    android:background="@drawable/background_round_dialog">
 
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/edit_text_search"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/heigh_search_bar"
+        android:inputType="none"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:drawableStart="@drawable/ic_search_black"
         android:background="@android:color/transparent"
-        android:text="asdasdasd" />
+        />
 
 
-</com.google.android.material.textfield.TextInputLayout>
+</com.google.android.material.card.MaterialCardView>

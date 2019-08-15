@@ -18,11 +18,15 @@
         <item name="fontFamily">@font/roboto</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">marquee</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMinTextSize">12sp</item>
+        <item name="autoSizeStepGranularity">3sp</item>
     </style>
 
     <style name="TextNormalBold" parent="TextNormal">
         <item name="android:fontFamily">@font/roboto_medium</item>
         <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="TextComment" parent="TextAppearance.MaterialComponents.Body1">

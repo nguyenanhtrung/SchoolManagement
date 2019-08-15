@@ -3,12 +3,8 @@ package com.nguyenanhtrung.schoolmanagement.ui.dashboard
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavDestination
 import androidx.navigation.NavDirections
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
-import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
 import com.nguyenanhtrung.schoolmanagement.domain.navigation.GetDestinationIdUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserInfoUseCase
@@ -43,7 +39,8 @@ class DashboardViewModel @Inject constructor(
 
 
     internal fun loadUserInfo() {
-        if (_userInfoLiveData.value != null) {
+        val userInfoResource = _userInfoLiveData.value
+        if (userInfoResource != null && userInfoResource.status == Status.SUCCESS) {
             return
         }
         getUserInfoUseCase.invoke(viewModelScope, Unit, _userInfoLiveData)

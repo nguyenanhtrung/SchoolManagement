@@ -47,6 +47,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/margin_small_50"
             tools:text="@string/title_updated"
+            android:clickable="false"
             app:chipBackgroundColor="@color/colorPrimary"
             android:textAppearance="@style/TextNormal"
             android:textColor="@color/colorOnPrimary"

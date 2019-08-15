@@ -54,7 +54,7 @@
     <string name="error_empty_password">Vui lòng nhập mật khẩu</string>
     <string name="error_length_password">Độ dài mật khẩu từ 8 đến 15 kí tự.Vui lòng nhập lại</string>
     <string name="empty">""</string>
-    <string name="error_wrong_login">Email hoặc mật khẩu không chính xác.Vui lòng nhập lại</string>
+    <string name="error_wrong_login">Email hoặc mật khẩu không chính xác.</string>
     <string name="error_network">Kết nối mạng đã ngắt.</string>
     <string name="retry">Thử lại</string>
     <string name="title_error_state">Có lỗi đã xảy ra</string>
@@ -96,4 +96,5 @@
     <string name="error_birthday_format">Định dạng ngày sinh không hợp lệ</string>
     <string name="error_profile_image_not_selected">Vui lòng chọn ảnh</string>
     <string name="title_success_update_profile">Cập nhật thông tin thành công!</string>
+    <string name="title_success_create_account">Tạo tài khoản thành công. Nhấn nút cập nhật để cập nhật thông tin cho tài khoản</string>
 </resources>
