@@ -6,7 +6,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_account.*
 
-class UserItem(val user: User) : Item() {
+data class UserItem(val user: User) : Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         viewHolder.text_account_email.text = user.accountName

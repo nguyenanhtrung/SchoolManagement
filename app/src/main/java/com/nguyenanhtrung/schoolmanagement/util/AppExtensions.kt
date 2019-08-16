@@ -19,6 +19,7 @@ fun GroupAdapter<ViewHolder>.removeLastItem() {
     removeGroup(itemCount - 1)
 }
 
+
 fun GroupAdapter<ViewHolder>.addErrorItem(messageId: Int, retryEvent: () -> Unit) {
     add(ErrorItem(
         messageId,

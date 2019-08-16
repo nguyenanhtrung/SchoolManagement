@@ -4,17 +4,20 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foregroundTint="@color/colorSurface"
+    app:cardElevation="@dimen/elevation_search_view"
     android:background="@drawable/background_round_dialog">
 
 
-    <com.google.android.material.textfield.TextInputEditText
+    <androidx.appcompat.widget.SearchView
         android:id="@+id/edit_text_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/heigh_search_bar"
-        android:inputType="none"
-        android:layout_marginStart="@dimen/margin_normal_100"
-        android:drawableStart="@drawable/ic_search_black"
+        app:searchIcon="@drawable/ic_search_black"
+        app:closeIcon="@drawable/ic_clear"
+        app:defaultQueryHint="@string/title_search"
         android:background="@android:color/transparent"
+        android:iconifiedByDefault="false"
+        android:inputType="text"
         />
 
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -23,10 +24,12 @@ import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
+import com.nguyenanhtrung.schoolmanagement.util.hideKeyboard
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_list_account.*
+import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
 
 class AccountManagementFragment : BaseListItemFragment() {
@@ -45,6 +48,8 @@ class AccountManagementFragment : BaseListItemFragment() {
     override fun bindRecyclerView(): RecyclerView = recycler_view_accounts
 
     override fun bindItemsViewModel(): BaseListItemViewModel = accountViewModel
+
+    override fun bindSearchView(): SearchView = edit_text_search
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -65,6 +70,8 @@ class AccountManagementFragment : BaseListItemFragment() {
         subscribeMaxUserId()
     }
 
+
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val activity = (requireActivity() as AppCompatActivity)
@@ -83,6 +90,7 @@ class AccountManagementFragment : BaseListItemFragment() {
     private fun subscribeNavigateToAccountDetail() {
         accountViewModel.navToAccountDetail.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { position ->
+                hideKeyboard(edit_text_search)
                 openAccountDetailFragment(position)
             }
         })
@@ -111,7 +119,7 @@ class AccountManagementFragment : BaseListItemFragment() {
         inflater.inflate(R.menu.fragment_accounts_management, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         android.R.id.home -> findNavController().popBackStack()
         else -> super.onOptionsItemSelected(item)
     }

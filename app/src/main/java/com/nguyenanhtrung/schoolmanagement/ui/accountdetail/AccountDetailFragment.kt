@@ -58,6 +58,8 @@ class AccountDetailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         val currentUser = args.userInfo
         detailViewModel.currentUserInfo = currentUser
+        subscribeUserInfo()
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -76,7 +78,6 @@ class AccountDetailFragment : BaseFragment() {
         subscribeStateUpdateBasicInfo()
         subscribeErrorName()
         subscribeStateChangePassword()
-        subscribeUserInfo()
         subscribeSelectedUserType()
         subscribeErrorPassword()
         subscribeResultChangePassword()
@@ -85,7 +86,7 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeResultChangePassword() {
         detailViewModel.resultChangePassword.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS) {
-                button_status_change_password.setImageResource(R.drawable.ic_edit)
+//                button_status_change_password.setImageResource(R.drawable.ic_edit)
                 mainViewModel.showMessage(R.string.success_change_password)
             }
         })
@@ -106,7 +107,7 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeStateUpdateBasicInfo() {
         detailViewModel.stateUpdateBasicInfo.observe(viewLifecycleOwner, Observer {
             if (it.status == Status.SUCCESS) {
-                button_status_mofidy_info.setImageResource(R.drawable.ic_edit)
+//                button_status_mofidy_info.setImageResource(R.drawable.ic_edit)
                 mainViewModel.showMessage(R.string.success_modify_info)
             }
         })
@@ -116,11 +117,11 @@ class AccountDetailFragment : BaseFragment() {
         detailViewModel.stateModifyPassword.observe(viewLifecycleOwner, Observer {
             when (it) {
                 ModificationState.Edit -> {
-                    enableEditInput(
-                        button_status_change_password,
-                        input_layout_password,
-                        edit_text_password
-                    )
+//                    enableEditInput(
+//                        button_status_change_password,
+//                        input_layout_password,
+//                        edit_text_password
+//                    )
                 }
                 ModificationState.Save -> {
                     disableEditInput(
@@ -137,11 +138,11 @@ class AccountDetailFragment : BaseFragment() {
         detailViewModel.stateModifyInfo.observe(viewLifecycleOwner, Observer {
             when (it) {
                 ModificationState.Edit -> {
-                    enableEditInput(
-                        button_status_mofidy_info,
-                        input_layout_name,
-                        edit_text_name
-                    )
+//                    enableEditInput(
+//                        button_status_mofidy_info,
+//                        input_layout_name,
+//                        edit_text_name
+//                    )
                     spinner_account_type.isEnabled = true
                 }
                 ModificationState.Save -> {
@@ -175,13 +176,13 @@ class AccountDetailFragment : BaseFragment() {
 
 
     private fun setupModifyInfoButtonEvent() {
-        button_status_mofidy_info.setOnClickListener {
-            detailViewModel.onClickModifyInfoButton()
-        }
-
-        button_status_change_password.setOnClickListener {
-            detailViewModel.onClickModifyPasswordButton()
-        }
+//        button_status_mofidy_info.setOnClickListener {
+//            detailViewModel.onClickModifyInfoButton()
+//        }
+//
+//        button_status_change_password.setOnClickListener {
+//            detailViewModel.onClickModifyPasswordButton()
+//        }
     }
 
     private fun setupNavigationEvent() {
@@ -199,7 +200,7 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     private fun subscribeUserInfo() {
-        detailViewModel.currentUserLiveData.observe(viewLifecycleOwner, Observer {
+        detailViewModel.currentUserLiveData.observe(this, Observer {
             it?.let {
                 showUserInfo(it)
             }
@@ -218,13 +219,10 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     private fun showUserInfo(user: User) {
-        with(user) {
-            text_account_name.text = accountName
-            text_account_id.text =
-                String.format("%s: %d", getString(R.string.title_account_id), user.id)
-            image_account_detail.loadImageIfEmptyPath(user.avatarPath)
-            edit_text_name.setText(user.name)
-            detailViewModel.showSelectedUserType(user.typeId)
-        }
+        text_account_name.text = user.accountName
+        image_account_detail.loadImageIfEmptyPath(user.avatarPath)
+        edit_text_name.setText(user.name)
+        text_account_detail_id.text = getString(R.string.title_account_id) + ": " + user.id
+        detailViewModel.showSelectedUserType(user.typeId)
     }
 }

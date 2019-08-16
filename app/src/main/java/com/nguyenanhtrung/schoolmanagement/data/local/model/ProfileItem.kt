@@ -14,7 +14,7 @@ class ProfileItem constructor(val profile: Profile) : Item() {
             image_account_profile.loadImageIfEmptyPath(profile.avatarPath)
             text_name.text = profile.name
             val context = itemView.context
-            text_account_id.text =
+            text_account_detail_id.text =
                 "${context.getString(R.string.title_account_id)}: ${profile.userId}"
             if (profile.isProfileUpdated) {
                 chip_status_profile.setTextColor(

@@ -30,7 +30,7 @@
             tools:text="Nguyen Anh Trung" />
 
         <TextView
-            android:id="@+id/text_account_id"
+            android:id="@+id/text_account_detail_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_name"
@@ -43,7 +43,7 @@
             android:id="@+id/chip_status_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_account_id"
+            android:layout_below="@id/text_account_detail_id"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/margin_small_50"
             tools:text="@string/title_updated"

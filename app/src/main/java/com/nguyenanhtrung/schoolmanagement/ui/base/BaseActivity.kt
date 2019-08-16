@@ -14,13 +14,14 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Visibility
 import com.nguyenanhtrung.schoolmanagement.util.NetworkLiveData
 
 
 abstract class BaseActivity : AppCompatActivity() {
 
 
-    lateinit var baseViewModel: BaseActivityViewModel
+    private lateinit var baseViewModel: BaseActivityViewModel
 
     private lateinit var loadingBar: ProgressBar
     private lateinit var networkLiveData: NetworkLiveData
@@ -45,6 +46,7 @@ abstract class BaseActivity : AppCompatActivity() {
         })
 
     }
+
 
     private fun subscribeMessage() {
         baseViewModel.messageLiveData.observe(this, Observer {

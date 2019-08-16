@@ -23,11 +23,12 @@
             android:id="@+id/text_account_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/margin_small_100"
-            android:transitionName="@string/transition_name_account_email"
             android:layout_toEndOf="@id/image_account"
             android:maxLines="1"
             android:textAppearance="@style/TitleNormal"
+            android:transitionName="@string/transition_name_account_email"
             tools:text="nguyenanhtrung2495@gmail.com" />
 
         <TextView

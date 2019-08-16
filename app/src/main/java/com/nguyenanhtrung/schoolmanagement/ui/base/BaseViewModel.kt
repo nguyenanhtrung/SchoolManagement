@@ -5,10 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 
 abstract class BaseViewModel : ViewModel() {
 

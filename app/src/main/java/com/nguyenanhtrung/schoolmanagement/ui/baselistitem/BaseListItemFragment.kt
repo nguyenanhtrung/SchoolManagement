@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.baselistitem
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,7 @@ abstract class BaseListItemFragment : BaseFragment() {
     }
 
     private lateinit var endlessScrollListener: EndlessScrollListener
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +40,17 @@ abstract class BaseListItemFragment : BaseFragment() {
         subscribeEmptyStateGetItems()
         subscribeErrorItems()
         subscribeStateLoadingMoreItems()
+        subscribeClearItems()
+    }
+
+
+
+    private fun subscribeClearItems() {
+        itemsViewModel.clearItemsLiveData.observe(this, Observer {
+            if (it) {
+                itemAdapter.clear()
+            }
+        })
     }
 
     private fun subscribeItems() {
@@ -80,11 +93,30 @@ abstract class BaseListItemFragment : BaseFragment() {
         })
     }
 
+    private fun bindBaseViews() {
+        recyclerView = bindRecyclerView()
+        searchView = bindSearchView()
+    }
+
     override fun setupUiEvents() {
+        bindBaseViews()
+        setupSearchItemsEvent()
         setupRecyclerViewItems()
         setupItemClickEvent()
         setupLoadMoreItemEvent()
         itemsViewModel.loadItems()
+    }
+
+    private fun setupSearchItemsEvent() {
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean = false
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                itemsViewModel.onSearchItemQueryChange(newText)
+                return false
+            }
+        })
+
     }
 
     private fun setupItemClickEvent() {
@@ -94,23 +126,24 @@ abstract class BaseListItemFragment : BaseFragment() {
     }
 
     private fun setupRecyclerViewItems() {
-        recyclerView = bindRecyclerView()
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
         recyclerView.adapter = itemAdapter
     }
 
     private fun setupLoadMoreItemEvent() {
         if (!::endlessScrollListener.isInitialized) {
-            endlessScrollListener = object : EndlessScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
-                override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
-                    val lastUserItem = itemAdapter.getItem(itemAdapter.itemCount - 1)
-                    itemsViewModel.onLoadMoreItem(lastUserItem)
+            endlessScrollListener =
+                object : EndlessScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
+                    override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
+                        val lastUserItem = itemAdapter.getItem(itemAdapter.itemCount - 1)
+                        itemsViewModel.onLoadMoreItem(lastUserItem)
+                    }
                 }
-            }
         }
         recyclerView.addOnScrollListener(endlessScrollListener)
     }
 
     abstract fun bindRecyclerView(): RecyclerView
     abstract fun bindItemsViewModel(): BaseListItemViewModel
+    abstract fun bindSearchView(): SearchView
 }

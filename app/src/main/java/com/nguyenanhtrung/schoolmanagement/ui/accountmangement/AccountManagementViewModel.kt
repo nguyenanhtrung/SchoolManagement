@@ -37,6 +37,7 @@ class AccountManagementViewModel @Inject constructor(
         get() = _maxUserIdLiveData
 
 
+
     override fun loadMoreItems(
         lastItem: Item<ViewHolder>,
         itemsLiveData: MutableLiveData<Resource<MutableList<out com.xwray.groupie.kotlinandroidextensions.Item>>>
@@ -53,6 +54,20 @@ class AccountManagementViewModel @Inject constructor(
     override fun onCustomClickItem(position: Int) {
         _navToAccountDetail.value = Event(position)
     }
+
+    override fun customCheckItemWithQuery(
+        query: String,
+        item: com.xwray.groupie.kotlinandroidextensions.Item
+    ): Boolean {
+        if (item is UserItem) {
+            val user = item.user
+            val accountName = user.accountName
+            return accountName.contains(query)
+        }
+        return false
+    }
+
+
 
     internal fun onClickButtonCreateAccount() {
         getMaxUserIdUseCase.invoke(viewModelScope, Unit, _maxUserIdLiveData)

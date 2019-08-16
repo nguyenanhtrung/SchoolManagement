@@ -1,10 +1,15 @@
 package com.nguyenanhtrung.schoolmanagement.util
 
+import android.content.Context
+import android.inputmethodservice.InputMethodService
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -75,6 +80,16 @@ fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
             }
         }
     }
+}
+
+fun Fragment.showKeyboard(view: View) {
+    val input = getSystemService(requireActivity() ,InputMethodManager::class.java) as InputMethodManager
+    input.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
+}
+
+fun Fragment.hideKeyboard(view: View) {
+    val input = getSystemService(requireActivity() ,InputMethodManager::class.java) as InputMethodManager
+    input.hideSoftInputFromWindow(view.windowToken, 0)
 }
 
 fun ImageView.loadImageIfEmptyPath(imagePath: String) {
