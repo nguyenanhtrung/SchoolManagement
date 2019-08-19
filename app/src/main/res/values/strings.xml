@@ -97,4 +97,6 @@
     <string name="error_profile_image_not_selected">Vui lòng chọn ảnh</string>
     <string name="title_success_update_profile">Cập nhật thông tin thành công!</string>
     <string name="title_success_create_account">Tạo tài khoản thành công. Nhấn nút cập nhật để cập nhật thông tin cho tài khoản</string>
+    <string name="title_edit">Sửa</string>
+    <string name="title_save">Lưu</string>
 </resources>

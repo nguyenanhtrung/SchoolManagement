@@ -1,13 +1,12 @@
 package com.nguyenanhtrung.schoolmanagement.ui.baselistitem
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ListEmptyState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.LoadMoreItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
@@ -17,6 +16,7 @@ import com.nguyenanhtrung.schoolmanagement.util.removeFirstItem
 import com.nguyenanhtrung.schoolmanagement.util.removeLastItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
+import kotlinx.android.synthetic.main.include_search_view.*
 
 abstract class BaseListItemFragment : BaseFragment() {
 
@@ -44,7 +44,6 @@ abstract class BaseListItemFragment : BaseFragment() {
     }
 
 
-
     private fun subscribeClearItems() {
         itemsViewModel.clearItemsLiveData.observe(this, Observer {
             if (it) {
@@ -67,7 +66,17 @@ abstract class BaseListItemFragment : BaseFragment() {
 
     private fun subscribeEmptyStateGetItems() {
         itemsViewModel.emptyUsersLiveData.observe(this, Observer {
-            itemAdapter.add(it)
+            when(it) {
+                ListEmptyState.CLEAR -> {
+                    itemAdapter.clear()
+                    itemsViewModel.itemCopys.clear()
+                }
+                is ListEmptyState.EMPTY -> {
+                    itemAdapter.add(it.emptyView)
+                    itemsViewModel.itemCopys.add(it.emptyView)
+                }
+            }
+
         })
     }
 
@@ -113,7 +122,7 @@ abstract class BaseListItemFragment : BaseFragment() {
 
             override fun onQueryTextChange(newText: String): Boolean {
                 itemsViewModel.onSearchItemQueryChange(newText)
-                return false
+                return true
             }
         })
 

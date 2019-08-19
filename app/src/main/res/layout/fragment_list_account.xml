@@ -37,6 +37,7 @@
         android:layout_gravity="bottom"
         app:hideOnScroll="true"
         app:fabAlignmentMode="end"
+        android:animateLayoutChanges="true"
         app:navigationIcon="@drawable/ic_back_white"
         style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
         />

@@ -68,6 +68,11 @@ class AccountManagementFragment : BaseListItemFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         subscribeMaxUserId()
+        mainViewModel.mutableAccountEvent.observe(this, Observer {
+            it?.let {
+                accountViewModel.onSuccessCreateAccount(it)
+            }
+        })
     }
 
 

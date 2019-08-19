@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.main
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData
+import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import javax.inject.Inject
 
@@ -25,6 +26,13 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
     }
     internal val profileUpdated: LiveData<Int>
         get() = mutableProfileUpdated
+
+    val mutableAccountEvent by lazy {
+        MutableLiveData<User>()
+    }
+    val accountEvent: LiveData<User>
+        get() = mutableAccountEvent
+
 
 
 

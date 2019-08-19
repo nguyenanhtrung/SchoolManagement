@@ -10,7 +10,6 @@ import com.nguyenanhtrung.schoolmanagement.domain.user.UpdateUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertype.GetUserTypesUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.util.Validator
-import timber.log.Timber
 import javax.inject.Inject
 
 class AccountDetailViewModel @Inject constructor(
@@ -39,23 +38,6 @@ class AccountDetailViewModel @Inject constructor(
     internal val indexUserTypeSelected: LiveData<Int>
         get() = _indexUserTypeSelected
 
-    private val _stateModifyInfo by lazy {
-        MutableLiveData<ModificationState>()
-    }
-    internal val stateModifyInfo: LiveData<ModificationState>
-        get() = _stateModifyInfo
-
-    private val _stateModifyPassword by lazy {
-        MutableLiveData<ModificationState>()
-    }
-    internal val stateModifyPassword: LiveData<ModificationState>
-        get() = _stateModifyPassword
-
-    private val _stateUpdateBasicInfo by lazy {
-        createApiResultLiveData<Unit>()
-    }
-    internal val stateUpdateBasicInfo: LiveData<Resource<Unit>>
-        get() = _stateUpdateBasicInfo
 
     private val _errorNameLiveData by lazy {
         MutableLiveData<ErrorState>()
@@ -69,28 +51,10 @@ class AccountDetailViewModel @Inject constructor(
     internal val errorPasswordLiveData: LiveData<ErrorState>
         get() = _errorPasswordLiveData
 
-    private val _resultChangePassword by lazy {
-        createApiResultLiveData<Unit>()
-    }
-    internal val resultChangePassword: LiveData<Resource<Unit>>
-        get() = _resultChangePassword
+    internal fun onClickButtonEdit() {
 
-
-    internal fun onClickModifyInfoButton() {
-        if (_stateModifyInfo.value == null || _stateModifyInfo.value == ModificationState.Save) {
-            _stateModifyInfo.value = ModificationState.Edit
-        } else {
-            _stateModifyInfo.value = ModificationState.Save
-        }
     }
 
-    internal fun onClickModifyPasswordButton() {
-        if (_stateModifyPassword.value == null || _stateModifyPassword.value == ModificationState.Save) {
-            _stateModifyPassword.value = ModificationState.Edit
-        } else {
-            _stateModifyPassword.value = ModificationState.Save
-        }
-    }
 
     internal fun saveBasicInfoModification(name: String, indexSelectedType: Int) {
         if (isBasicInfoModified(name, indexSelectedType)) {
@@ -109,7 +73,7 @@ class AccountDetailViewModel @Inject constructor(
                 modificationInfos["typeId"] = getUserTypeIdByIndex(indexSelectedType)
             }
             val newUserInfo = Pair(originUserInfo.firebaseUserId, modificationInfos)
-            updateUserInfoUseCase.invoke(viewModelScope, newUserInfo, _stateUpdateBasicInfo)
+            //updateUserInfoUseCase.invoke(viewModelScope, newUserInfo, _stateUpdateBasicInfo)
         }
 
     }
@@ -122,7 +86,7 @@ class AccountDetailViewModel @Inject constructor(
                 originUserInfo.accountName,
                 newPassword
             )
-            changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
+          //  changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
         }
     }
 
@@ -152,13 +116,10 @@ class AccountDetailViewModel @Inject constructor(
     }
 
     internal fun showSelectedUserType(typeId: String) {
-        Timber.d("TypeId = $typeId")
         val userTypesResource = _userTypesLiveData.value
-        Timber.d("UserTypesData = ${userTypesResource.toString()}")
         userTypesResource?.data?.let {
             val indexOfType = it.indexOfFirst { userType ->
                 val check = typeId == userType.id
-                Timber.d("Founded TypeId = $typeId")
                 check
             }
 

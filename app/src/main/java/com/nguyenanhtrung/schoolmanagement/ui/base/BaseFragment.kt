@@ -21,7 +21,10 @@ abstract class BaseFragment : Fragment() {
         injectDependencies(requireActivity().application)
         fragmentViewModel = createFragmentViewModel()
         activityViewModel = bindActivityViewModel()
-
+        subscribeMessage()
+        subscribeViewState()
+        subscribeLoading()
+        subscribeError()
     }
 
     override fun onCreateView(
@@ -32,35 +35,31 @@ abstract class BaseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        subscribeMessage()
-        subscribeViewState()
-        subscribeLoading()
-        subscribeError()
         setupUiEvents()
 
 
     }
 
     private fun subscribeMessage() {
-        fragmentViewModel.messageLiveData.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.messageLiveData.observe(this, Observer {
             activityViewModel.showMessage(it)
         })
     }
 
     private fun subscribeViewState() {
-        fragmentViewModel.viewStateLiveData.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.viewStateLiveData.observe(this, Observer {
             activityViewModel.handleViewState(it)
         })
     }
 
     private fun subscribeError() {
-        fragmentViewModel.errorLiveData.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.errorLiveData.observe(this, Observer {
             activityViewModel.showError(it)
         })
     }
 
     private fun subscribeLoading() {
-        fragmentViewModel.loadingLiveData.observe(viewLifecycleOwner, Observer {
+        fragmentViewModel.loadingLiveData.observe(this, Observer {
             activityViewModel.setLoading(it)
         })
     }

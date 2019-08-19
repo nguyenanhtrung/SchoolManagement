@@ -67,6 +67,7 @@ class CreateAccountFragment : BaseFragment() {
                     R.string.title_update,
                     R.id.dialogFlowStatusDest
                 )
+
                 findNavController().navigate(
                     CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment(
                         flowStatusInfo

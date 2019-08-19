@@ -67,6 +67,14 @@ class AccountManagementViewModel @Inject constructor(
         return false
     }
 
+    internal fun onSuccessCreateAccount(newUser: User) {
+        if (isItemsEmpty()) {
+            _emptyUsersLiveData.value = ListEmptyState.CLEAR
+        }
+        val newUserItem = UserItem(newUser)
+        addItems(mutableListOf(newUserItem))
+    }
+
 
 
     internal fun onClickButtonCreateAccount() {

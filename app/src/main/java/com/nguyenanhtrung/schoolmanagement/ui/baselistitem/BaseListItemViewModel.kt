@@ -2,7 +2,6 @@ package com.nguyenanhtrung.schoolmanagement.ui.baselistitem
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.xwray.groupie.ViewHolder
@@ -10,9 +9,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 
 abstract class BaseListItemViewModel : BaseViewModel() {
 
-    private val itemCopys by lazy {
+    internal val itemCopys by lazy {
         mutableListOf<Item>()
     }
+
+    private var lastQueryItem: String? = null
 
     private var shouldLoadMoreItem = true
 
@@ -22,10 +23,10 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     internal val getItemsLiveData: LiveData<Resource<MutableList<out Item>>>
         get() = _getItemsLiveData
 
-    private val _emptyUsersLiveData by lazy {
-        MutableLiveData<EmptyItem>()
+    protected val _emptyUsersLiveData by lazy {
+        MutableLiveData<ListEmptyState>()
     }
-    internal val emptyUsersLiveData: LiveData<EmptyItem>
+    internal val emptyUsersLiveData: LiveData<ListEmptyState>
         get() = _emptyUsersLiveData
 
     private val _errorItemsLiveData by lazy {
@@ -67,7 +68,8 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     internal fun handleStatusGetItems(getItemsResult: Resource<MutableList<out Item>>) {
         when (getItemsResult.status) {
             Status.EMPTY -> {
-                _emptyUsersLiveData.value = EmptyItem(getItemsResult.error)
+                val emptyItem = EmptyItem(getItemsResult.error)
+                _emptyUsersLiveData.value = ListEmptyState.EMPTY(emptyItem)
             }
             Status.FAILURE, Status.EXCEPTION -> {
                 if (_errorItemsLiveData.value == null) {
@@ -101,7 +103,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     internal fun loadItems() {
         val getItemsResult = _getItemsLiveData.value
         if (getItemsResult != null && (getItemsResult.status == Status.SUCCESS ||
-                    getItemsResult.status == Status.COMPLETE)
+                    getItemsResult.status == Status.COMPLETE || getItemsResult.status == Status.EMPTY)
         ) {
             return
         }
@@ -128,17 +130,23 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         }
     }
 
+    protected fun isItemsEmpty(): Boolean {
+        val emptyState = _emptyUsersLiveData.value
+        return emptyState == null
+    }
+
     internal fun onSearchItemQueryChange(query: String) {
-        if ((query.isEmpty() && itemsLength == itemCopys.size) ||
-            (query.isNotEmpty() && itemsLength < itemCopys.size)) {
+        if ((lastQueryItem == null && query.isEmpty()) || (lastQueryItem == query) || isItemsEmpty()) {
             return
         }
-        //cleaer current list item in recycler view
+        lastQueryItem = query
+
+        //clear current list item in recycler view
         _clearItemsLiveData.value = true
         if (query.isEmpty()) {
             enableLoadMore()
             //copy list from item copys to current list in recycler view
-            _itemsLiveData.value = itemCopys.toMutableList()
+            _itemsLiveData.value = itemCopys
         } else {
             disableLoadMore()
             val newItems = mutableListOf<Item>()
@@ -148,8 +156,13 @@ abstract class BaseListItemViewModel : BaseViewModel() {
                     newItems += it
                 }
             }
-            _itemsLiveData.value = newItems.toMutableList()
+            _itemsLiveData.value = newItems
         }
+    }
+
+    protected fun addItems(items: MutableList<Item>) {
+        _itemsLiveData.value = items
+        itemCopys.addAll(items)
     }
 
 

@@ -95,6 +95,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
             .orderBy("id")
+            .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
             .limit(USERS_LIMIT)
             .get()
             .await()
@@ -189,7 +190,7 @@ class UserRemoteDataSourceImp @Inject constructor(
             typeName,
             userCloudStore.typeId,
             userCloudStore.avatarPath,
-            userCloudStore.userName
+            userCloudStore.accountName
         )
         return Resource.success(userMapped)
     }
@@ -213,7 +214,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         }
     }
 
-    private suspend fun registerNewUser(createAccountParam: CreateAccountParam): String {
+    private suspend fun eregisterNewUser(createAccountParam: CreateAccountParam): String {
         val secondFirebaseAuth = createSecondFirebaseAuth(createAccountParam.id)
         secondFirebaseAuth.createUserWithEmailAndPassword(
             createAccountParam.email,
@@ -240,16 +241,20 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
     private suspend fun updateUserPassword(fireBaseUserId: String, password: String) {
+        val field = ArrayMap<String, String>()
+        field["password"] = password
         firestore.collection(AppKey.AUTHENTICATION_PATH)
             .document(fireBaseUserId)
-            .update("password", password)
+            .set(field)
             .await()
     }
 
     private suspend fun updateUserProfileStatus(fireBaseUserId: String, isUpdated: Boolean) {
+        val field = ArrayMap<String, Boolean>()
+        field["updated"] = isUpdated
         firestore.collection(USER_PROFILES_PATH)
             .document(fireBaseUserId)
-            .update("updated", isUpdated)
+            .set(field)
             .await()
     }
 
