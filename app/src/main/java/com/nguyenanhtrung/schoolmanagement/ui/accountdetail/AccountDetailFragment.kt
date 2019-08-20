@@ -12,8 +12,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ModificationState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.User
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -61,6 +60,26 @@ class AccountDetailFragment : BaseFragment() {
         subscribeStateModifyPassword()
         subscribeStateModifyUserType()
         subscribeStateEditAccoungInfo()
+        subscribeStateSaveModifiedInfo()
+    }
+
+    private fun subscribeStateSaveModifiedInfo() {
+        detailViewModel.stateSaveModifiedInfo.observe(this, Observer {
+            if (it.status == Status.SUCCESS) {
+                detailViewModel.onSuccessSaveModifiedAccountInfo()
+                val accountDetailParams = detailViewModel.accountDetailParams
+                val oldAccInfo = accountDetailParams.user
+                val modifiedAccountInfo = User(
+                    oldAccInfo.id,
+                    oldAccInfo.firebaseUserId,
+                    edit_text_name.getString(),
+                    spinner_account_type.selectedItem as String,
+                    detailViewModel.getUserTypeIdByIndex(spinner_account_type.selectedIndex),
+                    accountName = oldAccInfo.accountName
+                )
+                mainViewModel.updateAccountInfo.value = Event(modifiedAccountInfo)
+            }
+        })
     }
 
     private fun subscribeStateEditAccoungInfo() {
@@ -150,6 +169,7 @@ class AccountDetailFragment : BaseFragment() {
                 )
                 true
             }
+
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -199,7 +219,7 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeUserInfo() {
         detailViewModel.currentUserLiveData.observe(this, Observer {
             it?.let {
-                showUserInfo(it)
+                showAccountDetailInfo(it)
             }
         })
     }
@@ -215,11 +235,13 @@ class AccountDetailFragment : BaseFragment() {
         })
     }
 
-    private fun showUserInfo(user: User) {
+    private fun showAccountDetailInfo(accountDetailParams: AccountDetailParams) {
+        val user = accountDetailParams.user
         text_account_name.text = user.accountName
         image_account_detail.loadImageIfEmptyPath(user.avatarPath)
         edit_text_name.setText(user.name)
         text_account_detail_id.text = "${getString(R.string.title_account_id)}: ${user.id}"
         detailViewModel.showSelectedUserType(user.typeId)
+        edit_text_password.setText(accountDetailParams.password)
     }
 }

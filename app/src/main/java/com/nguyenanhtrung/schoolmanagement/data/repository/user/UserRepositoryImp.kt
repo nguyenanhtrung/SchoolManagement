@@ -114,19 +114,19 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun updateUserInfo(
         result: MutableLiveData<Resource<Unit>>,
-        userInfos: Pair<String, ArrayMap<String, String>>
+        updateInfoParams: UpdateAccountInfoParams
     ) {
         object :
-            NetworkBoundResources<Pair<String, ArrayMap<String, String>>, Unit>(
+            NetworkBoundResources<UpdateAccountInfoParams, Unit>(
                 context,
-                userInfos,
+                updateInfoParams,
                 result
             ) {
 
-            override fun shouldLoadFromLocal(params: Pair<String, ArrayMap<String, String>>): Boolean =
+            override fun shouldLoadFromLocal(params: UpdateAccountInfoParams): Boolean =
                 false
 
-            override fun shouldSaveToLocal(params: Pair<String, ArrayMap<String, String>>): Boolean =
+            override fun shouldSaveToLocal(params: UpdateAccountInfoParams): Boolean =
                 false
 
             override suspend fun callApi(): Resource<Unit> {

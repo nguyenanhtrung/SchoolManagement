@@ -41,6 +41,13 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
     val supportMainToolbar: LiveData<Boolean>
         get() = mutableSupportMainToolbar
 
+    val updateAccountInfo by lazy {
+        MutableLiveData<Event<User>>()
+    }
+    val stateModifyAccInfo: LiveData<Event<User>>
+        get() = updateAccountInfo
+
+
 
     fun hideToolbar() {
         if (_toolbarVisibility.value == true || _toolbarVisibility.value == null) {

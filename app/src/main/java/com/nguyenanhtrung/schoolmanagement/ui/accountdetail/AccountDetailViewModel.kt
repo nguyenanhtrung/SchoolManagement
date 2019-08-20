@@ -1,11 +1,10 @@
 package com.nguyenanhtrung.schoolmanagement.ui.accountdetail
 
-import androidx.collection.ArrayMap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
-import com.nguyenanhtrung.schoolmanagement.domain.user.ChangeUserPassUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.UpdateUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertype.GetUserTypesUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -14,17 +13,16 @@ import javax.inject.Inject
 
 class AccountDetailViewModel @Inject constructor(
     private val getUserTypesUseCase: GetUserTypesUseCase,
-    private val updateUserInfoUseCase: UpdateUserInfoUseCase,
-    private val changeUserPassUseCase: ChangeUserPassUseCase
+    private val updateUserInfoUseCase: UpdateUserInfoUseCase
 ) : BaseViewModel() {
     internal lateinit var accountDetailParams: AccountDetailParams
 
 
-    private val _currentUserLiveData by lazy {
-        MutableLiveData<User>()
+    private val _accountDetailInfo by lazy {
+        MutableLiveData<AccountDetailParams>()
     }
-    internal val currentUserLiveData: LiveData<User>
-        get() = _currentUserLiveData
+    internal val currentUserLiveData: LiveData<AccountDetailParams>
+        get() = _accountDetailInfo
 
     private val _userTypesLiveData by lazy {
         createApiResultLiveData<List<UserType>>()
@@ -75,6 +73,12 @@ class AccountDetailViewModel @Inject constructor(
     internal val stateEditAccountInfo: LiveData<ModificationState>
         get() = _stateEditAccountInfo
 
+    private val _stateSaveModifiedInfo by lazy {
+        createApiResultLiveData<Unit>()
+    }
+    internal val stateSaveModifiedInfo: LiveData<Resource<Unit>>
+        get() = _stateSaveModifiedInfo
+
 
     internal fun onClickButtonEdit() {
         _stateModifyName.value = ModificationState.Edit
@@ -83,55 +87,64 @@ class AccountDetailViewModel @Inject constructor(
         _stateEditAccountInfo.value = ModificationState.Edit
     }
 
-    internal fun onClickButtonSave(name: String, indexSelectedType: Int, password: String) {
+    internal fun onClickButtonSave(newName: String, indexSelectedType: Int, newPassword: String) {
+        val accountInfo = accountDetailParams.user
+        val oldName = accountInfo.name
+        val oldAccountTypeId = accountInfo.typeId
+        val oldPassword = accountDetailParams.password
+        val newAccountTypeId = getUserTypeIdByIndex(indexSelectedType)
 
-    }
-
-    private fun isBasicInfoModified(name: String, indexSelectedType: Int): Boolean {
-        val originUserInfo = _currentUserLiveData.value ?: return false
-        val originIndexUserType = _indexUserTypeSelected.value
-        if (originUserInfo.name == name && originIndexUserType == indexSelectedType) {
-            return false
+        if (oldName == newName && newAccountTypeId == oldAccountTypeId
+            && oldPassword == newPassword
+        ) {
+            _stateEditAccountInfo.value = ModificationState.Save
+            disableModifyInputs()
+            return
         }
-        return true
-    }
 
-
-    internal fun saveBasicInfoModification(name: String, indexSelectedType: Int) {
-        if (isBasicInfoModified(name, indexSelectedType)) {
-
-            val modificationInfos = ArrayMap<String, String>()
-            val originUserInfo = _currentUserLiveData.value ?: return
-            if (originUserInfo.name != name) {
-                //check valid name
-                if (!Validator.isNameValid(name, _errorNameLiveData)) {
-                    return
-                }
-                modificationInfos["name"] = name
+        val updateAccountInfoParams = UpdateAccountInfoParams()
+        updateAccountInfoParams.fireBaseUserId = accountInfo.firebaseUserId
+        if (oldName != newName) {
+            if (!Validator.isNameValid(newName, _errorNameLiveData)) {
+                return
             }
-            val originIndexUserType = _indexUserTypeSelected.value ?: return
-            if (originIndexUserType != indexSelectedType) {
-                modificationInfos["typeId"] = getUserTypeIdByIndex(indexSelectedType)
+            updateAccountInfoParams.name = newName
+        }
+
+        if (oldPassword != newPassword
+        ) {
+            if (!Validator.isPasswordValid(newPassword, _errorPasswordLiveData)) {
+                return
             }
-            val newUserInfo = Pair(originUserInfo.firebaseUserId, modificationInfos)
-            //updateUserInfoUseCase.invoke(viewModelScope, newUserInfo, _stateUpdateBasicInfo)
+            updateAccountInfoParams.password = newPassword
+            updateAccountInfoParams.accountName = accountInfo.accountName
         }
 
-    }
-
-    internal fun savePasswordModification(newPassword: String) {
-        if (Validator.isPasswordValid(newPassword, _errorPasswordLiveData)) {
-            val originUserInfo = _currentUserLiveData.value ?: return
-            val changePassParam = ChangePasswordParam(
-                originUserInfo.firebaseUserId,
-                originUserInfo.accountName,
-                newPassword
-            )
-            //  changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
+        if (oldAccountTypeId != newAccountTypeId) {
+            updateAccountInfoParams.typeId = newAccountTypeId
         }
+
+
+        updateUserInfoUseCase.invoke(
+            viewModelScope,
+            updateAccountInfoParams,
+            _stateSaveModifiedInfo
+        )
     }
 
-    private fun getUserTypeIdByIndex(index: Int): String {
+    private fun disableModifyInputs() {
+        _stateModifyName.value = ModificationState.Save
+        _stateModifyPassword.value = ModificationState.Save
+        _stateModifyUserType.value = ModificationState.Save
+        _stateEditAccountInfo.value = ModificationState.Save
+    }
+
+    internal fun onSuccessSaveModifiedAccountInfo() {
+        disableModifyInputs()
+        _messageLiveData.value = R.string.success_save_modified_account_info
+    }
+
+    internal fun getUserTypeIdByIndex(index: Int): String {
         val userTypes = _userTypesLiveData.value?.data ?: return ""
         if (index < 0 || index >= userTypes.size) {
             return ""
@@ -140,9 +153,8 @@ class AccountDetailViewModel @Inject constructor(
     }
 
 
-
     internal fun loadUserInfo() {
-        _currentUserLiveData.value = accountDetailParams.user
+        _accountDetailInfo.value = accountDetailParams
     }
 
     internal fun loadUserTypes() {

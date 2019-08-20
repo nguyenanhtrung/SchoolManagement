@@ -39,7 +39,7 @@ interface UserRepository {
 
     suspend fun updateUserInfo(
         result: MutableLiveData<Resource<Unit>>,
-        userInfos: Pair<String, ArrayMap<String, String>>
+        updateInfoParams: UpdateAccountInfoParams
     )
 
     suspend fun changeUserPassword(

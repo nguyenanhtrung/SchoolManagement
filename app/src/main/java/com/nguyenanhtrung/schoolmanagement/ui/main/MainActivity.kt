@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
@@ -48,6 +49,12 @@ class MainActivity : BaseActivity() {
     private fun setupToolbar() {
         setSupportActionBar(tool_bar_main)
         tool_bar_main.setupWithNavController(findNavController(R.id.fragment_host), appBarConfiguration)
+        setupActionBarWithNavController(findNavController(R.id.fragment_host), appBarConfiguration)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.fragment_host)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private fun subscribeToolbarVisibility() {

@@ -17,7 +17,6 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
-import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_PROFILES_PATH
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -158,11 +157,23 @@ class UserRemoteDataSourceImp @Inject constructor(
         return Resource.success(Unit)
     }
 
-    override suspend fun updateUserInfo(userInfos: Pair<String, androidx.collection.ArrayMap<String, String>>): Resource<Unit> {
-        firestore.collection(USERS_PATH_FIRE_STORE)
-            .document(userInfos.first)
-            .update(userInfos.second.toMap())
-            .await()
+    override suspend fun updateUserInfo(updateInfoParams: UpdateAccountInfoParams): Resource<Unit> {
+        val userRef = firestore.collection(USERS_PATH_FIRE_STORE)
+            .document(updateInfoParams.fireBaseUserId)
+        if (updateInfoParams.name.isNotEmpty()) {
+            userRef.update(AppKey.USER_NAME_FIELD, updateInfoParams.name).await()
+        }
+        if (updateInfoParams.typeId.isNotEmpty()) {
+            userRef.update(AppKey.USER_TYPE_ID_FIELD, updateInfoParams.typeId).await()
+        }
+        if (updateInfoParams.accountName.isNotEmpty() && updateInfoParams.password.isNotEmpty()) {
+            return changeUserPassword(
+                updateInfoParams.fireBaseUserId,
+                updateInfoParams.accountName,
+                updateInfoParams.password
+            )
+        }
+
         return Resource.success(Unit)
     }
 

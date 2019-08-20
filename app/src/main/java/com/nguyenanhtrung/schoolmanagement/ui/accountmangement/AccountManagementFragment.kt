@@ -66,6 +66,18 @@ class AccountManagementFragment : BaseListItemFragment() {
         subscribeMaxUserId()
         subscribeCreateAccountEvent()
         subscribeGetSelectedUserPassword()
+        subscribeModifyAccountInfo()
+    }
+
+    private fun subscribeModifyAccountInfo() {
+        mainViewModel.stateModifyAccInfo.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {modifiedUser ->
+                val posAccountSelected = accountViewModel.posAccountSelected
+                val selectedItem = itemAdapter.getItem(posAccountSelected) as UserItem
+                selectedItem.user = modifiedUser
+                itemAdapter.notifyItemChanged(posAccountSelected)
+            }
+        })
     }
 
     private fun subscribeGetSelectedUserPassword() {
@@ -131,10 +143,7 @@ class AccountManagementFragment : BaseListItemFragment() {
         inflater.inflate(R.menu.fragment_accounts_management, menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
-        android.R.id.home -> findNavController().popBackStack()
-        else -> super.onOptionsItemSelected(item)
-    }
+
 
     private fun subscribeMaxUserId() {
         accountViewModel.maxUserIdLiveData.observe(this, Observer {
