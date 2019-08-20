@@ -46,4 +46,9 @@ interface UserRepository {
         changePassParam: ChangePasswordParam,
         result: MutableLiveData<Resource<Unit>>
     )
+
+    suspend fun getUserPassword(
+        fireBaseUserId: String,
+        result: MutableLiveData<Resource<String>>
+    )
 }

@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.main
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -28,12 +29,17 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
         get() = mutableProfileUpdated
 
     val mutableAccountEvent by lazy {
-        MutableLiveData<User>()
+        MutableLiveData<Event<User>>()
     }
-    val accountEvent: LiveData<User>
+    val accountEvent: LiveData<Event<User>>
         get() = mutableAccountEvent
 
+    val mutableSupportMainToolbar by lazy {
+        MutableLiveData<Boolean>()
+    }
 
+    val supportMainToolbar: LiveData<Boolean>
+        get() = mutableSupportMainToolbar
 
 
     fun hideToolbar() {

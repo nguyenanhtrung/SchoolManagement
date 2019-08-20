@@ -64,10 +64,11 @@ class CreateAccountFragment : BaseFragment() {
                 val flowStatusInfo = FlowStatusInfo(
                     Status.SUCCESS,
                     R.string.title_success_create_account,
+                    R.string.title_status_detail_update_profile,
                     R.string.title_update,
                     R.id.dialogFlowStatusDest
                 )
-
+                updateAccounts(userFireBaseId)
                 findNavController().navigate(
                     CreateAccountFragmentDirections.actionCreateAccountDestToDialogFlowStatusFragment(
                         flowStatusInfo
@@ -79,11 +80,29 @@ class CreateAccountFragment : BaseFragment() {
         })
     }
 
+    private fun updateAccounts(userFireBaseId: String) {
+        val user = User(
+            accountViewModel.maxId,
+            userFireBaseId,
+            edit_text_name.getString(),
+            spinner_user_type.selectedItem as String,
+            accountViewModel.getUserTypeId(spinner_user_type.selectedIndex),
+            accountName = edit_text_email.getString()
+        )
+        mainViewModel.mutableAccountEvent.value = Event(user)
+    }
+
 
     private fun clearAllInput() {
         edit_text_email.clearText()
         edit_text_name.clearText()
         edit_text_password.clearText()
+    }
+
+    private fun clearAllFocusInput() {
+        edit_text_email.clearFocus()
+        edit_text_name.clearFocus()
+        edit_text_password.clearFocus()
     }
 
 
@@ -124,6 +143,7 @@ class CreateAccountFragment : BaseFragment() {
 
     private fun setupButtonConfirmEvent() {
         button_confirm.setOnClickListener {
+            clearAllFocusInput()
             accountViewModel.onClickButtonConfirm(
                 CreateAccountInput(
                     edit_text_name.getString(),

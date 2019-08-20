@@ -6,27 +6,23 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.data.local.model.AccountDetailParams
+import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
-import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
-import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
 import com.nguyenanhtrung.schoolmanagement.util.hideKeyboard
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_list_account.*
 import kotlinx.android.synthetic.main.include_search_view.*
@@ -68,18 +64,29 @@ class AccountManagementFragment : BaseListItemFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         subscribeMaxUserId()
-        mainViewModel.mutableAccountEvent.observe(this, Observer {
-            it?.let {
-                accountViewModel.onSuccessCreateAccount(it)
+        subscribeCreateAccountEvent()
+        subscribeGetSelectedUserPassword()
+    }
+
+    private fun subscribeGetSelectedUserPassword() {
+        accountViewModel.userPasswordLiveData.observe(this, Observer {
+            it.data?.let { password ->
+                accountViewModel.onSuccessGetSelectedUserPassword(password)
             }
         })
     }
 
-
+    private fun subscribeCreateAccountEvent() {
+        mainViewModel.accountEvent.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { user ->
+                accountViewModel.onSuccessCreateAccount(user)
+            }
+        })
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val activity = (requireActivity() as AppCompatActivity)
+        val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(bottom_app_bar_accounts)
     }
 
@@ -94,15 +101,16 @@ class AccountManagementFragment : BaseListItemFragment() {
 
     private fun subscribeNavigateToAccountDetail() {
         accountViewModel.navToAccountDetail.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { position ->
+            it.getContentIfNotHandled()?.let { accountDetailParams ->
                 hideKeyboard(edit_text_search)
-                openAccountDetailFragment(position)
+                openAccountDetailFragment(accountDetailParams)
             }
         })
     }
 
-    private fun openAccountDetailFragment(position: Int) {
+    private fun openAccountDetailFragment(accountDetailParams: AccountDetailParams) {
         val layoutManager = recycler_view_accounts.layoutManager
+        val position = accountViewModel.posAccountSelected
         val itemView = layoutManager?.findViewByPosition(position) ?: return
         val imageViewAcc = itemView.findViewById<CircleImageView>(R.id.image_account)
         val textNameAcc = itemView.findViewById<TextView>(R.id.text_account_email)
@@ -112,10 +120,9 @@ class AccountManagementFragment : BaseListItemFragment() {
             textNameAcc to getString(R.string.transition_name_account_email)
         )
 
-        val userItem = itemAdapter.getItem(position) as UserItem
         findNavController().navigate(
             AccountManagementFragmentDirections.actionAccountManagementDestToAccountDetailFragment(
-                userItem.user
+                accountDetailParams
             ), shareViews
         )
     }

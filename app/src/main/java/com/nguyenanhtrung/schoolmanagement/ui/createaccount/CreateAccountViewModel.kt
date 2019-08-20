@@ -91,7 +91,7 @@ class CreateAccountViewModel @Inject constructor(
         maxId++
     }
 
-    private fun getUserTypeId(index: Int): String {
+    internal fun getUserTypeId(index: Int): String {
         val userTypes = _userTypesLiveData.value?.data
         val userTypeSelected = userTypes?.get(index)
         return userTypeSelected?.id ?: return ""

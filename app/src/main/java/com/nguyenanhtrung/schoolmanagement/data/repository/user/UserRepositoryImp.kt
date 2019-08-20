@@ -97,6 +97,21 @@ class UserRepositoryImp @Inject constructor(
         }.createCall()
     }
 
+    override suspend fun getUserPassword(
+        fireBaseUserId: String,
+        result: MutableLiveData<Resource<String>>
+    ) {
+        object : NetworkBoundResources<String, String>(context, fireBaseUserId, result) {
+
+            override fun shouldSaveToLocal(params: String): Boolean = false
+            override fun shouldLoadFromLocal(params: String): Boolean = false
+
+            override suspend fun callApi(): Resource<String> {
+                return userRemoteDataSource.getUserPassword(params)
+            }
+        }.createCall()
+    }
+
     override suspend fun updateUserInfo(
         result: MutableLiveData<Resource<Unit>>,
         userInfos: Pair<String, ArrayMap<String, String>>

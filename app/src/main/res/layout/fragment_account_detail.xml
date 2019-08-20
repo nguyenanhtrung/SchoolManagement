@@ -14,6 +14,9 @@
         android:id="@+id/card_view_account_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginEnd="@dimen/margin_normal_100"
         android:foregroundTint="@color/colorSurface">
 
         <androidx.constraintlayout.widget.ConstraintLayout

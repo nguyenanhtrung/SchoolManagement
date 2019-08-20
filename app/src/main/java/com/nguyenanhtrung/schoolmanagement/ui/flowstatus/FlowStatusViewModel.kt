@@ -18,13 +18,14 @@ class FlowStatusViewModel @Inject constructor() : BaseViewModel() {
         get() = _viewDatas
 
     internal fun showViewDatas() {
-        val messageId = flowStatusInfo.messageId
+        val messageId = flowStatusInfo.titleId
         var buttonNameId = -1
         val status = flowStatusInfo.status
         if (status == Status.SUCCESS) {
             buttonNameId = flowStatusInfo.buttonNameId
         }
-        val flowStatusViewState = FlowStatusViewState(messageId, buttonNameId)
+        val flowStatusViewState =
+            FlowStatusViewState(messageId, flowStatusInfo.contentId, buttonNameId)
         _viewDatas.value = flowStatusViewState
     }
 

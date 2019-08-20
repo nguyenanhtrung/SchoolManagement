@@ -8,16 +8,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ModificationState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
-import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
-import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
-import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
+import com.nguyenanhtrung.schoolmanagement.util.*
 import kotlinx.android.synthetic.main.fragment_account_detail.*
 import javax.inject.Inject
 
@@ -36,6 +37,8 @@ class AccountDetailFragment : BaseFragment() {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
 
+    private lateinit var detailMenu: Menu
+
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
         myApp.appComponent.inject(this)
@@ -51,14 +54,77 @@ class AccountDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val currentUser = args.userInfo
-        detailViewModel.currentUserInfo = currentUser
-        subscribeUserInfo()
+        detailViewModel.accountDetailParams = args.accountDetailParams
 
+        subscribeUserInfo()
+        subscribeStateModifyName()
+        subscribeStateModifyPassword()
+        subscribeStateModifyUserType()
+        subscribeStateEditAccoungInfo()
+    }
+
+    private fun subscribeStateEditAccoungInfo() {
+        detailViewModel.stateEditAccountInfo.observe(this, Observer {
+            when (it) {
+                ModificationState.Edit -> showMenuItemWithEditState()
+                ModificationState.Save -> showMenuItemWithSaveState()
+            }
+        })
+    }
+
+    private fun showMenuItemWithEditState() {
+        if (::detailMenu.isInitialized) {
+            val editItem = detailMenu.findItem(R.id.menu_item_edit)
+            editItem.isVisible = false
+            val saveItem = detailMenu.findItem(R.id.menu_item_save)
+            saveItem.isVisible = true
+        }
+    }
+
+    private fun showMenuItemWithSaveState() {
+        if (::detailMenu.isInitialized) {
+            val editItem = detailMenu.findItem(R.id.menu_item_edit)
+            editItem.isVisible = true
+            val saveItem = detailMenu.findItem(R.id.menu_item_save)
+            saveItem.isVisible = false
+        }
+    }
+
+    private fun subscribeStateModifyUserType() {
+        detailViewModel.stateModifyUserType.observe(this, Observer {
+            when (it) {
+                ModificationState.Edit -> spinner_account_type.isEnabled = true
+                ModificationState.Save -> spinner_account_type.isEnabled = false
+            }
+        })
+    }
+
+    private fun subscribeStateModifyPassword() {
+        detailViewModel.stateModifyPassword.observe(this, Observer {
+            handleStateModifyInput(it, edit_text_password, input_layout_password)
+        })
+    }
+
+    private fun subscribeStateModifyName() {
+        detailViewModel.stateModifyName.observe(this, Observer {
+            handleStateModifyInput(it, edit_text_name, input_layout_name)
+        })
+    }
+
+    private fun handleStateModifyInput(
+        state: ModificationState,
+        editText: TextInputEditText,
+        inputLayout: TextInputLayout
+    ) {
+        when (state) {
+            ModificationState.Edit -> editText.enableInput(inputLayout)
+            ModificationState.Save -> editText.disableEdit(inputLayout)
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
         mainViewModel.showToolbar()
         edit_text_password.clearErrorWhenFocus(input_layout_password)
         edit_text_name.clearErrorWhenFocus(input_layout_name)
@@ -66,6 +132,8 @@ class AccountDetailFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_account_detail, menu)
+        detailMenu = menu
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -75,6 +143,11 @@ class AccountDetailFragment : BaseFragment() {
                 true
             }
             R.id.menu_item_save -> {
+                detailViewModel.onClickButtonSave(
+                    edit_text_name.getString(),
+                    spinner_account_type.selectedIndex,
+                    edit_text_password.getString()
+                )
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -82,6 +155,7 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     override fun setupUiEvents() {
+        setSupportActionBar()
         setupNavigationEvent()
         subscribeUserTypes()
         subscribeSelectedUserType()
@@ -91,6 +165,9 @@ class AccountDetailFragment : BaseFragment() {
 
     }
 
+    private fun setSupportActionBar() {
+        mainViewModel.mutableSupportMainToolbar.value = true
+    }
 
     private fun subscribeErrorPassword() {
         detailViewModel.errorPasswordLiveData.observe(viewLifecycleOwner, Observer {

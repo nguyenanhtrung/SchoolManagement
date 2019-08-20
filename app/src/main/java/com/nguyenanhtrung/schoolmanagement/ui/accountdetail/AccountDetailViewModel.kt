@@ -17,7 +17,7 @@ class AccountDetailViewModel @Inject constructor(
     private val updateUserInfoUseCase: UpdateUserInfoUseCase,
     private val changeUserPassUseCase: ChangeUserPassUseCase
 ) : BaseViewModel() {
-    internal lateinit var currentUserInfo: User
+    internal lateinit var accountDetailParams: AccountDetailParams
 
 
     private val _currentUserLiveData by lazy {
@@ -51,8 +51,49 @@ class AccountDetailViewModel @Inject constructor(
     internal val errorPasswordLiveData: LiveData<ErrorState>
         get() = _errorPasswordLiveData
 
-    internal fun onClickButtonEdit() {
+    private val _stateModifyName by lazy {
+        MutableLiveData<ModificationState>()
+    }
+    internal val stateModifyName: LiveData<ModificationState>
+        get() = _stateModifyName
 
+    private val _stateModifyPassword by lazy {
+        MutableLiveData<ModificationState>()
+    }
+    internal val stateModifyPassword: LiveData<ModificationState>
+        get() = _stateModifyPassword
+
+    private val _stateModifyUserType by lazy {
+        MutableLiveData<ModificationState>()
+    }
+    internal val stateModifyUserType: LiveData<ModificationState>
+        get() = _stateModifyUserType
+
+    private val _stateEditAccountInfo by lazy {
+        MutableLiveData<ModificationState>()
+    }
+    internal val stateEditAccountInfo: LiveData<ModificationState>
+        get() = _stateEditAccountInfo
+
+
+    internal fun onClickButtonEdit() {
+        _stateModifyName.value = ModificationState.Edit
+        _stateModifyPassword.value = ModificationState.Edit
+        _stateModifyUserType.value = ModificationState.Edit
+        _stateEditAccountInfo.value = ModificationState.Edit
+    }
+
+    internal fun onClickButtonSave(name: String, indexSelectedType: Int, password: String) {
+
+    }
+
+    private fun isBasicInfoModified(name: String, indexSelectedType: Int): Boolean {
+        val originUserInfo = _currentUserLiveData.value ?: return false
+        val originIndexUserType = _indexUserTypeSelected.value
+        if (originUserInfo.name == name && originIndexUserType == indexSelectedType) {
+            return false
+        }
+        return true
     }
 
 
@@ -86,7 +127,7 @@ class AccountDetailViewModel @Inject constructor(
                 originUserInfo.accountName,
                 newPassword
             )
-          //  changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
+            //  changeUserPassUseCase.invoke(viewModelScope, changePassParam, _resultChangePassword)
         }
     }
 
@@ -98,17 +139,10 @@ class AccountDetailViewModel @Inject constructor(
         return userTypes[index].id
     }
 
-    private fun isBasicInfoModified(name: String, indexSelectedType: Int): Boolean {
-        val originUserInfo = _currentUserLiveData.value ?: return false
-        val originIndexUserType = _indexUserTypeSelected.value
-        if (originUserInfo.name == name && originIndexUserType == indexSelectedType) {
-            return false
-        }
-        return true
-    }
+
 
     internal fun loadUserInfo() {
-        _currentUserLiveData.value = currentUserInfo
+        _currentUserLiveData.value = accountDetailParams.user
     }
 
     internal fun loadUserTypes() {

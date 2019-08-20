@@ -97,7 +97,7 @@ abstract class EndlessScrollListener : RecyclerView.OnScrollListener {
             return
         }
 
-        if (!loading && lastVisibleItemPosition + visibleThreshold <= totalItemCount) {
+        if (!loading && lastVisibleItemPosition + visibleThreshold >= totalItemCount) {
             loading = true
             onLoadMore(totalItemCount, view)
         }

@@ -36,6 +36,15 @@ class UserRemoteDataSourceImp @Inject constructor(
         private const val USERS_LIMIT = 8L
     }
 
+    override suspend fun getUserPassword(fireBaseUserId: String): Resource<String> {
+        val documentSnapshot = firestore.collection(AppKey.AUTHENTICATION_PATH)
+            .document(fireBaseUserId)
+            .get()
+            .await()
+        val password = documentSnapshot[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] as String
+        return Resource.success(password)
+    }
+
     override suspend fun getPagingUsesByProfileStatus(
         lastUserId: Long,
         userTypes: Map<String, String>,
@@ -214,7 +223,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         }
     }
 
-    private suspend fun eregisterNewUser(createAccountParam: CreateAccountParam): String {
+    private suspend fun registerNewUser(createAccountParam: CreateAccountParam): String {
         val secondFirebaseAuth = createSecondFirebaseAuth(createAccountParam.id)
         secondFirebaseAuth.createUserWithEmailAndPassword(
             createAccountParam.email,
@@ -236,7 +245,6 @@ class UserRemoteDataSourceImp @Inject constructor(
             .set(userInfo)
             .await()
         updateUserPassword(newUserId, password = createAccountParam.password)
-        updateUserProfileStatus(newUserId, false)
         return newUserId
     }
 
@@ -244,15 +252,6 @@ class UserRemoteDataSourceImp @Inject constructor(
         val field = ArrayMap<String, String>()
         field["password"] = password
         firestore.collection(AppKey.AUTHENTICATION_PATH)
-            .document(fireBaseUserId)
-            .set(field)
-            .await()
-    }
-
-    private suspend fun updateUserProfileStatus(fireBaseUserId: String, isUpdated: Boolean) {
-        val field = ArrayMap<String, Boolean>()
-        field["updated"] = isUpdated
-        firestore.collection(USER_PROFILES_PATH)
             .document(fireBaseUserId)
             .set(field)
             .await()

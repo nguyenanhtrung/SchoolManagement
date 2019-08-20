@@ -82,8 +82,8 @@
         tools:layout="@layout/fragment_account_detail"
         android:label="AccountDetailFragment" >
         <argument
-            android:name="userInfo"
-            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.User" />
+            android:name="accountDetailParams"
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.AccountDetailParams" />
     </fragment>
     <fragment
         android:id="@+id/profilesDest"

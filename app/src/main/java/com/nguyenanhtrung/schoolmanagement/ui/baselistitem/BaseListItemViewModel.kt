@@ -131,8 +131,8 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     }
 
     protected fun isItemsEmpty(): Boolean {
-        val emptyState = _emptyUsersLiveData.value
-        return emptyState == null
+        val emptyState = _emptyUsersLiveData.value ?: true
+        return emptyState is ListEmptyState.EMPTY
     }
 
     internal fun onSearchItemQueryChange(query: String) {

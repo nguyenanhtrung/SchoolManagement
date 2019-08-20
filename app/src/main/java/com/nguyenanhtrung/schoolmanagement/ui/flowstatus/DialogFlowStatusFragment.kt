@@ -71,8 +71,8 @@ class DialogFlowStatusFragment : BaseDialogFragment() {
 
     private fun subscribeViewsData() {
         flowStatusViewModel.viewDatas.observe(viewLifecycleOwner, Observer {
-            val messageId = it.messageId
-            text_status.text = getString(messageId)
+            text_status.text = getString(it.titleId)
+            text_detail_status.text = getString(it.contentId)
 
             val buttonNameId = it.buttonNameId
             if (buttonNameId == -1) {

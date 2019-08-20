@@ -16,8 +16,8 @@ class ErrorItem(
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        val context = viewHolder.itemView.context
-//        val message = context.getString(messageId)
+//        val context = viewHolder.itemView.context
+//        val message = context.getString(titleId)
 //        viewHolder.text_error_content.text = message
 
         viewHolder.button_retry.setOnClickListener {

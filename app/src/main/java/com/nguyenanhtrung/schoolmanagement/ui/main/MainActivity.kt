@@ -34,6 +34,15 @@ class MainActivity : BaseActivity() {
         //
         setupToolbar()
         subscribeToolbarVisibility()
+        subscribeSetSupportToolbar()
+    }
+
+    private fun subscribeSetSupportToolbar() {
+        mainViewModel.supportMainToolbar.observe(this, Observer {
+            if (it) {
+                setSupportActionBar(tool_bar_main)
+            }
+        })
     }
 
     private fun setupToolbar() {

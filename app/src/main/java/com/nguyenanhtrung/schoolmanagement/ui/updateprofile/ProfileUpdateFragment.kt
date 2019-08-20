@@ -172,15 +172,16 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     private fun navigateToSuccessDialog() {
-        findNavController().navigate(
-            ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
-                FlowStatusInfo(
-                    Status.SUCCESS,
-                    R.string.title_success_update_profile,
-                    R.string.title_update
-                )
-            )
-        )
+//        findNavController().navigate(
+//            ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
+//                FlowStatusInfo(
+//                    Status.SUCCESS,
+//                    R.string.title_success_update_profile,
+//                    "",
+//                    R.string.title_update
+//                )
+//            )
+//        )
     }
 
     private fun subscribeImageSelectedError() {

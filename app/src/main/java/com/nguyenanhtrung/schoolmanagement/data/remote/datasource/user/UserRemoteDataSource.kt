@@ -28,6 +28,8 @@ interface UserRemoteDataSource {
         newPassword: String
     ): Resource<Unit>
 
+    suspend fun getUserPassword(fireBaseUserId: String): Resource<String>
+
     suspend fun getUserByProfileStatus(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
