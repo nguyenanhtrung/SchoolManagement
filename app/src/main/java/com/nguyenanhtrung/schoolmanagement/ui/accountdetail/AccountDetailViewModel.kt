@@ -162,13 +162,12 @@ class AccountDetailViewModel @Inject constructor(
     }
 
     internal fun showSelectedUserType(typeId: String) {
-        val userTypesResource = _userTypesLiveData.value
-        userTypesResource?.data?.let {
+        val userTypesResource = _userTypesLiveData.value ?: return
+        userTypesResource.data?.let {
             val indexOfType = it.indexOfFirst { userType ->
                 val check = typeId == userType.id
                 check
             }
-
             _indexUserTypeSelected.value = indexOfType
         }
     }

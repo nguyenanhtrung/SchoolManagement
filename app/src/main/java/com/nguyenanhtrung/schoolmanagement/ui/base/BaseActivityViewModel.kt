@@ -17,4 +17,8 @@ abstract class BaseActivityViewModel() : BaseViewModel() {
         _messageLiveData.value = messageId
     }
 
+    fun hideLoading() {
+        _loadingLiveData.value = false
+    }
+
 }

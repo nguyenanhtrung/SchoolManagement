@@ -101,12 +101,6 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     }
 
     internal fun loadItems() {
-        val getItemsResult = _getItemsLiveData.value
-        if (getItemsResult != null && (getItemsResult.status == Status.SUCCESS ||
-                    getItemsResult.status == Status.COMPLETE || getItemsResult.status == Status.EMPTY)
-        ) {
-            return
-        }
         loadItemsFromServer(_getItemsLiveData)
     }
 

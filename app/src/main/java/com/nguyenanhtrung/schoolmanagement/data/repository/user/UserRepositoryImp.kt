@@ -1,7 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
 import android.content.Context
-import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
@@ -62,11 +61,11 @@ class UserRepositoryImp @Inject constructor(
 
             override suspend fun callApi(): Resource<MutableList<out Item>> {
                 val pair = finalParams.second
-                val lastUserId = finalParams.first
+                val userId = finalParams.first
                 val profileFilter = pair.first
                 val userTypes = pair.second
                 return userRemoteDataSource.getPagingUsesByProfileStatus(
-                    lastUserId,
+                    userId,
                     userTypes,
                     profileFilter
                 )

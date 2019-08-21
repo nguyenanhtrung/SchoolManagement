@@ -41,6 +41,7 @@ abstract class BaseListItemFragment : BaseFragment() {
         subscribeErrorItems()
         subscribeStateLoadingMoreItems()
         subscribeClearItems()
+        itemsViewModel.loadItems()
     }
 
 
@@ -113,7 +114,6 @@ abstract class BaseListItemFragment : BaseFragment() {
         setupRecyclerViewItems()
         setupItemClickEvent()
         setupLoadMoreItemEvent()
-        itemsViewModel.loadItems()
     }
 
     private fun setupSearchItemsEvent() {

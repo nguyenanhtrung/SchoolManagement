@@ -25,6 +25,9 @@ abstract class BaseFragment : Fragment() {
         subscribeViewState()
         subscribeLoading()
         subscribeError()
+
+
+
     }
 
     override fun onCreateView(
@@ -64,6 +67,10 @@ abstract class BaseFragment : Fragment() {
         })
     }
 
+    override fun onDestroy() {
+        activityViewModel.hideLoading()
+        super.onDestroy()
+    }
 
     protected abstract fun injectDependencies(application: Application)
     protected abstract fun createFragmentViewModel(): BaseViewModel

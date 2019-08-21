@@ -39,10 +39,6 @@ class DashboardViewModel @Inject constructor(
 
 
     internal fun loadUserInfo() {
-        val userInfoResource = _userInfoLiveData.value
-        if (userInfoResource != null && userInfoResource.status == Status.SUCCESS) {
-            return
-        }
         getUserInfoUseCase.invoke(viewModelScope, Unit, _userInfoLiveData)
     }
 

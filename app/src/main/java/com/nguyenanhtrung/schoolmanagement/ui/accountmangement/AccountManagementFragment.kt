@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.core.app.ActivityCompat
+import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -97,6 +98,7 @@ class AccountManagementFragment : BaseListItemFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        ViewCompat.setTranslationZ(view, 1F)
         super.onViewCreated(view, savedInstanceState)
         val activity = requireActivity() as AppCompatActivity
         activity.setSupportActionBar(bottom_app_bar_accounts)

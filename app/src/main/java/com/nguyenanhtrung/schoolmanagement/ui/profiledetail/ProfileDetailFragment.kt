@@ -105,7 +105,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
             edit_text_phone.setText(phoneNumber)
             edit_text_address.setText(address)
             edit_text_email.setText(email)
-            image_profile_detail.loadImageIfEmptyPath(imageUrl)
+            //image_profile_detail.loadImageIfEmptyPath(imageUrl)
             showSelectedGender(gender)
         }
     }

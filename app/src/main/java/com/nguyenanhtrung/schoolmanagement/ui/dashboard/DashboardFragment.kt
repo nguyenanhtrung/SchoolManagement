@@ -52,6 +52,11 @@ class DashboardFragment : BaseFragment() {
 
     override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        dashboardViewModel.loadUserInfo()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         mainViewModel.hideToolbar()
@@ -66,7 +71,6 @@ class DashboardFragment : BaseFragment() {
         setupTasksRecyclerView()
         subscribeEvents()
         setupTasksEvent()
-        dashboardViewModel.loadUserInfo()
     }
 
     private fun subscribeEvents() {
