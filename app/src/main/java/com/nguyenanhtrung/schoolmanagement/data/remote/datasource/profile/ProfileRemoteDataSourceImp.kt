@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.collection.ArrayMap
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
@@ -12,7 +11,6 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.FileUtils
-import kotlinx.android.synthetic.main.fragment_profile_detail.view.*
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -27,7 +25,6 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             .document(fireBaseUserId)
             .get()
             .await()
-        val imageUrl = profileDetailTask[AppKey.IMAGE_PATH_FIELD_PROFILE] as String
         val birthday = profileDetailTask[AppKey.BIRTHDAY_FIELD_PROFILE_PATH] as String
         val phoneNumber = profileDetailTask[AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH] as String
         val address = profileDetailTask[AppKey.ADDRESS_FIELD_PROFILE_PATH] as String
@@ -36,7 +33,6 @@ class ProfileRemoteDataSourceImp @Inject constructor(
 
         val gender = Gender.getGenreById(genderId.toInt())
         val profileDetail = ProfileDetail(
-            imageUrl,
             birthday,
             phoneNumber,
             address,
@@ -81,8 +77,8 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         val uploadImageTask = profileImageRef.putStream(imageStream).await()
         val imageDownloadUri = uploadImageTask.storage.downloadUrl.await()
         val imagePathField = ArrayMap<String, String>()
-        imagePathField[AppKey.IMAGE_PATH_FIELD_PROFILE] = imageDownloadUri.toString()
-        firestore.collection(AppKey.USER_PROFILES_PATH)
+        imagePathField[AppKey.PROFILE_IMAGE_PATH_FIELD] = imageDownloadUri.toString()
+        firestore.collection(AppKey.USERS_PATH_FIRE_STORE)
             .document(fireBaseUserId)
             .update(imagePathField.toMap())
             .await()

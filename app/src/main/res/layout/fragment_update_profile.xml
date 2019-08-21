@@ -18,16 +18,17 @@
             android:layout_marginTop="@dimen/margin_normal_100"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="0dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/image_profile"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/image_empty"
+                android:src="@drawable/ic_photo_empty"
                 tools:ignore="ContentDescription" />
         </androidx.cardview.widget.CardView>
 
@@ -59,11 +60,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
+            android:padding="@dimen/padding_small_100"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
             app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
             app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image"
-            app:srcCompat="@drawable/ic_camera" />
+            app:srcCompat="@drawable/ic_camera"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/text_profile_name"

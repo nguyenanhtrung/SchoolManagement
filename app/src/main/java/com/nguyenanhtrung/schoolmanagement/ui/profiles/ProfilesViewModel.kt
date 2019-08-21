@@ -7,6 +7,9 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.profile.GetFilterProfileDatasUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersByProfileStatusUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
+import com.xwray.groupie.ViewHolder
+import com.xwray.groupie.kotlinandroidextensions.Item
 import java.util.logging.Filter
 import javax.inject.Inject
 
@@ -14,33 +17,16 @@ class ProfilesViewModel @Inject constructor(
     private val getUsersByProfileStatusUseCase: GetUsersByProfileStatusUseCase,
     private val getFilterProfileDatasUseCase: GetFilterProfileDatasUseCase
 ) :
-    BaseViewModel() {
+    BaseListItemViewModel() {
+
 
     private var currentProfileFilter: ProfileFilter = ProfileFilter.All
-
-    private val _userProfilesLiveData by lazy {
-        createApiResultLiveData<MutableList<ProfileItem>>()
-    }
-    internal val userProfilesLiveData: LiveData<Resource<MutableList<ProfileItem>>>
-        get() = _userProfilesLiveData
-
-    private val _stateLoadingMoreProfiles by lazy {
-        MutableLiveData<Status>()
-    }
-    internal val stateLoadingMoreProfiles: LiveData<Status>
-        get() = _stateLoadingMoreProfiles
 
     private val _filterProfileDatas by lazy {
         MutableLiveData<Resource<Array<FilterData>>>()
     }
     internal val filterProfileDatas: LiveData<Resource<Array<FilterData>>>
         get() = _filterProfileDatas
-
-    private val _clearProfileItems by lazy {
-        MutableLiveData<Boolean>()
-    }
-    internal val clearProfileItems: LiveData<Boolean>
-        get() = _clearProfileItems
 
     private val _profileUpdateScreen by lazy {
         MutableLiveData<Event<Pair<Int, Profile>>>()
@@ -53,27 +39,6 @@ class ProfilesViewModel @Inject constructor(
     }
     internal val profileDetailScreen: LiveData<Event<Profile>>
         get() = _profileDetailScreen
-
-    internal fun loadProfiles() {
-        val profiles = _userProfilesLiveData.value
-        if (profiles != null) {
-            return
-        }
-        val params = Pair(-1L, currentProfileFilter)
-        getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
-    }
-
-    internal fun onLoadMoreSuccess() {
-        if (_stateLoadingMoreProfiles.value == Status.LOADING) {
-            _stateLoadingMoreProfiles.value = Status.COMPLETE
-        }
-    }
-
-    internal fun onLoadMoreProfiles(lastProfile: Profile) {
-        val profileId = lastProfile.userId
-        val params = Pair(profileId, currentProfileFilter)
-        getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
-    }
 
     internal fun onClickItemFilterProfiles() {
         getFilterProfileDatasUseCase.invoke(viewModelScope, Unit, _filterProfileDatas)
@@ -88,20 +53,44 @@ class ProfilesViewModel @Inject constructor(
             }
             currentProfileFilter = profileStatus
             //reload all list
-            _clearProfileItems.value = true
+            _clearItemsLiveData.value = true
             val params = Pair(-1L, currentProfileFilter)
-            getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _userProfilesLiveData)
+            getUsersByProfileStatusUseCase.invoke(viewModelScope, params,  _getItemsLiveData)
         }
     }
 
-    internal fun onClickProfileItem(profile: Profile, index: Int) {
+
+    override fun onCustomClickItem(position: Int) {
+        val profile: Profile = itemCopys[position] as Profile
         val isProfileUpdated = profile.isProfileUpdated
         if (isProfileUpdated) {
             _profileDetailScreen.value = Event(profile)
         } else {
-            _profileUpdateScreen.value = Event(Pair(index, profile))
+            _profileUpdateScreen.value = Event(Pair(position, profile))
         }
-
     }
+
+    override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
+        val profileItem = item as ProfileItem
+        val profile = profileItem.profile
+        return profile.name.contains(query) || profile.userId.toString().contains(query)
+    }
+
+    override fun loadMoreItems(
+        lastItem: com.xwray.groupie.Item<ViewHolder>,
+        itemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>
+    ) {
+        val lastProfileItem = lastItem as ProfileItem
+        val lastProfile = lastProfileItem.profile
+        val profileId = lastProfile.userId
+        val params = Pair(profileId, currentProfileFilter)
+        getUsersByProfileStatusUseCase.invoke(viewModelScope, params, itemsLiveData)
+    }
+
+    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>) {
+        val params = Pair(-1L, currentProfileFilter)
+        getUsersByProfileStatusUseCase.invoke(viewModelScope, params, getItemsLiveData)
+    }
+
 
 }

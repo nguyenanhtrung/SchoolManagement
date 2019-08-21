@@ -6,10 +6,15 @@
     android:padding="@dimen/padding_normal_100"
     android:orientation="vertical">
 
+    <include
+        layout="@layout/include_search_view"
+        />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_profiles"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/margin_normal_100"
         tools:listitem="@layout/item_profile"
         />
 </LinearLayout>

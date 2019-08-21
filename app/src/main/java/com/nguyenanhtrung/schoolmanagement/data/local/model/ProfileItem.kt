@@ -11,7 +11,7 @@ class ProfileItem constructor(val profile: Profile) : Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
         with(viewHolder) {
-            image_account_profile.loadImageIfEmptyPath(profile.avatarPath)
+            image_account_profile.loadImageIfEmptyPath(profile.profileImagePath)
             text_name.text = profile.name
             val context = itemView.context
             text_account_detail_id.text =

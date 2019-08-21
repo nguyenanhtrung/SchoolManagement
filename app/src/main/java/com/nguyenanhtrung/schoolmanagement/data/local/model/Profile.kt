@@ -10,5 +10,6 @@ data class Profile(
     val name: String,
     var isProfileUpdated: Boolean = false,
     val userTypeName: String,
-    val avatarPath: String = ""
+    val avatarPath: String = "",
+    val profileImagePath: String = ""
 ): Parcelable

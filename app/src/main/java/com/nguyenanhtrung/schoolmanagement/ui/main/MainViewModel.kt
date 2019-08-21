@@ -47,6 +47,12 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
     val stateModifyAccInfo: LiveData<Event<User>>
         get() = updateAccountInfo
 
+    val eventClickUpdateProfile by lazy {
+        MutableLiveData<Event<Unit>>()
+    }
+    val observableClickUpdateProfile: LiveData<Event<Unit>>
+        get() = eventClickUpdateProfile
+
 
 
     fun hideToolbar() {

@@ -22,7 +22,7 @@ interface UserRepository {
 
     suspend fun getUsersByProfileFilter(
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     )
 
     suspend fun getUsersByLimit(
@@ -34,7 +34,7 @@ interface UserRepository {
     suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     )
 
     suspend fun updateUserInfo(

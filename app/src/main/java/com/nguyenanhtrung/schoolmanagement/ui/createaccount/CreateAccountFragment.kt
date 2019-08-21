@@ -16,6 +16,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragmentDirections
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
 import com.nguyenanhtrung.schoolmanagement.util.clearText
@@ -55,7 +56,24 @@ class CreateAccountFragment : BaseFragment() {
         val maxUserId = args.maxUserId
         accountViewModel.maxId = maxUserId
         subscribeCreateUser()
+        subscribeEventClickUpdateProfile()
     }
+
+    private fun subscribeEventClickUpdateProfile() {
+        mainViewModel.observableClickUpdateProfile.observe(this, Observer {
+            it.getContentIfNotHandled()?.let {
+                val profile = accountViewModel.createProfile()
+                if (findNavController().currentDestination?.id == R.id.dialogFlowStatusDest) {
+                    findNavController().navigate(
+                        DialogFlowStatusFragmentDirections.actionDialogFlowStatusDestToProfileUpdateFragment(
+                            profile
+                        )
+                    )
+                }
+            }
+        })
+    }
+
 
     private fun subscribeCreateUser() {
         accountViewModel.createUserLiveData.observe(this, Observer {

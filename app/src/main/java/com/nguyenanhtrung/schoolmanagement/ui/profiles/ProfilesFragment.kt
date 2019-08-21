@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.profiles
 import android.app.Application
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -15,14 +16,18 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemFragment
+import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_profiles.*
+import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
 
-class ProfilesFragment : BaseFragment() {
+class ProfilesFragment : BaseListItemFragment() {
+
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -38,6 +43,12 @@ class ProfilesFragment : BaseFragment() {
     private val profileAdapter by lazy {
         GroupAdapter<ViewHolder>()
     }
+
+    override fun bindRecyclerView(): RecyclerView = recycler_view_profiles
+
+    override fun bindItemsViewModel(): BaseListItemViewModel = profileViewModel
+
+    override fun bindSearchView(): SearchView = edit_text_search
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -55,19 +66,8 @@ class ProfilesFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        subscribeGetProfiles()
-        subscribeStateLoadMoreProfiles()
         subscribeFilterProfileDatas()
         subscribeSelectedFilterItem()
-        subscribeClearProfileItems()
-    }
-
-    private fun subscribeClearProfileItems() {
-        profileViewModel.clearProfileItems.observe(this, Observer {
-            if (it) {
-                profileAdapter.clear()
-            }
-        })
     }
 
     private fun subscribeSelectedFilterItem() {
@@ -92,73 +92,12 @@ class ProfilesFragment : BaseFragment() {
         )
     }
 
-    private fun subscribeStateLoadMoreProfiles() {
-        profileViewModel.stateLoadingMoreProfiles.observe(this, Observer {
-            when (it) {
-                Status.LOADING -> profileAdapter.add(LoadMoreItem())
-                else -> profileAdapter.removeGroup(
-                    profileAdapter.itemCount - 1
-                )
-            }
-        })
-    }
-
-    private fun subscribeGetProfiles() {
-        profileViewModel.userProfilesLiveData.observe(this, Observer {
-            when (it.status) {
-                Status.LOADING -> Unit
-                Status.EMPTY -> {
-                    profileAdapter.add(EmptyItem(it.error))
-                }
-                Status.FAILURE, Status.EXCEPTION -> {
-                    showErrorViewProfileItem(it.error)
-                }
-                Status.SUCCESS -> {
-                    removeErrorState()
-                    profileViewModel.onLoadMoreSuccess()
-                    it.data?.let { profiles ->
-                        showUserProfiles(profiles)
-                    }
-                }
-                Status.COMPLETE -> profileViewModel.onLoadMoreSuccess()
-            }
-        })
-    }
-
-    private fun showUserProfiles(profileItems: MutableList<ProfileItem>) {
-        profileAdapter.addAll(profileItems)
-    }
-
-    private fun removeErrorState() {
-        if (profileAdapter.itemCount == 0) {
-            return
-        }
-        profileAdapter.removeGroup(0)
-    }
-
-    private fun showErrorViewProfileItem(errorMessageId: Int) {
-        if (profileAdapter.itemCount == 0) {
-            profileAdapter.add(
-                ErrorItem(
-                    errorMessageId,
-                    object : ErrorItem.OnClickButtonRetryListener {
-                        override fun onClickButtonRetry(view: View) {
-                            profileViewModel.loadProfiles()
-                        }
-                    })
-            )
-        }
-    }
-
     override fun setupUiEvents() {
+        super.setupUiEvents()
         setupToolbar()
         subscribeProfileUpdated()
         subscribeNavigateToProfileUpdateScreen()
         subscribeNavigateToProfileDetailScreen()
-        setupProfilesRecyclerView()
-        setupProfileItemClickEvent()
-        setupLoadMoreProfilesEvent()
-        profileViewModel.loadProfiles()
     }
 
     private fun subscribeProfileUpdated() {
@@ -196,30 +135,6 @@ class ProfilesFragment : BaseFragment() {
         })
     }
 
-    private fun setupProfileItemClickEvent() {
-        profileAdapter.setOnItemClickListener { item, _ ->
-            if (item is ProfileItem) {
-                val profile = item.profile
-                profileViewModel.onClickProfileItem(
-                    profile,
-                    profileAdapter.getAdapterPosition(item)
-                )
-            }
-        }
-    }
-
-    private fun setupLoadMoreProfilesEvent() {
-        val layoutManager = recycler_view_profiles.layoutManager as LinearLayoutManager
-        recycler_view_profiles.addOnScrollListener(object : EndlessScrollListener(layoutManager) {
-            override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
-                val lastProfileItem = profileAdapter.getItem(profileAdapter.itemCount - 1)
-                if (lastProfileItem is ProfileItem) {
-                    profileViewModel.onLoadMoreProfiles(lastProfileItem.profile)
-                }
-            }
-        })
-    }
-
     private fun setupToolbar() {
         mainViewModel.showToolbar()
     }
@@ -242,8 +157,4 @@ class ProfilesFragment : BaseFragment() {
         }
     }
 
-    private fun setupProfilesRecyclerView() {
-        recycler_view_profiles.layoutManager = LinearLayoutManager(requireActivity())
-        recycler_view_profiles.adapter = profileAdapter
-    }
 }

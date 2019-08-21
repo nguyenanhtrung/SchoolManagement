@@ -66,6 +66,14 @@
         <action
             android:id="@+id/action_createAccountDest_to_dialogFlowStatusFragment"
             app:destination="@id/dialogFlowStatusDest" />
+        <action
+            android:id="@+id/action_createAccountDest_to_profileUpdateFragment"
+            app:destination="@id/profileUpdateFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@+id/createAccountDest" />
     </fragment>
     <dialog
         android:id="@+id/dialogFlowStatusDest"
@@ -75,6 +83,9 @@
         <argument
             android:name="flowStatusInfo"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo" />
+        <action
+            android:id="@+id/action_dialogFlowStatusDest_to_profileUpdateFragment"
+            app:destination="@id/profileUpdateFragment" />
     </dialog>
     <fragment
         android:id="@+id/accountDetailFragment"
@@ -125,7 +136,11 @@
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />
         <action
             android:id="@+id/action_profileUpdateFragment_to_dialogFlowStatusDest"
-            app:destination="@id/dialogFlowStatusDest" />
+            app:destination="@id/dialogFlowStatusDest"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit" />
         <argument
             android:name="posProfileItem"
             app:argType="integer"

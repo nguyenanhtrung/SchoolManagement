@@ -98,9 +98,9 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     private fun requestPermissionsPickImage() {
         EasyPermissions.requestPermissions(
             PermissionRequest.Builder(this, REQUEST_CODE_PERMISSIONS, *permissions)
-                .setRationale(com.nguyenanhtrung.schoolmanagement.R.string.message_request_permission)
-                .setPositiveButtonText(getString(com.nguyenanhtrung.schoolmanagement.R.string.title_agree))
-                .setNegativeButtonText(getString(com.nguyenanhtrung.schoolmanagement.R.string.title_decline))
+                .setRationale(R.string.message_request_permission)
+                .setPositiveButtonText(getString(R.string.title_agree))
+                .setNegativeButtonText(getString(R.string.title_decline))
                 .build()
         )
     }
@@ -155,6 +155,9 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     private fun subscribeStateUpdateProfile() {
+        if (updateViewModel.indexProfile < 0) {
+            return
+        }
         updateViewModel.stateUpdateProfile.observe(this, Observer {
             if (it.status == Status.SUCCESS) {
                 notifyProfileUpdated()
@@ -172,16 +175,16 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     }
 
     private fun navigateToSuccessDialog() {
-//        findNavController().navigate(
-//            ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
-//                FlowStatusInfo(
-//                    Status.SUCCESS,
-//                    R.string.title_success_update_profile,
-//                    "",
-//                    R.string.title_update
-//                )
-//            )
-//        )
+        findNavController().navigate(
+            ProfileUpdateFragmentDirections.actionProfileUpdateFragmentToDialogFlowStatusDest(
+                FlowStatusInfo(
+                    Status.SUCCESS,
+                    R.string.title_success_update_profile,
+                    R.string.title_success_update_profile,
+                    R.string.title_update
+                )
+            )
+        )
     }
 
     private fun subscribeImageSelectedError() {

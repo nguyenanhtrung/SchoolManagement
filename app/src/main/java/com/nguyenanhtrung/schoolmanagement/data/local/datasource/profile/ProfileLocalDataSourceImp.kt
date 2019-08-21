@@ -12,7 +12,8 @@ class ProfileLocalDataSourceImp @Inject constructor() : ProfileLocalDataSource {
         return arrayOf(
             FilterData(
                 R.string.title_all,
-                FilterState.Profile(ProfileFilter.All)
+                FilterState.Profile(ProfileFilter.All),
+                true
             ),
 
             FilterData(

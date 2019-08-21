@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class FilterSheetViewModel @Inject constructor() : BaseViewModel() {
     internal lateinit var filterDatas: Array<FilterData>
-    private var currentPosFilterItem = -1
+    private var currentPosFilterItem = 0
 
     private val _filterItems by lazy {
         MutableLiveData<MutableList<FilterItem>>()
@@ -38,10 +38,6 @@ class FilterSheetViewModel @Inject constructor() : BaseViewModel() {
 
     internal fun onClickFilterItem(position: Int) {
         currentPosFilterItem = when (currentPosFilterItem) {
-            -1 -> {
-                notifyFilterItemChange(position, true)
-                position
-            }
             position -> return
             else -> {
                 notifyFilterItemChange(currentPosFilterItem, false)

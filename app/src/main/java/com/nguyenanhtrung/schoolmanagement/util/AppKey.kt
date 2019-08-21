@@ -23,7 +23,7 @@ class AppKey private constructor(){
         const val PHONE_NUMBER_FIELD_PROFILE_PATH = "phoneNumber"
         const val ADDRESS_FIELD_PROFILE_PATH = "address"
         const val EMAIL_FIELD_PROFILE_PATH = "email"
-        const val IMAGE_PATH_FIELD_PROFILE = "imagePath"
+        const val PROFILE_IMAGE_PATH_FIELD = "profileImagePath"
         const val GENDER_FIELD_PROFILE_PATH = "gender"
         //
         const val PASSWORD_FIELD_AUTHENTICATIONS_PATH = "password"

@@ -17,7 +17,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
 
     private var shouldLoadMoreItem = true
 
-    private val _getItemsLiveData by lazy {
+    protected val _getItemsLiveData by lazy {
         createApiResultLiveData<MutableList<out Item>>()
     }
     internal val getItemsLiveData: LiveData<Resource<MutableList<out Item>>>
@@ -41,7 +41,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     internal val itemsLiveData: LiveData<MutableList<out Item>>
         get() = _itemsLiveData
 
-    private val _clearItemsLiveData by lazy {
+    protected val _clearItemsLiveData by lazy {
         MutableLiveData<Boolean>()
     }
     internal val clearItemsLiveData: LiveData<Boolean>

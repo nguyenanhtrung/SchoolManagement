@@ -48,12 +48,12 @@ class UserRemoteDataSourceImp @Inject constructor(
         lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<ProfileItem>> {
+    ): Resource<MutableList<out Item>> {
         val lastDocument =
             firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
-                "id",
+                AppKey.USER_ID_FIELD,
                 lastUserId
-            ).get().await().documents[0]
+            ).whereGreaterThan(AppKey.USER_ID_FIELD, 0).get().await().documents[0]
         val querySnapshot = getUserProfilesQuery(profileFilter, lastDocument)
         val querySize = querySnapshot.size()
         if (querySize == 0) {
@@ -66,7 +66,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getUserByProfileStatus(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<ProfileItem>> {
+    ): Resource<MutableList<out Item>> {
 
         val querySnapshot = getUserProfilesQuery(profileFilter)
         val querySize = querySnapshot.size()
@@ -83,14 +83,17 @@ class UserRemoteDataSourceImp @Inject constructor(
     ): QuerySnapshot {
         val querySnapshot = when (profileFilter) {
             ProfileFilter.All -> firestore.collection(USERS_PATH_FIRE_STORE)
-                .orderBy("id")
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
             ProfileFilter.Updated -> firestore.collection(USERS_PATH_FIRE_STORE)
-                .orderBy("id")
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
                 .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
             ProfileFilter.NoUpdate -> firestore.collection(USERS_PATH_FIRE_STORE)
-                .orderBy("id")
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
                 .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, false)
         }
@@ -130,7 +133,8 @@ class UserRemoteDataSourceImp @Inject constructor(
                     it[AppKey.USER_NAME_FIELD] as String,
                     it[AppKey.PROFILE_STATUS_FIELD] as Boolean,
                     userTypeName,
-                    it[AppKey.USER_AVATAR_PATH_FIELD] as String
+                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
+                    it[AppKey.PROFILE_IMAGE_PATH_FIELD] as String
                 )
             )
         }
@@ -148,7 +152,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         val secondFireBaseAuth = createSecondFirebaseAuth(fireBaseUserId)
         secondFireBaseAuth.signInWithEmailAndPassword(
             accountName,
-            accCurrentPassword["password"] as String
+            accCurrentPassword[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] as String
         ).await()
         val user = secondFireBaseAuth.currentUser
         user?.updatePassword(newPassword)
@@ -261,7 +265,7 @@ class UserRemoteDataSourceImp @Inject constructor(
 
     private suspend fun updateUserPassword(fireBaseUserId: String, password: String) {
         val field = ArrayMap<String, String>()
-        field["password"] = password
+        field[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] = password
         firestore.collection(AppKey.AUTHENTICATION_PATH)
             .document(fireBaseUserId)
             .set(field)
@@ -316,11 +320,11 @@ class UserRemoteDataSourceImp @Inject constructor(
     ): Resource<MutableList<out Item>> {
         val lastDocument =
             firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
-                "id",
+                AppKey.USER_ID_FIELD,
                 lastUserId
             ).get().await().documents[0]
         val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy("id", Query.Direction.ASCENDING)
+            .orderBy(AppKey.USER_ID_FIELD, Query.Direction.ASCENDING)
             .limit(USERS_LIMIT)
             .startAfter(lastDocument)
             .get()

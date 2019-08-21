@@ -19,10 +19,10 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun getUsersByProfileFilter(
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
         object :
-            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<ProfileItem>>(
+            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<out Item>>(
                 context, params, result
             ) {
 
@@ -32,7 +32,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<ProfileFilter, Map<String, String>>): Boolean =
                 false
 
-            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
+            override suspend fun callApi(): Resource<MutableList<out Item>> {
                 return userRemoteDataSource.getUserByProfileStatus(params.second, params.first)
             }
 
@@ -42,11 +42,11 @@ class UserRepositoryImp @Inject constructor(
     override suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
+        result: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
         val finalParams = Pair(lastUserId, params)
         object :
-            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<ProfileItem>>(
+            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<out Item>>(
                 context,
                 finalParams,
                 result
@@ -60,7 +60,7 @@ class UserRepositoryImp @Inject constructor(
 
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
+            override suspend fun callApi(): Resource<MutableList<out Item>> {
                 val pair = finalParams.second
                 val lastUserId = finalParams.first
                 val profileFilter = pair.first

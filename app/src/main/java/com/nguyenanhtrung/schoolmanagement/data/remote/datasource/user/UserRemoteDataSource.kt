@@ -33,11 +33,11 @@ interface UserRemoteDataSource {
     suspend fun getUserByProfileStatus(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<ProfileItem>>
+    ): Resource<MutableList<out Item>>
 
     suspend fun getPagingUsesByProfileStatus(
         lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<ProfileItem>>
+    ): Resource<MutableList<out Item>>
 }

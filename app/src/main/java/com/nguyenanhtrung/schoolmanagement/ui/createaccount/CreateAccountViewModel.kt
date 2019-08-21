@@ -18,6 +18,7 @@ class CreateAccountViewModel @Inject constructor(
 
     var maxId: Long = 0
     var newFireBaseId = ""
+    private lateinit var createAccountInput: CreateAccountInput
 
     private val _userTypesLiveData by lazy {
         createApiResultLiveData<List<UserType>>()
@@ -58,6 +59,8 @@ class CreateAccountViewModel @Inject constructor(
     }
 
     internal fun onClickButtonConfirm(createAccountInput: CreateAccountInput) {
+        this.createAccountInput = createAccountInput
+
         val isNameValid = Validator.isNameValid(createAccountInput.fullName, _errorNameLiveData)
         if (!isNameValid) {
             return
@@ -87,8 +90,24 @@ class CreateAccountViewModel @Inject constructor(
 
     }
 
+    internal fun createProfile(): Profile {
+        val userTypeName = getUserTypeName(createAccountInput.userTypeIndex)
+        return Profile(
+            newFireBaseId,
+            maxId,
+            createAccountInput.fullName,
+            userTypeName = userTypeName
+        )
+    }
+
     private fun increaseUserId() {
         maxId++
+    }
+
+    private fun getUserTypeName(index: Int): String {
+        val userTypes = _userTypesLiveData.value?.data
+        val userTypeSelected = userTypes?.get(index)
+        return userTypeSelected?.name ?: return ""
     }
 
     internal fun getUserTypeId(index: Int): String {

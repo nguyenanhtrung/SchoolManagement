@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseDialogFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -64,6 +65,10 @@ class DialogFlowStatusFragment : BaseDialogFragment() {
     private fun setupUiEvents() {
         subscribeViewsData()
         button_close_dialog.setOnClickListener {
+            dismiss()
+        }
+        button_status_action.setOnClickListener {
+            mainViewModel.eventClickUpdateProfile.value = Event(Unit)
             dismiss()
         }
         flowStatusViewModel.showViewDatas()
