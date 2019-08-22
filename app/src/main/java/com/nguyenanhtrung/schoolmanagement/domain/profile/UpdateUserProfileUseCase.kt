@@ -8,12 +8,12 @@ import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import javax.inject.Inject
 
 class UpdateUserProfileUseCase @Inject constructor(private val profileRepository: ProfileRepository) :
-    BaseUseCase<ProfileUpdateParam, Unit>() {
+    BaseUseCase<ProfileUpdateParam, String>() {
 
 
     override suspend fun execute(
         params: ProfileUpdateParam,
-        resultLiveData: MutableLiveData<Resource<Unit>>
+        resultLiveData: MutableLiveData<Resource<String>>
     ) {
         profileRepository.updateUserProfile(params, resultLiveData)
     }

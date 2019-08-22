@@ -19,4 +19,8 @@ class LoginRepositoryImp @Inject constructor(private val loginRemoteDataSource: 
     override suspend fun checkAlreadyLoginAsync(result: MutableLiveData<Resource<LoginState>>) {
         loginRemoteDataSource.checkAlreadyLoginAsync(result)
     }
+
+    override suspend fun logOut(result: MutableLiveData<Resource<Unit>>) {
+        loginRemoteDataSource.logOut(result)
+    }
 }

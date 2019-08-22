@@ -12,7 +12,7 @@ interface ProfileRepository {
 
     suspend fun updateUserProfile(
         profileUpdateParam: ProfileUpdateParam,
-        result: MutableLiveData<Resource<Unit>>
+        result: MutableLiveData<Resource<String>>
     )
 
     suspend fun getProfileDetail(

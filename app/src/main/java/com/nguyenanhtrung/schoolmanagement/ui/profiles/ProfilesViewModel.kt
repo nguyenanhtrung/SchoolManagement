@@ -61,7 +61,8 @@ class ProfilesViewModel @Inject constructor(
 
 
     override fun onCustomClickItem(position: Int) {
-        val profile: Profile = itemCopys[position] as Profile
+        val profileItem: ProfileItem = itemCopys[position] as ProfileItem
+        val profile = profileItem.profile
         val isProfileUpdated = profile.isProfileUpdated
         if (isProfileUpdated) {
             _profileDetailScreen.value = Event(profile)

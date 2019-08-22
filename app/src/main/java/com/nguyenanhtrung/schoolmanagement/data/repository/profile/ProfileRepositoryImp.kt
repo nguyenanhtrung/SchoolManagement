@@ -37,15 +37,15 @@ class ProfileRepositoryImp @Inject constructor(
 
     override suspend fun updateUserProfile(
         profileUpdateParam: ProfileUpdateParam,
-        result: MutableLiveData<Resource<Unit>>
+        result: MutableLiveData<Resource<String>>
     ) {
         object :
-            NetworkBoundResources<ProfileUpdateParam, Unit>(context, profileUpdateParam, result) {
+            NetworkBoundResources<ProfileUpdateParam, String>(context, profileUpdateParam, result) {
 
             override fun shouldLoadFromLocal(params: ProfileUpdateParam): Boolean = false
             override fun shouldSaveToLocal(params: ProfileUpdateParam): Boolean = false
 
-            override suspend fun callApi(): Resource<Unit> {
+            override suspend fun callApi(): Resource<String> {
                 return profileRemoteDataSource.updateUserProfile(params)
             }
 

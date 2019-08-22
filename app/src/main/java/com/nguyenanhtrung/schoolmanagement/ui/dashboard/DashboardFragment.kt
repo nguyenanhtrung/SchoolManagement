@@ -19,9 +19,11 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.MyGridDividerItemDecoration
 import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
+import com.nguyenanhtrung.schoolmanagement.util.openActivity
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.fragment_dashboard.*
@@ -55,6 +57,16 @@ class DashboardFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dashboardViewModel.loadUserInfo()
+        subscribeStateLogOut()
+    }
+
+    private fun subscribeStateLogOut() {
+        dashboardViewModel.stateLogOut.observe(this, Observer {
+            if (it.status == Status.SUCCESS) {
+                requireActivity().finish()
+                openActivity(LoginActivity::class.java)
+            }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -71,6 +83,9 @@ class DashboardFragment : BaseFragment() {
         setupTasksRecyclerView()
         subscribeEvents()
         setupTasksEvent()
+        button_log_out.setOnClickListener {
+            dashboardViewModel.onClickButtonLogOut()
+        }
     }
 
     private fun subscribeEvents() {

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -21,6 +22,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragmen
 import com.nguyenanhtrung.schoolmanagement.util.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_update_profile.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -38,57 +40,19 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         Manifest.permission.READ_EXTERNAL_STORAGE
     )
 
-    private val imageViewProfile by lazy {
-        bindImageViewProfile()
-    }
-
-    private val buttonPickImage by lazy {
-        bindButtonPickImage()
-    }
-
-    private val textProfileName by lazy {
-        bindTextProfileName()
-    }
-
-    private val textUserTypeName by lazy {
-        bindTextUserTypeName()
-    }
-
-    private val toggleGroupGender by lazy {
-        bindToggleGroupGender()
-    }
-
-    private val inputLayoutBirthday by lazy {
-        bindInputLayoutBirthday()
-    }
-
-    private val editTextBirthday by lazy {
-        bindEditTextBirthday()
-    }
-
-    private val inputLayoutPhone by lazy {
-        bindInputLayoutPhone()
-    }
-
-    private val editTextPhone by lazy {
-        bindEditTextPhone()
-    }
-
-    private val inputLayoutAddress by lazy {
-        bindInputLayoutAddress()
-    }
-
-    private val editTextAddress by lazy {
-        bindEditTextAddress()
-    }
-
-    private val inputLayoutEmail by lazy {
-        bindInputLayoutEmail()
-    }
-
-    private val editTextEmail by lazy {
-        bindEditTextEmail()
-    }
+    private lateinit var imageViewProfile: ImageView
+    private lateinit var buttonPickImage: ImageButton
+    private lateinit var textProfileName: TextView
+    private lateinit var textUserTypeName: TextView
+    private lateinit var toggleGroupGender: MaterialButtonToggleGroup
+    private lateinit var inputLayoutBirthday: TextInputLayout
+    private lateinit var editTextBirthday: TextInputEditText
+    private lateinit var inputLayoutPhone: TextInputLayout
+    private lateinit var editTextPhone: TextInputEditText
+    private lateinit var inputLayoutAddress: TextInputLayout
+    private lateinit var editTextAddress: TextInputEditText
+    private lateinit var inputLayoutEmail: TextInputLayout
+    private lateinit var editTextEmail: TextInputEditText
 
     private val baseProfileViewModel by lazy {
         createBaseProfileViewModel()
@@ -98,6 +62,7 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         bindActivityViewModel()
     }
 
+
     override fun createFragmentViewModel(): BaseViewModel = baseProfileViewModel
 
 
@@ -106,7 +71,24 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         baseProfileViewModel.profile = getProfileArg()
     }
 
+    private fun bindViews() {
+        imageViewProfile = bindImageViewProfile()
+        buttonPickImage = bindButtonPickImage()
+        textProfileName = bindTextProfileName()
+        textUserTypeName = bindTextUserTypeName()
+        toggleGroupGender = bindToggleGroupGender()
+        inputLayoutBirthday = bindInputLayoutBirthday()
+        editTextBirthday = bindEditTextBirthday()
+        inputLayoutPhone = bindInputLayoutPhone()
+        editTextPhone = bindEditTextPhone()
+        inputLayoutAddress = bindInputLayoutAddress()
+        editTextAddress = bindEditTextAddress()
+        inputLayoutEmail = bindInputLayoutEmail()
+        editTextEmail = bindEditTextEmail()
+    }
+
     override fun setupUiEvents() {
+        bindViews()
         edit_text_birthday.disableEdit(input_layout_birthday)
         setupClearErrorWhenFocus()
         setupClickEventButtonPickImage()
@@ -165,11 +147,11 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         })
     }
 
-
     private fun subscribeBasicProfileInfo() {
         baseProfileViewModel.basicProfileInfo.observe(viewLifecycleOwner, Observer {
             textProfileName.text = it.name
             textUserTypeName.text = it.userTypeName
+            imageViewProfile.loadImageIfEmptyPath(it.profileImagePath)
         })
     }
 

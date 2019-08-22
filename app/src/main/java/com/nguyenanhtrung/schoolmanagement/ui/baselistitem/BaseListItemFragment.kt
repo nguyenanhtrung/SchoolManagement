@@ -110,8 +110,8 @@ abstract class BaseListItemFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         bindBaseViews()
-        setupSearchItemsEvent()
         setupRecyclerViewItems()
+        setupSearchItemsEvent()
         setupItemClickEvent()
         setupLoadMoreItemEvent()
     }

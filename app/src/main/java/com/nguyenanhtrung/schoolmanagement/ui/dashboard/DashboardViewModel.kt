@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
+import com.nguyenanhtrung.schoolmanagement.domain.logout.LogOutUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.navigation.GetDestinationIdUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserInfoUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.usertask.GetUserTasksUseCase
@@ -16,7 +17,8 @@ import javax.inject.Inject
 class DashboardViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val getUserTasksUseCase: GetUserTasksUseCase,
-    private val getDestinationIdUseCase: GetDestinationIdUseCase
+    private val getDestinationIdUseCase: GetDestinationIdUseCase,
+    private val logOutUseCase: LogOutUseCase
 ) : BaseViewModel() {
 
     private val _userInfoLiveData by lazy {
@@ -36,6 +38,12 @@ class DashboardViewModel @Inject constructor(
     }
     internal val navigationLiveData: LiveData<Resource<Event<NavDirections>>>
         get() = _navigationLiveData
+
+    private val _stateLogOut by lazy {
+        MutableLiveData<Resource<Unit>>()
+    }
+    internal val stateLogOut: LiveData<Resource<Unit>>
+        get() = _stateLogOut
 
 
     internal fun loadUserInfo() {
@@ -62,5 +70,9 @@ class DashboardViewModel @Inject constructor(
 
     internal fun onClickTaskItem(userTask: UserTask) {
         getDestinationIdUseCase.invoke(viewModelScope, userTask.id.toInt(), _navigationLiveData)
+    }
+
+    internal fun onClickButtonLogOut() {
+        logOutUseCase.invoke(viewModelScope, Unit, _stateLogOut)
     }
 }

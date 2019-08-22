@@ -40,10 +40,6 @@ class ProfilesFragment : BaseListItemFragment() {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
 
-    private val profileAdapter by lazy {
-        GroupAdapter<ViewHolder>()
-    }
-
     override fun bindRecyclerView(): RecyclerView = recycler_view_profiles
 
     override fun bindItemsViewModel(): BaseListItemViewModel = profileViewModel
@@ -66,6 +62,7 @@ class ProfilesFragment : BaseListItemFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        subscribeProfileUpdated()
         subscribeFilterProfileDatas()
         subscribeSelectedFilterItem()
     }
@@ -95,18 +92,18 @@ class ProfilesFragment : BaseListItemFragment() {
     override fun setupUiEvents() {
         super.setupUiEvents()
         setupToolbar()
-        subscribeProfileUpdated()
         subscribeNavigateToProfileUpdateScreen()
         subscribeNavigateToProfileDetailScreen()
     }
 
     private fun subscribeProfileUpdated() {
-        mainViewModel.profileUpdated.observe(viewLifecycleOwner, Observer {
-            val profileItem = profileAdapter.getItem(it)
+        mainViewModel.profileUpdated.observe(this, Observer {
+            val profileItem = itemAdapter.getItem(it.first)
             if (profileItem is ProfileItem) {
                 val profile = profileItem.profile
                 profile.isProfileUpdated = true
-                profileAdapter.notifyItemChanged(it)
+                profile.profileImagePath = it.second
+                itemAdapter.notifyItemChanged(it.first)
             }
         })
     }

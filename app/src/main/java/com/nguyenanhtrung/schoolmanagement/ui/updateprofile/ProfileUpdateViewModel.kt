@@ -60,9 +60,9 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         get() = _imageSelectedError
 
     private val _stateUpdateProfile by lazy {
-        createApiResultLiveData<Unit>()
+        createApiResultLiveData<String>()
     }
-    internal val stateUpdateProfile: LiveData<Resource<Unit>>
+    internal val stateUpdateProfile: LiveData<Resource<String>>
         get() = _stateUpdateProfile
 
     fun loadBasicProfileInfo() {

@@ -18,6 +18,7 @@ import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Visibility
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -55,6 +56,8 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     private val mainViewModel by lazy {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
+
+    private lateinit var updateMenu: Menu
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -142,6 +145,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
     override fun setupUiEvents() {
         setupClearErrorWhenFocus()
         edit_text_birthday.disableEdit(input_layout_birthday)
+        edit_text_birthday.isClickable = false
         subscribeBasicProfileInfo()
         subscribeBirthdayInputError()
         subscribePhoneInputError()
@@ -154,23 +158,35 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
         updateViewModel.loadBasicProfileInfo()
     }
 
+    private fun disableEditAllInput() {
+        image_profile.visibility = View.GONE
+        edit_text_birthday.disableInput(input_layout_birthday)
+
+        edit_text_address.disableInput(input_layout_address)
+        edit_text_phone.disableInput(input_layout_phone)
+        edit_text_email.disableInput(input_layout_email)
+    }
+
     private fun subscribeStateUpdateProfile() {
         if (updateViewModel.indexProfile < 0) {
             return
         }
         updateViewModel.stateUpdateProfile.observe(this, Observer {
-            if (it.status == Status.SUCCESS) {
-                notifyProfileUpdated()
+            it.data?.let { imageUri ->
+                disableEditAllInput()
+                val menuItem = updateMenu.findItem(R.id.item_update_profile)
+                menuItem.isVisible = false
+                notifyProfileUpdated(imageUri)
                 navigateToSuccessDialog()
             }
         })
     }
 
-    private fun notifyProfileUpdated() {
+    private fun notifyProfileUpdated(imageUri: String) {
         val indexProfile = updateViewModel.indexProfile
-        if (indexProfile >= 0) {
+        if (indexProfile >= 0 && imageUri.isNotEmpty()) {
             val profileUpdated = mainViewModel.mutableProfileUpdated
-            profileUpdated.value = indexProfile
+            profileUpdated.value = Pair(indexProfile, imageUri)
         }
     }
 
@@ -261,6 +277,7 @@ class ProfileUpdateFragment : BaseFragment(), EasyPermissions.PermissionCallback
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_profile_update, menu)
+        updateMenu = menu
         super.onCreateOptionsMenu(menu, inflater)
     }
 

@@ -254,6 +254,7 @@ class UserRemoteDataSourceImp @Inject constructor(
             put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
             put(AppKey.USER_ACCOUNT_NAME_FIELD, createAccountParam.email)
             put(AppKey.PROFILE_STATUS_FIELD, false)
+            put(AppKey.PROFILE_IMAGE_PATH_FIELD, "")
         }
         firestore.collection(USERS_PATH_FIRE_STORE)
             .document(newUserId)

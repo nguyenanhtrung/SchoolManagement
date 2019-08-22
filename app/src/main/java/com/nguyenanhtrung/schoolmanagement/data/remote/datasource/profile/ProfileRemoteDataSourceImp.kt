@@ -43,8 +43,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     }
 
 
-
-    override suspend fun updateUserProfile(profileUpdateParam: ProfileUpdateParam): Resource<Unit> {
+    override suspend fun updateUserProfile(profileUpdateParam: ProfileUpdateParam): Resource<String> {
         val mappedProfileFields = ArrayMap<String, Any>()
         with(mappedProfileFields) {
             put(AppKey.BIRTHDAY_FIELD_PROFILE_PATH, profileUpdateParam.birthday)
@@ -55,12 +54,13 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         }
         firestore.collection(AppKey.USER_PROFILES_PATH)
             .document(profileUpdateParam.fireBaseUserId)
-            .update(mappedProfileFields.toMap())
+            .set(mappedProfileFields.toMap())
             .await()
-        uploadProfileImage(profileUpdateParam.fireBaseUserId, profileUpdateParam.imageUri)
         updateUserProfileStatus(profileUpdateParam.fireBaseUserId)
+        val imageUri =
+            uploadProfileImage(profileUpdateParam.fireBaseUserId, profileUpdateParam.imageUri)
 
-        return Resource.success(Unit)
+        return Resource.success(imageUri)
     }
 
     private suspend fun updateUserProfileStatus(fireBaseUserId: String) {
@@ -70,10 +70,10 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             .await()
     }
 
-    private suspend fun uploadProfileImage(fireBaseUserId: String, imageUri: String) {
+    private suspend fun uploadProfileImage(fireBaseUserId: String, imageUri: String): String {
         val profileImageRef = firebaseStorage.reference.child(AppKey.PROFILE_IMAGES_PATH_STORAGE)
             .child(fireBaseUserId)
-        val imageStream = FileUtils.getInputStreamLocalImage(context, imageUri) ?: return
+        val imageStream = FileUtils.getInputStreamLocalImage(context, imageUri) ?: return ""
         val uploadImageTask = profileImageRef.putStream(imageStream).await()
         val imageDownloadUri = uploadImageTask.storage.downloadUrl.await()
         val imagePathField = ArrayMap<String, String>()
@@ -82,5 +82,6 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             .document(fireBaseUserId)
             .update(imagePathField.toMap())
             .await()
+        return imageDownloadUri.toString()
     }
 }

@@ -8,7 +8,7 @@ interface ProfileRemoteDataSource {
 
     suspend fun updateUserProfile(
         profileUpdateParam: ProfileUpdateParam
-    ): Resource<Unit>
+    ): Resource<String>
 
     suspend fun getProfileDetail(fireBaseUserId: String): Resource<ProfileDetail>
 }

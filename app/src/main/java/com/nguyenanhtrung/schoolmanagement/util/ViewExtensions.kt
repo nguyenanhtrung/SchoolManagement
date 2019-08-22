@@ -95,7 +95,7 @@ fun Fragment.hideKeyboard(view: View) {
 fun ImageView.loadImageIfEmptyPath(imagePath: String) {
     if (imagePath.isEmpty()) {
         Glide.with(this)
-            .load(R.drawable.image_empty)
+            .load(R.drawable.ic_photo_empty)
             .override(150, 150)
             .into(this)
         return

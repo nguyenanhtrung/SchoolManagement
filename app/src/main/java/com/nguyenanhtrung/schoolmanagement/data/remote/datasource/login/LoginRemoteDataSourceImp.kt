@@ -18,6 +18,11 @@ class LoginRemoteDataSourceImp @Inject constructor(
     private val context: Context
 ) : LoginRemoteDataSource {
 
+    override suspend fun logOut(result: MutableLiveData<Resource<Unit>>) {
+        firebaseAuth.signOut()
+        result.value = Resource.success(Unit)
+    }
+
     override suspend fun loginAsync(
         loginPair: Pair<String, String>,
         result: MutableLiveData<Resource<Boolean>>
