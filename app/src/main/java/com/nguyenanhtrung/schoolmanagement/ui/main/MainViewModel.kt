@@ -23,9 +23,9 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
         get() = mutableFilterItem
 
     val mutableProfileUpdated by lazy {
-        MutableLiveData<Pair<Int, String>>()
+        MutableLiveData<Event<String>>()
     }
-    internal val profileUpdated: LiveData<Pair<Int, String>>
+    internal val profileUpdated: LiveData<Event<String>>
         get() = mutableProfileUpdated
 
     val mutableAccountEvent by lazy {

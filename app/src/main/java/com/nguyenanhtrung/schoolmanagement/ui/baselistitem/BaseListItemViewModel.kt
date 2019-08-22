@@ -13,6 +13,8 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         mutableListOf<Item>()
     }
 
+    internal var posItemSelected = -1
+
     private var lastQueryItem: String? = null
 
     private var shouldLoadMoreItem = true
@@ -105,6 +107,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     }
 
     internal fun onClickItem(position: Int) {
+        posItemSelected = position
         onCustomClickItem(position)
     }
 

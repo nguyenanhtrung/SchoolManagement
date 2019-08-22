@@ -10,7 +10,6 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.Observer
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -18,12 +17,10 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
-import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment
 import com.nguyenanhtrung.schoolmanagement.util.*
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
-import de.hdodenhof.circleimageview.CircleImageView
-import kotlinx.android.synthetic.main.fragment_update_profile.*
+import kotlinx.android.synthetic.main.fragment_profile_detail.*
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -89,7 +86,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
 
     override fun setupUiEvents() {
         bindViews()
-        edit_text_birthday.disableEdit(input_layout_birthday)
         setupClearErrorWhenFocus()
         setupClickEventButtonPickImage()
         subscribeBasicProfileInfo()
@@ -174,6 +170,30 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         editTextEmail.clearErrorWhenFocus(inputLayoutEmail)
     }
 
+    protected fun disableProfileInput() {
+        buttonPickImage.isEnabled = false
+        editTextEmail.disableInput(inputLayoutEmail)
+        editTextBirthday.disableInput(inputLayoutBirthday)
+        editTextBirthday.isEnabled = false
+        editTextPhone.disableInput(inputLayoutPhone)
+        editTextAddress.disableInput(inputLayoutAddress)
+    }
+
+    protected fun enableProfileInput() {
+        buttonPickImage.isEnabled = true
+        editTextEmail.enableInput(inputLayoutEmail)
+        editTextBirthday.disableInput(inputLayoutBirthday)
+        editTextBirthday.isEnabled = true
+        editTextPhone.enableInput(inputLayoutPhone)
+        editTextAddress.enableInput(inputLayoutAddress)
+    }
+
+    protected fun setGenderSelection(isEnabled: Boolean) {
+        button_male_gender.isClickable = isEnabled
+        button_female_gender.isClickable = isEnabled
+        toggle_group_gender.isEnabled = isEnabled
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -210,7 +230,7 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         EasyPermissions.requestPermissions(
             PermissionRequest.Builder(
                 this,
-                ProfileUpdateFragment.REQUEST_CODE_PERMISSIONS,
+                REQUEST_CODE_PERMISSIONS,
                 *permissions
             )
                 .setRationale(com.nguyenanhtrung.schoolmanagement.R.string.message_request_permission)
@@ -228,7 +248,7 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
             .thumbnailScale(0.85f)
             .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
             .imageEngine(Glide4Engine())
-            .forResult(ProfileUpdateFragment.REQUEST_CODE_PICK_IMAGE)
+            .forResult(REQUEST_CODE_PICK_IMAGE)
     }
 
 

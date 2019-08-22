@@ -33,6 +33,10 @@
         <item name="android:inputType">textPassword</item>
     </style>
 
+    <style name="Widget.EditTextBirthday" parent="Widget.EditText">
+        <item name="android:inputType">none</item>
+    </style>
+
 
     <style name="Widget.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
         <item name="android:textAppearance">@style/TextSmall</item>

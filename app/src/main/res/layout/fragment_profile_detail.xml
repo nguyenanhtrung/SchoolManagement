@@ -59,7 +59,7 @@
             android:layout_marginTop="@dimen/margin_normal_100"
             android:textAppearance="@style/TitleNormal"
             app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
-            app:layout_constraintHorizontal_bias="0.529"
+            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/card_image_profile"
             app:layout_constraintTop_toBottomOf="@+id/button_change_profile_image"
             tools:text="Nguyen Anh Trung" />
@@ -69,10 +69,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
-            app:layout_constraintBottom_toBottomOf="@+id/card_image_profile"
+            android:padding="@dimen/padding_small_100"
+            app:layout_constraintTop_toBottomOf="@+id/card_image_profile"
             app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
             app:layout_constraintStart_toStartOf="@+id/card_image_profile"
-            app:layout_constraintTop_toTopOf="@+id/card_image_profile"
             app:layout_constraintVertical_bias="1.0"
             app:srcCompat="@drawable/ic_camera" />
 
@@ -126,7 +126,9 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_birthday"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                style="@style/Widget.EditTextBirthday"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

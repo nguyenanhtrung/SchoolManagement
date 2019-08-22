@@ -49,23 +49,6 @@ class AccountDetailViewModel @Inject constructor(
     internal val errorPasswordLiveData: LiveData<ErrorState>
         get() = _errorPasswordLiveData
 
-    private val _stateModifyName by lazy {
-        MutableLiveData<ModificationState>()
-    }
-    internal val stateModifyName: LiveData<ModificationState>
-        get() = _stateModifyName
-
-    private val _stateModifyPassword by lazy {
-        MutableLiveData<ModificationState>()
-    }
-    internal val stateModifyPassword: LiveData<ModificationState>
-        get() = _stateModifyPassword
-
-    private val _stateModifyUserType by lazy {
-        MutableLiveData<ModificationState>()
-    }
-    internal val stateModifyUserType: LiveData<ModificationState>
-        get() = _stateModifyUserType
 
     private val _stateEditAccountInfo by lazy {
         MutableLiveData<ModificationState>()
@@ -81,9 +64,6 @@ class AccountDetailViewModel @Inject constructor(
 
 
     internal fun onClickButtonEdit() {
-        _stateModifyName.value = ModificationState.Edit
-        _stateModifyPassword.value = ModificationState.Edit
-        _stateModifyUserType.value = ModificationState.Edit
         _stateEditAccountInfo.value = ModificationState.Edit
     }
 
@@ -133,9 +113,6 @@ class AccountDetailViewModel @Inject constructor(
     }
 
     private fun disableModifyInputs() {
-        _stateModifyName.value = ModificationState.Save
-        _stateModifyPassword.value = ModificationState.Save
-        _stateModifyUserType.value = ModificationState.Save
         _stateEditAccountInfo.value = ModificationState.Save
     }
 

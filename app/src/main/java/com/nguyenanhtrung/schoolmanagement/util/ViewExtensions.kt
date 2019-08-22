@@ -57,14 +57,7 @@ fun TextInputEditText.enableInput(inputLayout: TextInputLayout) {
 fun TextInputEditText.disableInput(inputLayout: TextInputLayout) {
     isFocusable = false
     isFocusableInTouchMode = false
-    if (inputLayout.endIconMode == TextInputLayout.END_ICON_CLEAR_TEXT) {
-        inputLayout.endIconMode = TextInputLayout.END_ICON_NONE
-    }
-}
 
-fun TextInputEditText.disableEdit(inputLayout: TextInputLayout) {
-    inputType = InputType.TYPE_NULL
-    isFocusable = false
     if (inputLayout.endIconMode == TextInputLayout.END_ICON_CLEAR_TEXT) {
         inputLayout.endIconMode = TextInputLayout.END_ICON_NONE
     }

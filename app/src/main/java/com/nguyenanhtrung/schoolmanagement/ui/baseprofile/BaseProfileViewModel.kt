@@ -10,43 +10,43 @@ abstract class BaseProfileViewModel : BaseViewModel() {
 
     lateinit var profile: Profile
 
-    private val _basicProfileInfo by lazy {
+    protected val _basicProfileInfo by lazy {
         MutableLiveData<Profile>()
     }
     internal val basicProfileInfo: LiveData<Profile>
         get() = _basicProfileInfo
 
-    private val _profileImage by lazy {
+    protected val _profileImage by lazy {
         MutableLiveData<String>()
     }
     internal val profileImage: LiveData<String>
         get() = _profileImage
 
-    private val _birthdayInputError by lazy {
+    protected val _birthdayInputError by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val birthdayInputError: LiveData<ErrorState>
         get() = _birthdayInputError
 
-    private val _phoneInputError by lazy {
+    protected val _phoneInputError by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val phoneInputError: LiveData<ErrorState>
         get() = _phoneInputError
 
-    private val _addressInputError by lazy {
+    protected val _addressInputError by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val addressInputError: LiveData<ErrorState>
         get() = _addressInputError
 
-    private val _emailInputError by lazy {
+    protected val _emailInputError by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val emailInputError: LiveData<ErrorState>
         get() = _emailInputError
 
-    private val _imageSelectedError by lazy {
+    protected val _imageSelectedError by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val imageSelectedError: LiveData<ErrorState>

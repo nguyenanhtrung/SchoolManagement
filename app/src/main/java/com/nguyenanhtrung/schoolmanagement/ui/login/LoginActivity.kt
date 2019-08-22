@@ -74,6 +74,8 @@ class LoginActivity : BaseActivity() {
     private fun subscribeLoginResult() {
         loginViewModel.loginResultLiveData.observe(this, Observer {
             it.data?.let { isLoginSuccess ->
+                input_layout_email.clearFocus()
+                input_layout_password.clearFocus()
                 loginViewModel.onCheckLogin(isLoginSuccess)
             }
         })

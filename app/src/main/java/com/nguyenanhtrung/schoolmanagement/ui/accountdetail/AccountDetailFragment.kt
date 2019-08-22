@@ -56,10 +56,7 @@ class AccountDetailFragment : BaseFragment() {
         detailViewModel.accountDetailParams = args.accountDetailParams
 
         subscribeUserInfo()
-        subscribeStateModifyName()
-        subscribeStateModifyPassword()
-        subscribeStateModifyUserType()
-        subscribeStateEditAccoungInfo()
+        subscribeStateEditAccountInfo()
         subscribeStateSaveModifiedInfo()
     }
 
@@ -82,11 +79,19 @@ class AccountDetailFragment : BaseFragment() {
         })
     }
 
-    private fun subscribeStateEditAccoungInfo() {
+    private fun subscribeStateEditAccountInfo() {
         detailViewModel.stateEditAccountInfo.observe(this, Observer {
+            handleStateModifyInput(it, edit_text_name, input_layout_name)
+            handleStateModifyInput(it, edit_text_password, input_layout_password)
             when (it) {
-                ModificationState.Edit -> showMenuItemWithEditState()
-                ModificationState.Save -> showMenuItemWithSaveState()
+                ModificationState.Edit -> {
+                    spinner_account_type.isEnabled = true
+                    showMenuItemWithEditState()
+                }
+                ModificationState.Save -> {
+                    spinner_account_type.isEnabled = false
+                    showMenuItemWithSaveState()
+                }
             }
         })
     }
@@ -109,27 +114,6 @@ class AccountDetailFragment : BaseFragment() {
         }
     }
 
-    private fun subscribeStateModifyUserType() {
-        detailViewModel.stateModifyUserType.observe(this, Observer {
-            when (it) {
-                ModificationState.Edit -> spinner_account_type.isEnabled = true
-                ModificationState.Save -> spinner_account_type.isEnabled = false
-            }
-        })
-    }
-
-    private fun subscribeStateModifyPassword() {
-        detailViewModel.stateModifyPassword.observe(this, Observer {
-            handleStateModifyInput(it, edit_text_password, input_layout_password)
-        })
-    }
-
-    private fun subscribeStateModifyName() {
-        detailViewModel.stateModifyName.observe(this, Observer {
-            handleStateModifyInput(it, edit_text_name, input_layout_name)
-        })
-    }
-
     private fun handleStateModifyInput(
         state: ModificationState,
         editText: TextInputEditText,
@@ -137,7 +121,7 @@ class AccountDetailFragment : BaseFragment() {
     ) {
         when (state) {
             ModificationState.Edit -> editText.enableInput(inputLayout)
-            ModificationState.Save -> editText.disableEdit(inputLayout)
+            ModificationState.Save -> editText.disableInput(inputLayout)
         }
     }
 

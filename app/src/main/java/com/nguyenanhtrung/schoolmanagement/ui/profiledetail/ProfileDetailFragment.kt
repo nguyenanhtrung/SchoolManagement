@@ -2,9 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.profiledetail
 
 import android.app.Application
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -18,14 +16,13 @@ import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ModificationState
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
-import com.nguyenanhtrung.schoolmanagement.util.disableEdit
-import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
 import kotlinx.android.synthetic.main.fragment_profile_detail.*
 import javax.inject.Inject
 
@@ -43,6 +40,8 @@ class ProfileDetailFragment : BaseProfileFragment() {
     private val mainViewModel by lazy {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
+
+    private lateinit var detailMenu: Menu
 
     override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
     override fun createBaseProfileViewModel(): BaseProfileViewModel = detailViewModel
@@ -89,6 +88,43 @@ class ProfileDetailFragment : BaseProfileFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeProfileDetail()
+        subscribeStateModifyProfile()
+        detailViewModel.initStateModifyProfileInfo()
+    }
+
+    private fun subscribeStateModifyProfile() {
+        detailViewModel.stateModifyProfileInfo.observe(this, Observer {
+            when(it) {
+                ModificationState.Edit -> {
+                    setGenderSelection(isEnabled = true)
+                    enableProfileInput()
+                }
+                ModificationState.Save -> {
+                    disableProfileInput()
+                    setGenderSelection(isEnabled = false)
+                }
+            }
+        })
+    }
+
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.fragment_profile_detail, menu)
+        detailMenu = menu
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+        R.id.item_edit_profile_detail -> {
+            detailViewModel.onClickButtonEditProfile()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     private fun subscribeProfileDetail() {
@@ -118,19 +154,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun setupUiEvents() {
         super.setupUiEvents()
-        setGenderSelection(isEnabled = false)
-        edit_text_birthday.isEnabled = false
-        edit_text_birthday.disableEdit(input_layout_email)
-        edit_text_address.disableEdit(input_layout_address)
-        edit_text_phone.disableEdit(input_layout_phone)
-        edit_text_email.disableEdit(input_layout_email)
         detailViewModel.loadProfileDetail()
-    }
-
-    private fun setGenderSelection(isEnabled: Boolean) {
-        button_male_gender.isClickable = isEnabled
-        button_female_gender.isClickable = isEnabled
-        toggle_group_gender.isEnabled = isEnabled
     }
 
 }
