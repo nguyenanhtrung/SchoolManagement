@@ -7,4 +7,10 @@
         android:icon="@drawable/ic_edit"
         android:title="@string/title_edit"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/item_save_profile_detail"
+        android:icon="@drawable/ic_check"
+        android:title="@string/title_save"
+        android:visible="false"
+        app:showAsAction="ifRoom" />
 </menu>

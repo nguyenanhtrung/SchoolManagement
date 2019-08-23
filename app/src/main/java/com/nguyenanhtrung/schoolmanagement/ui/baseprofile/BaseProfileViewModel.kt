@@ -58,5 +58,8 @@ abstract class BaseProfileViewModel : BaseViewModel() {
 
     fun onProfileImagePicked(imageUri: String) {
         _profileImage.value = imageUri
+        onSuccessProfileImagePicked()
     }
+
+    protected open fun onSuccessProfileImagePicked() = Unit
 }

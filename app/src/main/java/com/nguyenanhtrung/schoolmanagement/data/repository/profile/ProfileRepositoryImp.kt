@@ -3,10 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.profile
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.profile.ProfileLocalDataSource
-import com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile.ProfileRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
@@ -19,6 +16,24 @@ class ProfileRepositoryImp @Inject constructor(
 ) :
     ProfileRepository {
 
+    override suspend fun saveProfileModified(
+        profileModificationParams: ProfileModificationParams,
+        result: MutableLiveData<Resource<String>>
+    ) {
+        object : NetworkBoundResources<ProfileModificationParams, String>(
+            context,
+            profileModificationParams,
+            result
+        ) {
+            override fun shouldSaveToLocal(params: ProfileModificationParams): Boolean = false
+            override fun shouldLoadFromLocal(params: ProfileModificationParams): Boolean = false
+
+            override suspend fun callApi(): Resource<String> {
+                return profileRemoteDataSource.saveProfileModified(params)
+            }
+
+        }.createCall()
+    }
 
     override suspend fun getProfileDetail(
         fireBaseUserId: String,

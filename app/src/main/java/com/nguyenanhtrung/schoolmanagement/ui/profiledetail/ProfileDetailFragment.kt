@@ -15,14 +15,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ModificationState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.util.getString
 import kotlinx.android.synthetic.main.fragment_profile_detail.*
 import javax.inject.Inject
 
@@ -45,15 +43,6 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
     override fun createBaseProfileViewModel(): BaseProfileViewModel = detailViewModel
-
-    override fun injectDependencies(application: Application) {
-        val myApp = application as MyApplication
-        myApp.appComponent.inject(this)
-    }
-
-    override fun getProfileArg(): Profile {
-        return profileArgs.profile
-    }
 
     override fun bindImageViewProfile(): ImageView = image_profile_detail
 
@@ -81,36 +70,77 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun bindEditTextEmail(): TextInputEditText = edit_text_email
 
+    override fun injectDependencies(application: Application) {
+        val myApp = application as MyApplication
+        myApp.appComponent.inject(this)
+    }
+
+    override fun getProfileArg(): Profile {
+        return profileArgs.profile
+    }
+
+
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
         return inflater.inflate(R.layout.fragment_profile_detail, container, false)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         subscribeProfileDetail()
+        detailViewModel.loadProfileDetail()
         subscribeStateModifyProfile()
-        detailViewModel.initStateModifyProfileInfo()
+        subscribeSaveProfileModification()
+
     }
 
-    private fun subscribeStateModifyProfile() {
-        detailViewModel.stateModifyProfileInfo.observe(this, Observer {
-            when(it) {
-                ModificationState.Edit -> {
-                    setGenderSelection(isEnabled = true)
-                    enableProfileInput()
-                }
-                ModificationState.Save -> {
-                    disableProfileInput()
-                    setGenderSelection(isEnabled = false)
+
+    private fun subscribeSaveProfileModification() {
+        detailViewModel.saveProfileModification.observe(this, Observer {
+            it.data?.let { newImagePath ->
+                detailViewModel.onSuccessSaveProfileModification(newImagePath)
+                mainViewModel.showMessage(R.string.success_modify_profile_info)
+                if (newImagePath.isNotEmpty()) {
+                    mainViewModel.mutableProfileUpdated.value = Event(newImagePath)
                 }
             }
         })
     }
 
+    private fun subscribeStateModifyProfile() {
+        detailViewModel.stateModifyProfileInfo.observe(this, Observer {
+            when (it) {
+                ModificationState.Edit -> {
+                    setGenderSelection(isEnabled = true)
+                    enableProfileInput()
+                    showMenuItemSave()
+                }
+                ModificationState.Save -> {
+                    disableProfileInput()
+                    setGenderSelection(isEnabled = false)
+                    showMenuItemEdit()
+                }
+            }
+        })
+    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        setHasOptionsMenu(true)
+    private fun showMenuItemSave() {
+        val editItem = detailMenu.findItem(R.id.item_edit_profile_detail)
+        editItem.isVisible = false
+        val saveItem = detailMenu.findItem(R.id.item_save_profile_detail)
+        saveItem.isVisible = true
+    }
+
+    private fun showMenuItemEdit() {
+        val editItem = detailMenu.findItem(R.id.item_edit_profile_detail)
+        editItem.isVisible = true
+        val saveItem = detailMenu.findItem(R.id.item_save_profile_detail)
+        saveItem.isVisible = false
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        detailViewModel.initStateModifyProfileInfo()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -119,17 +149,36 @@ class ProfileDetailFragment : BaseProfileFragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean = when(item.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.item_edit_profile_detail -> {
             detailViewModel.onClickButtonEditProfile()
+            true
+        }
+        R.id.item_save_profile_detail -> {
+            detailViewModel.onClickButtonSaveModifiedProfile(
+                ProfileDetail(
+                    edit_text_birthday.getString(),
+                    edit_text_phone.getString(),
+                    edit_text_address.getString(),
+                    edit_text_email.getString(),
+                    getGenderSelected()
+                )
+            )
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
 
+    private fun getGenderSelected(): Gender = when (toggle_group_gender.checkedButtonId) {
+        R.id.button_male_gender -> Gender.MALE
+        R.id.button_female_gender -> Gender.FEMALE
+        else -> Gender.MALE
+    }
+
     private fun subscribeProfileDetail() {
-        detailViewModel.profileDetail.observe(this, Observer {
+        detailViewModel.profileDetailResult.observe(this, Observer {
             it.data?.let { profileDetail ->
+                detailViewModel.profileDetail = profileDetail
                 showProfileDetail(profileDetail)
             }
         })
@@ -146,7 +195,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
     }
 
     private fun showSelectedGender(gender: Gender) {
-        when(gender) {
+        when (gender) {
             Gender.MALE -> toggle_group_gender.check(R.id.button_male_gender)
             Gender.FEMALE -> toggle_group_gender.check(R.id.button_female_gender)
         }
@@ -154,7 +203,20 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun setupUiEvents() {
         super.setupUiEvents()
-        detailViewModel.loadProfileDetail()
+        subscribeVisibilityButtonResetImage()
+        button_reset_profile_image.setOnClickListener {
+            detailViewModel.onClickButtonResetProfileImage()
+        }
+    }
+
+    private fun subscribeVisibilityButtonResetImage() {
+        detailViewModel.stateResetProfileImage.observe(viewLifecycleOwner, Observer {
+            when (it) {
+                Visibility.SHOW -> button_reset_profile_image.visibility = View.VISIBLE
+                Visibility.HIDE -> button_reset_profile_image.visibility = View.GONE
+                else -> Visibility.SHOW
+            }
+        })
     }
 
 }

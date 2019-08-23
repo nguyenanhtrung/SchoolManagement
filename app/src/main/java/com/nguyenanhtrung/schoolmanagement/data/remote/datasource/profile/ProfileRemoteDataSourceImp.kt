@@ -2,12 +2,10 @@ package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile
 
 import android.content.Context
 import androidx.collection.ArrayMap
+import androidx.collection.arrayMapOf
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Gender
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.FileUtils
@@ -19,6 +17,23 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     private val firebaseStorage: FirebaseStorage,
     @ApplicationContext private val context: Context
 ) : ProfileRemoteDataSource {
+
+    override suspend fun saveProfileModified(profileModificationParams: ProfileModificationParams): Resource<String> {
+        firestore.collection(AppKey.USER_PROFILES_PATH)
+            .document(profileModificationParams.firebaseUserId)
+            .update(profileModificationParams.modifiedFields)
+            .await()
+
+        if (profileModificationParams.imagePath.isEmpty()) {
+            return Resource.success("")
+        }
+
+        val newImageUri = uploadProfileImage(
+            profileModificationParams.firebaseUserId,
+            profileModificationParams.imagePath
+        )
+        return Resource.success(newImageUri)
+    }
 
     override suspend fun getProfileDetail(fireBaseUserId: String): Resource<ProfileDetail> {
         val profileDetailTask = firestore.collection(AppKey.USER_PROFILES_PATH)

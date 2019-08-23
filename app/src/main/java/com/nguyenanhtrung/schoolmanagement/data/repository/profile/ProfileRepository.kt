@@ -1,10 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.profile
 
 import androidx.lifecycle.MutableLiveData
-import com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileDetail
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParam
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 
 interface ProfileRepository {
 
@@ -18,5 +15,10 @@ interface ProfileRepository {
     suspend fun getProfileDetail(
         fireBaseUserId: String,
         result: MutableLiveData<Resource<ProfileDetail>>
+    )
+
+    suspend fun saveProfileModified(
+        profileModificationParams: ProfileModificationParams,
+        result: MutableLiveData<Resource<String>>
     )
 }

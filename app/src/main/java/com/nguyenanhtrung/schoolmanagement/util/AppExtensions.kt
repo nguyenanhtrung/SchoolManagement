@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.util
 
 import android.view.View
+import androidx.collection.ArrayMap
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -30,4 +31,3 @@ fun GroupAdapter<ViewHolder>.addErrorItem(messageId: Int, retryEvent: () -> Unit
         })
     )
 }
-

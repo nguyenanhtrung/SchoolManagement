@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
-        android:paddingBottom="@dimen/margin_normal_100"
-        >
+        android:paddingBottom="@dimen/margin_normal_100">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_ver_start"
@@ -68,12 +67,14 @@
             android:id="@+id/button_change_profile_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_normal_100"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:padding="@dimen/padding_small_100"
-            app:layout_constraintTop_toBottomOf="@+id/card_image_profile"
-            app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
+            app:layout_constraintEnd_toStartOf="@+id/button_reset_profile_image"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintStart_toStartOf="@+id/card_image_profile"
-            app:layout_constraintVertical_bias="1.0"
+            app:layout_constraintTop_toBottomOf="@+id/card_image_profile"
             app:srcCompat="@drawable/ic_camera" />
 
         <TextView
@@ -125,10 +126,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditTextBirthday"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -180,6 +180,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/button_reset_profile_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:padding="@dimen/padding_small_100"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/button_change_profile_image"
+            app:layout_constraintEnd_toEndOf="@+id/card_image_profile"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/button_change_profile_image"
+            app:layout_constraintTop_toBottomOf="@+id/card_image_profile"
+            app:srcCompat="@drawable/ic_undo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
