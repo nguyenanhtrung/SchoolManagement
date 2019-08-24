@@ -11,4 +11,6 @@
     <color name="colorOnSurface">#000000</color>
     <color name="colorBackground">#F3F5F7</color>
     <color name="colorSuccess">#4CAF50</color>
+    <color name="colorTextPrimary">#000000</color>
+    <color name="colorTextSecondary">#918E8E</color>
 </resources>

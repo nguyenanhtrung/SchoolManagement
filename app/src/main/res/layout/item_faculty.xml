@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foregroundTint="@color/colorSurface"
+    android:layout_marginBottom="@dimen/margin_normal_100"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal_100"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/text_faculty_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TitleNormal"
+            tools:text="CNTT"
+            />
+
+        <TextView
+            android:id="@+id/text_faculty_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextSmall"
+            tools:text="Cong nghe thong tin"
+            />
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/title_faculty_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/faculty_teacher"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toTopOf="@+id/guideline_hori_top" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_ver_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_normal_100" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_hori_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="@dimen/margin_normal_100" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_faculty_teacher"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_faculty_teacher">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/padding_normal_100">
+
+            <ImageView
+                android:id="@+id/image_faculty_teacher"
+                android:layout_width="@dimen/width_image_square"
+                android:layout_height="@dimen/height_image_square"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/text_faculty_teacher_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_small_100"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:text="TextView"
+                android:textAppearance="@style/TextNormalBold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/image_faculty_teacher"
+                app:layout_constraintTop_toTopOf="@+id/image_faculty_teacher"
+                tools:text="Nguyen Van Giap" />
+
+            <TextView
+                android:id="@+id/text_faculty_teacher_id"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_small_100"
+                android:textAppearance="@style/TextSmall"
+                app:layout_constraintStart_toStartOf="@+id/text_faculty_teacher_name"
+                app:layout_constraintTop_toBottomOf="@+id/text_faculty_teacher_name"
+                tools:text="GV000122" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_change_faculty_teacher"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/title_select"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/text_faculty_teacher_name" />
+
+            <TextView
+                android:id="@+id/text_faculty_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextSmall"
+                app:layout_constraintStart_toStartOf="@+id/text_faculty_teacher_id"
+                app:layout_constraintTop_toBottomOf="@+id/text_faculty_teacher_id"
+                tools:text="0363559931" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/title_faculty_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        android:text="@string/title_faculty_info"
+        android:textAppearance="@style/TitleNormal"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/card_view_faculty_teacher" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_faculty_detail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_normal_100"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
+        app:layout_constraintTop_toBottomOf="@+id/title_faculty_info">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/padding_normal_150">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_faculty_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:hint="@string/title_faculty_id">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_faculty_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/input_layout_faculty_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_normal_100"
+                    android:hint="@string/title_faculty_name">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_text_faculty_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_faculty_room"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                android:hint="@string/title_faculty_room_number">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_text_faculty_room"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</androidx.constraintlayout.widget.ConstraintLayout>

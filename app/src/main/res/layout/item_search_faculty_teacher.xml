@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_normal_100"
+        >
+
+        <ImageView
+            android:id="@+id/image_item_faculty_teacher"
+            android:layout_width="@dimen/width_image_square"
+            android:layout_height="@dimen/height_image_square"
+            android:scaleType="centerCrop"
+            tools:src="@tools:sample/avatars"
+            />
+
+        <TextView
+            android:id="@+id/text_item_faculty_teacher_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/image_item_faculty_teacher"
+            android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginTop="@dimen/margin_small_100"
+            style="@style/TitleNormal"
+            tools:text="TeacherName"
+            />
+
+        <TextView
+            android:id="@+id/text_item_faculty_teacher_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="GV0123123"
+            android:layout_marginTop="@dimen/margin_small_100"
+            style="@style/TextSmall"
+            android:layout_below="@id/text_item_faculty_teacher_name"
+            android:layout_alignStart="@id/text_item_faculty_teacher_name"
+            />
+
+        <TextView
+            android:id="@+id/text_item_faculty_teacher_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_item_faculty_teacher_id"
+            android:layout_alignStart="@id/text_item_faculty_teacher_id"
+            tools:text="0363559931"
+            android:layout_marginTop="@dimen/margin_small_100"
+            style="@style/TextSmall"
+            />
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

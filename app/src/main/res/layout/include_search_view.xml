@@ -4,8 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:foregroundTint="@color/colorSurface"
-    app:cardElevation="@dimen/elevation_search_view"
-    android:background="@drawable/background_round_dialog">
+    app:cardElevation="@dimen/elevation_search_view">
 
 
     <androidx.appcompat.widget.SearchView

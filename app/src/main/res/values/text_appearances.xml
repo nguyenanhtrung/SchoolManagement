@@ -41,6 +41,7 @@
     <style name="TextSmall" parent="TextAppearance.MaterialComponents.Body1">
         <item name="android:fontFamily">@font/roboto</item>
         <item name="fontFamily">@font/roboto</item>
+        <item name="android:textColor">@color/colorTextSecondary</item>
     </style>
 
 

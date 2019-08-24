@@ -102,4 +102,8 @@
     <string name="title_status_detail_update_profile">Nhấn nút cập nhật để cập nhật thông tin cho tài khoản</string>
     <string name="success_save_modified_account_info">Sửa thông tin tài khoản thành công!</string>
     <string name="success_modify_profile_info">Thay đổi thông tin hồ sơ thành công!</string>
+    <string name="faculty_teacher">Chủ nhiệm khoa</string>
+    <string name="title_faculty_info">Thông tin khoa</string>
+    <string name="title_faculty_name">Tên khoa</string>
+    <string name="title_faculty_room_number">Số phòng</string>
 </resources>
