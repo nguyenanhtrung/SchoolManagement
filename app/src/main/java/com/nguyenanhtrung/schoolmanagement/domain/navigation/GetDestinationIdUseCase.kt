@@ -21,6 +21,8 @@ class GetDestinationIdUseCase @Inject constructor() : BaseUseCase<Int, Event<Nav
                 Resource.success(Event(DashboardFragmentDirections.actionDashboardFragmentToAccountManagementFragment()))
             AppKey.ID_TASK_PROFILES -> resultLiveData.value =
                 Resource.success(Event(DashboardFragmentDirections.actionDashboardDestToProfilesDest()))
+            AppKey.ID_TASK_SCHOOL_ROOMS -> resultLiveData.value =
+                Resource.success(Event(DashboardFragmentDirections.actionDashboardDestToSchoolRoomsDest()))
         }
     }
 

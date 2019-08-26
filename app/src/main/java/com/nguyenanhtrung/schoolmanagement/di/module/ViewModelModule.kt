@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.nguyenanhtrung.schoolmanagement.ui.accountdetail.AccountDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.addschoolroom.AddSchoolRoomViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.filtersheet.FilterSheetViewModel
@@ -13,6 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.login.LoginViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.schoolroom.SchoolRoomsViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateViewModel
 import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
@@ -91,4 +93,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileDetailViewModel::class)
     abstract fun bindProfileDetailViewModel(profileDetailViewModel: ProfileDetailViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SchoolRoomsViewModel::class)
+    abstract fun bindSchoolRoomsViewModel(schoolRoomsViewModel: SchoolRoomsViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddSchoolRoomViewModel::class)
+    abstract fun bindAddSchoolRoomViewModel(addSchoolRoomViewModel: AddSchoolRoomViewModel) : ViewModel
 }

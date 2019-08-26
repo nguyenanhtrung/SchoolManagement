@@ -106,4 +106,10 @@
     <string name="title_faculty_info">Thông tin khoa</string>
     <string name="title_faculty_name">Tên khoa</string>
     <string name="title_faculty_room_number">Số phòng</string>
+    <string name="title_add_room">Thêm phòng</string>
+    <string name="title_input_room_number">Nhập số phòng</string>
+    <string name="title_input_room_name">Nhập tên phòng</string>
+    <string name="title_office">Văn phòng</string>
+    <string name="title_class_room">Phòng học</string>
+    <string name="title_room_type">Loại phòng</string>
 </resources>

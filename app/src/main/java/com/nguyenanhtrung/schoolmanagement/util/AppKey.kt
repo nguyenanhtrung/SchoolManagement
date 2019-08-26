@@ -11,6 +11,7 @@ class AppKey private constructor(){
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"
         const val USER_PROFILES_PATH = "profiles"
         const val AUTHENTICATION_PATH = "authentications"
+        const val SCHOOL_ROOMS_PATH = "school_rooms"
         //
         const val USER_AVATAR_PATH_FIELD = "avatarPath"
         const val USER_NAME_FIELD = "name"
@@ -28,8 +29,15 @@ class AppKey private constructor(){
         //
         const val PASSWORD_FIELD_AUTHENTICATIONS_PATH = "password"
         //
+
+        //
+        const val NAME_FIELD_SCHOOL_ROOMS_PATH = "name"
+        const val ROOM_ID_FIELD_SCHOOL_ROOMS_PATH = "room_id"
+
+        //
         const val ID_TASK_ACCOUNT = 501
         const val ID_TASK_PROFILES = 500
+        const val ID_TASK_SCHOOL_ROOMS = 494
 
         const val PROFILE_IMAGES_PATH_STORAGE = "profile_images"
 

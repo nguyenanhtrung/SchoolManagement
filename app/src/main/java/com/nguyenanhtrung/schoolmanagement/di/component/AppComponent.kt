@@ -4,6 +4,7 @@ import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.di.module.*
 import com.nguyenanhtrung.schoolmanagement.ui.accountdetail.AccountDetailFragment
 import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagementFragment
+import com.nguyenanhtrung.schoolmanagement.ui.addschoolroom.AddSchoolRoomFragment
 import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountFragment
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardFragment
 import com.nguyenanhtrung.schoolmanagement.ui.filtersheet.FilterBottomSheetDialogFragment
@@ -13,6 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.login.LoginActivity
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailFragment
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment
+import com.nguyenanhtrung.schoolmanagement.ui.schoolroom.SchoolRoomsFragment
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashActivity
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment
 import dagger.Component
@@ -41,4 +43,6 @@ interface AppComponent {
     fun inject(filterBottomSheetDialogFragment: FilterBottomSheetDialogFragment)
     fun inject(profileUpdateFragment: ProfileUpdateFragment)
     fun inject(profileDetailFragment: ProfileDetailFragment)
+    fun inject(schoolRoomsFragment: SchoolRoomsFragment)
+    fun inject(addSchoolRoomFragment: AddSchoolRoomFragment)
 }

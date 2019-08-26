@@ -31,6 +31,13 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_in_right"
             app:popUpTo="@+id/dashboardDest" />
+        <action
+            android:id="@+id/action_dashboardDest_to_schoolRoomsDest"
+            app:destination="@id/schoolRoomsDest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/accountManagementDest"
@@ -155,4 +162,20 @@
             android:name="profile"
             app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />
     </fragment>
+    <fragment
+        android:id="@+id/schoolRoomsDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.schoolroom.SchoolRoomsFragment"
+        android:label="SchoolRoomsFragment" >
+        <action
+            android:id="@+id/action_schoolRoomsDest_to_addSchoolRoomDest"
+            app:destination="@id/addSchoolRoomDest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/addSchoolRoomDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.addschoolroom.AddSchoolRoomFragment"
+        android:label="AddSchoolRoomFragment" />
 </navigation>
