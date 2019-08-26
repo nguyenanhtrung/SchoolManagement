@@ -1,15 +1,22 @@
 package com.nguyenanhtrung.schoolmanagement.ui.schoolroom
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
+import com.nguyenanhtrung.schoolmanagement.domain.schoolrooms.GetSchoolRoomsUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
-class SchoolRoomsViewModel @Inject constructor() : BaseListItemViewModel() {
+class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase: GetSchoolRoomsUseCase) :
+    BaseListItemViewModel() {
 
     override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
+        val schoolRoomItem = item as SchoolRoomItem
+        val schoolRoom = schoolRoomItem.schoolRoom
+        return schoolRoom.roomName.contains(query)
     }
 
     override fun loadMoreItems(
@@ -19,6 +26,7 @@ class SchoolRoomsViewModel @Inject constructor() : BaseListItemViewModel() {
     }
 
     override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>) {
+        getSchoolRoomsUseCase.invoke(viewModelScope, -1, getItemsLiveData)
     }
 
     override fun onCustomClickItem(position: Int) {

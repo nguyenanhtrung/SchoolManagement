@@ -2,8 +2,8 @@ package com.nguyenanhtrung.schoolmanagement.di.module
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.nguyenanhtrung.schoolmanagement.data.local.database.AppDatabase
+import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.schoolroom.SchoolRoomDao
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.user.UserDao
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.usertasks.UserTaskDao
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.usertype.UserTypeDao
@@ -32,5 +32,9 @@ class DatabaseModule {
     @Singleton
     @Provides
     fun provideUserTypeDao(appDatabase: AppDatabase): UserTypeDao = appDatabase.userTypeDao()
+
+    @Singleton
+    @Provides
+    fun providerSchoolRoomDao(appDatabase: AppDatabase): SchoolRoomDao = appDatabase.schoolRoomDao()
 
 }

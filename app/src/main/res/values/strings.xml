@@ -112,4 +112,5 @@
     <string name="title_office">Văn phòng</string>
     <string name="title_class_room">Phòng học</string>
     <string name="title_room_type">Loại phòng</string>
+    <string name="title_empty_rooms">Danh sách phòng đang trống</string>
 </resources>

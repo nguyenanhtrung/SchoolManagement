@@ -31,8 +31,10 @@ class AppKey private constructor(){
         //
 
         //
-        const val NAME_FIELD_SCHOOL_ROOMS_PATH = "name"
-        const val ROOM_ID_FIELD_SCHOOL_ROOMS_PATH = "room_id"
+        const val NAME_FIELD_SCHOOL_ROOMS = "roomName"
+        const val ROOM_ID_FIELD_SCHOOL_ROOMS = "roomId"
+        const val ROOM_NUMBER_FIELD_SCHOOL_ROOMS = "roomNumber"
+        const val IS_OFFICE_ROOM_FIELD_SCHOOL_ROOMS = "isOfficeRoom"
 
         //
         const val ID_TASK_ACCOUNT = 501
