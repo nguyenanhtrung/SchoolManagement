@@ -35,7 +35,7 @@ class AppKey private constructor(){
         const val ROOM_ID_FIELD_SCHOOL_ROOMS = "roomId"
         const val ROOM_NUMBER_FIELD_SCHOOL_ROOMS = "roomNumber"
         const val IS_OFFICE_ROOM_FIELD_SCHOOL_ROOMS = "isOfficeRoom"
-
+        const val CAN_MODIFY_FIELD_SCHOOL_ROOMS = "canModify"
         //
         const val ID_TASK_ACCOUNT = 501
         const val ID_TASK_PROFILES = 500

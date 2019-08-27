@@ -41,5 +41,15 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
         schoolRoomDao.insertListData(schoolRoomEntities)
     }
 
+    override suspend fun saveSchoolRoom(schoolRoom: SchoolRoom) {
+        val schoolRoomEntity = SchoolRoomEntity(
+            schoolRoom.roomId,
+            schoolRoom.fireBaseId,
+            schoolRoom.roomNumber,
+            schoolRoom.roomName,
+            schoolRoom.isOfficeRoom
+        )
+        schoolRoomDao.insertData(schoolRoomEntity)
+    }
 
 }

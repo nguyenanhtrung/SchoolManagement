@@ -1,8 +1,11 @@
 package com.nguyenanhtrung.schoolmanagement.ui.schoolroom
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
 import com.nguyenanhtrung.schoolmanagement.domain.schoolrooms.GetSchoolRoomsUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
@@ -13,10 +16,19 @@ import javax.inject.Inject
 class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase: GetSchoolRoomsUseCase) :
     BaseListItemViewModel() {
 
+    private val _roomDetailNavigation by lazy {
+        MutableLiveData<Event<SchoolRoom>>()
+    }
+    internal val roomDetailNavigation: LiveData<Event<SchoolRoom>>
+        get() = _roomDetailNavigation
+
     override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
         val schoolRoomItem = item as SchoolRoomItem
         val schoolRoom = schoolRoomItem.schoolRoom
-        return schoolRoom.roomName.contains(query) || schoolRoom.roomNumber.contains(query)
+        return schoolRoom.roomName.contains(query, true) || schoolRoom.roomNumber.contains(
+            query,
+            true
+        )
     }
 
     override fun loadMoreItems(
@@ -33,5 +45,11 @@ class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase
     }
 
     override fun onCustomClickItem(position: Int) {
+        val schoolRoomSelected = itemCopys[position]
+        if (schoolRoomSelected is SchoolRoomItem) {
+            val schoolRoom = schoolRoomSelected.schoolRoom
+            _roomDetailNavigation.value = Event(schoolRoom)
+        }
     }
+
 }

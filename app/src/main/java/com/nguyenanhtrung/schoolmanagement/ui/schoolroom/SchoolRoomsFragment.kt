@@ -54,18 +54,36 @@ class SchoolRoomsFragment : BaseListItemFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         subscribeSuccessAddSchoolRoom()
+        subscribeRoomDetailNavigation()
+    }
+
+    private fun subscribeRoomDetailNavigation() {
+        schoolRoomsViewModel.roomDetailNavigation.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { schoolRoom ->
+                findNavController().navigate(
+                    SchoolRoomsFragmentDirections.actionSchoolRoomsDestToSchoolRoomDetailDest(
+                        schoolRoom
+                    )
+                )
+            }
+        })
     }
 
     private fun subscribeSuccessAddSchoolRoom() {
         mainViewModel.stateAddSchoolRoom.observe(this, Observer {
             it.getContentIfNotHandled()?.let { schoolRoom ->
-                itemAdapter.add(SchoolRoomItem(schoolRoom))
+                schoolRoomsViewModel.addItem(SchoolRoomItem(schoolRoom))
             }
         })
     }
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
         return inflater.inflate(R.layout.fragment_list_item_with_adding_button, container, false)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mainViewModel.showToolbar()
     }
 
 

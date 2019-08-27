@@ -74,6 +74,7 @@ class SchoolRoomRemoteDataSourceImp @Inject constructor(private val firestore: F
         fields[AppKey.NAME_FIELD_SCHOOL_ROOMS] = schoolRoomParams.roomName
         fields[AppKey.ROOM_NUMBER_FIELD_SCHOOL_ROOMS] = schoolRoomParams.roomNumber
         fields[AppKey.IS_OFFICE_ROOM_FIELD_SCHOOL_ROOMS] = schoolRoomParams.isOfficeRoom
+        fields[AppKey.CAN_MODIFY_FIELD_SCHOOL_ROOMS] = true
 
         val taskSnapshot = firestore.collection(AppKey.SCHOOL_ROOMS_PATH)
             .document()

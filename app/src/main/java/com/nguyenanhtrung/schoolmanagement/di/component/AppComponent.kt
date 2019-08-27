@@ -15,6 +15,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
 import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailFragment
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesFragment
 import com.nguyenanhtrung.schoolmanagement.ui.schoolroom.SchoolRoomsFragment
+import com.nguyenanhtrung.schoolmanagement.ui.schoolroomdetail.SchoolRoomDetailFragment
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashActivity
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment
 import dagger.Component
@@ -45,4 +46,5 @@ interface AppComponent {
     fun inject(profileDetailFragment: ProfileDetailFragment)
     fun inject(schoolRoomsFragment: SchoolRoomsFragment)
     fun inject(addSchoolRoomFragment: AddSchoolRoomFragment)
+    fun inject(schoolRoomDetailFragment: SchoolRoomDetailFragment)
 }

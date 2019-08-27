@@ -82,8 +82,11 @@ class SchoolRoomRepositoryImp @Inject constructor(
             result
         ) {
             override fun shouldLoadFromLocal(params: CreateSchoolRoomParams): Boolean = false
-            override fun shouldSaveToLocal(params: CreateSchoolRoomParams): Boolean = false
+            override fun shouldSaveToLocal(params: CreateSchoolRoomParams): Boolean = true
 
+            override suspend fun saveToLocal(output: SchoolRoom) {
+                schoolRoomLocalDataSource.saveSchoolRoom(output)
+            }
 
             override suspend fun callApi(): Resource<SchoolRoom> {
                 return schoolRoomRemoteDataSource.createSchoolRoom(params)

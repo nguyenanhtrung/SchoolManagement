@@ -157,10 +157,16 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         }
     }
 
-    protected fun addItems(items: MutableList<Item>) {
+    internal fun addItems(items: MutableList<Item>) {
         _itemsLiveData.value = items
         itemCopys.addAll(items)
     }
+
+    internal fun addItem(item: Item) {
+        itemCopys.add(item)
+        _itemsLiveData.value = mutableListOf(item)
+    }
+
 
 
     protected abstract fun customCheckItemWithQuery(query: String, item: Item): Boolean
@@ -173,4 +179,6 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     protected abstract fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>)
 
     protected abstract fun onCustomClickItem(position: Int)
+
+
 }

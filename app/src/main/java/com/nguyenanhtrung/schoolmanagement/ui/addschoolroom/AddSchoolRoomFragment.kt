@@ -48,19 +48,6 @@ class AddSchoolRoomFragment : BaseSchoolRoomFragment() {
         myApp.appComponent.inject(this)
     }
 
-    override fun bindInputRoomIdLayout(): TextInputLayout = input_layout_room_id
-
-    override fun bindEditTextRoomId(): TextInputEditText = edit_text_room_id
-
-    override fun bindInputRoomNameLayout(): TextInputLayout = input_layout_room_name
-
-    override fun bindEditTextRoomName(): TextInputEditText = edit_text_room_name
-
-    override fun bindToggleRoomTypeGroup(): MaterialButtonToggleGroup = toggle_room_type_group
-
-    override fun bindButtonClassRoom(): MaterialButton = button_class_room
-
-    override fun bindButtonOfficeRoom(): MaterialButton = button_office_room
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,10 +72,6 @@ class AddSchoolRoomFragment : BaseSchoolRoomFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         addRoomViewModel.lastRoomId = args.lastRoomId
-    }
-
-    override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
-        return inflater.inflate(R.layout.fragment_add_school_room, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

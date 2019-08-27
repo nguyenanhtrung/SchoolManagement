@@ -15,6 +15,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiledetail.ProfileDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.profiles.ProfilesViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.schoolroom.SchoolRoomsViewModel
+import com.nguyenanhtrung.schoolmanagement.ui.schoolroomdetail.SchoolRoomDetailViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.splash.SplashViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateViewModel
 import com.nguyenanhtrung.schoolmanagement.util.AppViewModelFactory
@@ -103,4 +104,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddSchoolRoomViewModel::class)
     abstract fun bindAddSchoolRoomViewModel(addSchoolRoomViewModel: AddSchoolRoomViewModel) : ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SchoolRoomDetailViewModel::class)
+    abstract fun bindSchoolRoomDetailViewModel(schoolRoomDetailViewModel: SchoolRoomDetailViewModel) : ViewModel
 }

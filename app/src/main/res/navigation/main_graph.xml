@@ -173,6 +173,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+        <action
+            android:id="@+id/action_schoolRoomsDest_to_schoolRoomDetailDest"
+            app:destination="@id/schoolRoomDetailDest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/addSchoolRoomDest"
@@ -182,5 +189,13 @@
             android:name="lastRoomId"
             app:argType="long"
             android:defaultValue="0L" />
+    </fragment>
+    <fragment
+        android:id="@+id/schoolRoomDetailDest"
+        android:name="com.nguyenanhtrung.schoolmanagement.ui.schoolroomdetail.SchoolRoomDetailFragment"
+        android:label="Chi tiết phòng">
+        <argument
+            android:name="schoolRoom"
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom" />
     </fragment>
 </navigation>
