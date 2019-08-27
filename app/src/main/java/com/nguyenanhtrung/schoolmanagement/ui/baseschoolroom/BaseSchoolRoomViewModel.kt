@@ -7,13 +7,13 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 
 abstract class BaseSchoolRoomViewModel : BaseViewModel() {
 
-    private val _stateErrorInputRoomId by lazy {
+    protected val _stateErrorInputRoomId by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val stateErrorInputRoomId: LiveData<ErrorState>
         get() = _stateErrorInputRoomId
 
-    private val _stateErrorInputRoomName by lazy {
+    protected val _stateErrorInputRoomName by lazy {
         MutableLiveData<ErrorState>()
     }
     internal val stateErrorInputRoomName: LiveData<ErrorState>

@@ -11,6 +11,10 @@ import javax.inject.Inject
 class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao: SchoolRoomDao) :
     SchoolRoomLocalDataSource {
 
+    override suspend fun isSchoolRoomsSaved(offset: Int): Boolean {
+        val result = schoolRoomDao.checkSchoolRoomsSaved(offset)
+        return result > 0
+    }
 
     override suspend fun getSchoolRooms(offset: Int): Resource<MutableList<out Item>> {
         val schoolRoomEntities = schoolRoomDao.getSchoolRooms(offset)
@@ -22,9 +26,10 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
         return Resource.success(schoolRoomItems)
     }
 
-    override suspend fun saveSchoolRooms(schoolRoomItems: List<SchoolRoomItem>) {
+    override suspend fun saveSchoolRooms(schoolRoomItems: List<Item>) {
         val schoolRoomEntities = schoolRoomItems.map {
-            val schoolRoom = it.schoolRoom
+            val schoolRoomItem = it as SchoolRoomItem
+            val schoolRoom = schoolRoomItem.schoolRoom
             SchoolRoomEntity(
                 schoolRoom.roomId,
                 schoolRoom.fireBaseId,
@@ -35,4 +40,6 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
         }
         schoolRoomDao.insertListData(schoolRoomEntities)
     }
+
+
 }

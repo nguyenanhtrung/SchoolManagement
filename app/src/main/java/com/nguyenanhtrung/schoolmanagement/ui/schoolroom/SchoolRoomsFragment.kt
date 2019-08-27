@@ -1,16 +1,19 @@
 package com.nguyenanhtrung.schoolmanagement.ui.schoolroom
 
 import android.app.Application
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemFragment
@@ -48,15 +51,40 @@ class SchoolRoomsFragment : BaseListItemFragment() {
 
     override fun bindSearchView(): SearchView = edit_text_search
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        subscribeSuccessAddSchoolRoom()
+    }
+
+    private fun subscribeSuccessAddSchoolRoom() {
+        mainViewModel.stateAddSchoolRoom.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { schoolRoom ->
+                itemAdapter.add(SchoolRoomItem(schoolRoom))
+            }
+        })
+    }
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
         return inflater.inflate(R.layout.fragment_list_item_with_adding_button, container, false)
     }
 
+
     override fun setupUiEvents() {
         super.setupUiEvents()
         float_button_add.setOnClickListener {
-            findNavController().navigate(SchoolRoomsFragmentDirections.actionSchoolRoomsDestToAddSchoolRoomDest())
+            var lastRoomId = 0L
+            if (itemAdapter.itemCount != 0) {
+                val lastRoomItem = itemAdapter.getItem(itemAdapter.itemCount - 1) as SchoolRoomItem
+                val lastRoom = lastRoomItem.schoolRoom
+                lastRoomId = lastRoom.roomId
+            }
+
+            findNavController().navigate(
+                SchoolRoomsFragmentDirections.actionSchoolRoomsDestToAddSchoolRoomDest(
+                    lastRoomId
+                )
+            )
+
         }
     }
 }

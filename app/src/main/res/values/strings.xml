@@ -113,4 +113,7 @@
     <string name="title_class_room">Phòng học</string>
     <string name="title_room_type">Loại phòng</string>
     <string name="title_empty_rooms">Danh sách phòng đang trống</string>
+    <string name="title_empty_room_number">Vui lòng nhập số phòng</string>
+    <string name="title_empty_room_name">Vui lòng nhập tên phòng</string>
+    <string name="title_success_add_school_room">Thêm phòng mới thành công!</string>
 </resources>

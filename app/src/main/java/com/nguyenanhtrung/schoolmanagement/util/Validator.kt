@@ -88,5 +88,25 @@ class Validator private constructor() {
                 !imageUri.isNullOrEmpty()
             }
         }
+
+        fun isRoomNumberValid(
+            roomNumber: String,
+            roomNumberError: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.title_empty_room_number, roomNumberError) {
+                roomNumber.isNotEmpty()
+            }
+        }
+
+        fun isRoomNameValid(
+            roomName: String,
+            roomNameError: MutableLiveData<ErrorState>
+        ): Boolean {
+            return checkValid(R.string.title_empty_room_name, roomNameError) {
+                roomName.isNotEmpty()
+            }
+        }
+
+
     }
 }

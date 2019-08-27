@@ -177,5 +177,10 @@
     <fragment
         android:id="@+id/addSchoolRoomDest"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.addschoolroom.AddSchoolRoomFragment"
-        android:label="AddSchoolRoomFragment" />
+        android:label="AddSchoolRoomFragment" >
+        <argument
+            android:name="lastRoomId"
+            app:argType="long"
+            android:defaultValue="0L" />
+    </fragment>
 </navigation>

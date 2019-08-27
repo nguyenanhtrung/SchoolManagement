@@ -10,4 +10,7 @@ interface SchoolRoomDao : BaseDao<SchoolRoomEntity> {
 
     @Query("SELECT * FROM SchoolRoom LIMIT 15 OFFSET :offset")
     suspend fun getSchoolRooms(offset: Int): List<SchoolRoomEntity>
+
+    @Query(value = "SELECT EXISTS(SELECT 1 FROM SchoolRoom LIMIT 15 OFFSET :offset)")
+    suspend fun checkSchoolRoomsSaved(offset: Int): Int
 }

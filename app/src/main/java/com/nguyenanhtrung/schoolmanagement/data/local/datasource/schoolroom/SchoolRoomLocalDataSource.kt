@@ -9,4 +9,6 @@ interface SchoolRoomLocalDataSource {
     suspend fun getSchoolRooms(offset: Int): Resource<MutableList<out Item>>
 
     suspend fun saveSchoolRooms(schoolRoomItems: List<Item>)
+
+    suspend fun isSchoolRoomsSaved(offset: Int): Boolean
 }

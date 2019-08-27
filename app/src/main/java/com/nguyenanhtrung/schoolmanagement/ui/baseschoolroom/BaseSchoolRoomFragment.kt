@@ -2,8 +2,12 @@ package com.nguyenanhtrung.schoolmanagement.ui.baseschoolroom
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomType
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
@@ -16,6 +20,9 @@ abstract class BaseSchoolRoomFragment : BaseFragment() {
     private lateinit var editTextRoomId: TextInputEditText
     private lateinit var inputRoomNameLayout: TextInputLayout
     private lateinit var editTextRoomName: TextInputEditText
+    private lateinit var toggleRoomTypeGroup: MaterialButtonToggleGroup
+    private lateinit var buttonOfficeRoom: MaterialButton
+    private lateinit var buttonClassRoom: MaterialButton
 
     private val schoolRoomViewModel by lazy {
         bindBaseViewModel()
@@ -41,11 +48,22 @@ abstract class BaseSchoolRoomFragment : BaseFragment() {
         })
     }
 
+    protected fun getSelectedRoomType(): SchoolRoomType =
+        when (toggleRoomTypeGroup.checkedButtonId) {
+            buttonClassRoom.id -> SchoolRoomType.CLASS_ROOM
+            buttonOfficeRoom.id -> SchoolRoomType.OFFICE
+            else -> SchoolRoomType.OFFICE
+        }
+
+
     override fun setupUiEvents() {
         inputRoomIdLayout = bindInputRoomIdLayout()
         editTextRoomId = bindEditTextRoomId()
         inputRoomNameLayout = bindInputRoomNameLayout()
         editTextRoomName = bindEditTextRoomName()
+        toggleRoomTypeGroup = bindToggleRoomTypeGroup()
+        buttonClassRoom = bindButtonClassRoom()
+        buttonOfficeRoom = bindButtonOfficeRoom()
 
         editTextRoomId.clearErrorWhenFocus(input_layout_room_id)
         edit_text_room_name.clearErrorWhenFocus(input_layout_room_name)
@@ -56,6 +74,8 @@ abstract class BaseSchoolRoomFragment : BaseFragment() {
     abstract fun bindEditTextRoomId(): TextInputEditText
     abstract fun bindInputRoomNameLayout(): TextInputLayout
     abstract fun bindEditTextRoomName(): TextInputEditText
-
+    abstract fun bindToggleRoomTypeGroup(): MaterialButtonToggleGroup
+    abstract fun bindButtonOfficeRoom(): MaterialButton
+    abstract fun bindButtonClassRoom(): MaterialButton
 
 }

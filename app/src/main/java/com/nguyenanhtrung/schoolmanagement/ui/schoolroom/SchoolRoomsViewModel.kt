@@ -16,13 +16,16 @@ class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase
     override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
         val schoolRoomItem = item as SchoolRoomItem
         val schoolRoom = schoolRoomItem.schoolRoom
-        return schoolRoom.roomName.contains(query)
+        return schoolRoom.roomName.contains(query) || schoolRoom.roomNumber.contains(query)
     }
 
     override fun loadMoreItems(
         lastItem: com.xwray.groupie.Item<ViewHolder>,
         itemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
+        val schoolRoomItem = lastItem as SchoolRoomItem
+        val lastRoom = schoolRoomItem.schoolRoom
+        getSchoolRoomsUseCase.invoke(viewModelScope, lastRoom.roomId, itemsLiveData)
     }
 
     override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>) {

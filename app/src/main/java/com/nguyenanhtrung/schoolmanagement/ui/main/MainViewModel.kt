@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
 import com.nguyenanhtrung.schoolmanagement.data.local.model.FilterData
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import javax.inject.Inject
@@ -53,6 +54,15 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
     val observableClickUpdateProfile: LiveData<Event<Unit>>
         get() = eventClickUpdateProfile
 
+
+    val stateAddSchoolRoom by lazy {
+        MutableLiveData<Event<SchoolRoom>>()
+    }
+
+
+    fun notifySuccessAddSchoolRoom(schoolRoom: SchoolRoom) {
+        stateAddSchoolRoom.value = Event(schoolRoom)
+    }
 
 
     fun hideToolbar() {
