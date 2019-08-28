@@ -14,12 +14,12 @@ class SchoolRoomEntity(
     val fireBaseId: String,
 
     @ColumnInfo(name = "room_number")
-    val roomNumber: String,
+    var roomNumber: String,
 
     @ColumnInfo(name = "room_name")
-    val roomName: String,
+    var roomName: String,
 
     @ColumnInfo(name = "is_office_room")
-    val isOfficeRoom: Boolean
+    var isOfficeRoom: Boolean
 
 )

@@ -34,8 +34,13 @@ class ScrollAwareFABBehavior(context: Context, attributeSet: AttributeSet) :
             consumed
         )
         if (dyConsumed > 0 && child.visibility == View.VISIBLE) {
-            child.hide()
-        } else if (dyConsumed < 0 && child.visibility == View.GONE) {
+            child.hide(object : FloatingActionButton.OnVisibilityChangedListener() {
+                override fun onHidden(fab: FloatingActionButton?) {
+                    super.onHidden(fab)
+                    fab?.visibility = View.INVISIBLE
+                }
+            })
+        } else if (dyConsumed < 0 && child.visibility == View.INVISIBLE) {
             child.show()
         }
     }

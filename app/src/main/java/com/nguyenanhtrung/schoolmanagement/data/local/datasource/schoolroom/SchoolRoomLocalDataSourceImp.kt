@@ -1,15 +1,21 @@
 package com.nguyenanhtrung.schoolmanagement.data.local.datasource.schoolroom
 
+import androidx.collection.ArrayMap
 import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.schoolroom.SchoolRoomDao
 import com.nguyenanhtrung.schoolmanagement.data.local.entity.SchoolRoomEntity
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UpdateSchoolRoomParams
 import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
 class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao: SchoolRoomDao) :
     SchoolRoomLocalDataSource {
+
+    override suspend fun saveUpdateSchoolRoom(updateSchoolRoomParams: UpdateSchoolRoomParams) {
+        schoolRoomDao.updateSchoolRoom(updateSchoolRoomParams)
+    }
 
     override suspend fun isSchoolRoomsSaved(offset: Int): Boolean {
         val result = schoolRoomDao.checkSchoolRoomsSaved(offset)
@@ -18,7 +24,7 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
 
     override suspend fun getSchoolRooms(offset: Int): Resource<MutableList<out Item>> {
         val schoolRoomEntities = schoolRoomDao.getSchoolRooms(offset)
-        val schoolRoomItems =  schoolRoomEntities.map {
+        val schoolRoomItems = schoolRoomEntities.map {
             SchoolRoomItem(
                 SchoolRoom(it.fireBaseId, it.id, it.roomNumber, it.roomName, it.isOfficeRoom)
             )

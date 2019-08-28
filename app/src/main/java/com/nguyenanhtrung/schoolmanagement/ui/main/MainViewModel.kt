@@ -59,6 +59,13 @@ class MainViewModel @Inject constructor() : BaseActivityViewModel() {
         MutableLiveData<Event<SchoolRoom>>()
     }
 
+    val stateUpdateSchoolRoom by lazy {
+        MutableLiveData<Event<SchoolRoom>>()
+    }
+
+    fun notifySucessUpdateSchoolRoom(schoolRoom: SchoolRoom) {
+        stateUpdateSchoolRoom.value = Event(schoolRoom)
+    }
 
     fun notifySuccessAddSchoolRoom(schoolRoom: SchoolRoom) {
         stateAddSchoolRoom.value = Event(schoolRoom)

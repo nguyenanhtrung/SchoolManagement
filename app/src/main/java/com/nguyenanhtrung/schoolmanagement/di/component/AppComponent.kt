@@ -7,6 +7,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.accountmangement.AccountManagement
 import com.nguyenanhtrung.schoolmanagement.ui.addschoolroom.AddSchoolRoomFragment
 import com.nguyenanhtrung.schoolmanagement.ui.createaccount.CreateAccountFragment
 import com.nguyenanhtrung.schoolmanagement.ui.dashboard.DashboardFragment
+import com.nguyenanhtrung.schoolmanagement.ui.faculties.FacultiesFragment
 import com.nguyenanhtrung.schoolmanagement.ui.filtersheet.FilterBottomSheetDialogFragment
 import com.nguyenanhtrung.schoolmanagement.ui.flowstatus.DialogFlowStatusFragment
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
@@ -47,4 +48,5 @@ interface AppComponent {
     fun inject(schoolRoomsFragment: SchoolRoomsFragment)
     fun inject(addSchoolRoomFragment: AddSchoolRoomFragment)
     fun inject(schoolRoomDetailFragment: SchoolRoomDetailFragment)
+    fun inject(facultiesFragment: FacultiesFragment)
 }

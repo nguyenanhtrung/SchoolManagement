@@ -51,6 +51,26 @@ class SchoolRoomDetailFragment : BaseSchoolRoomFragment() {
         subscribeSchoolRoomDetail()
         roomDetailViewModel.showSchoolRoomDetail(detailArgs.schoolRoom)
         subscribeStateOnClickMenuItem()
+        subscribeStateUpdateSchoolRoomInfo()
+        subscribeNotifyUpdateSchoolRooms()
+    }
+
+    private fun subscribeNotifyUpdateSchoolRooms() {
+        roomDetailViewModel.notifyUpdateSchoolRooms.observe(this, Observer {
+            mainViewModel.notifySucessUpdateSchoolRoom(it)
+        })
+    }
+
+    private fun subscribeStateUpdateSchoolRoomInfo() {
+        roomDetailViewModel.stateUpdateSchoolRoom.observe(this, Observer {
+            it.data?.let {
+                roomDetailViewModel.onSuccessUpdateSchoolRoom(
+                    edit_text_room_name.getString(),
+                    edit_text_room_id.getString(),
+                    getSelectedRoomType()
+                )
+            }
+        })
     }
 
     private fun subscribeStateOnClickMenuItem() {

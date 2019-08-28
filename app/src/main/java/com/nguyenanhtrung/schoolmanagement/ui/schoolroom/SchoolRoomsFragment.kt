@@ -55,6 +55,18 @@ class SchoolRoomsFragment : BaseListItemFragment() {
         super.onCreate(savedInstanceState)
         subscribeSuccessAddSchoolRoom()
         subscribeRoomDetailNavigation()
+        subscribeStateUpdateRoomInfo()
+    }
+
+    private fun subscribeStateUpdateRoomInfo() {
+        mainViewModel.stateUpdateSchoolRoom.observe(this, Observer {
+            it.getContentIfNotHandled()?.let { schoolRoom ->
+                val position = schoolRoomsViewModel.posItemSelected
+                val selectedItem = itemAdapter.getItem(position) as SchoolRoomItem
+                selectedItem.schoolRoom = schoolRoom
+                itemAdapter.notifyItemChanged(position)
+            }
+        })
     }
 
     private fun subscribeRoomDetailNavigation() {

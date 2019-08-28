@@ -7,6 +7,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.schoolroom.SchoolRoomRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.CreateSchoolRoomParams
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UpdateSchoolRoomParams
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -18,6 +19,25 @@ class SchoolRoomRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : SchoolRoomRepository {
 
+    override suspend fun updateSchoolRoom(
+        params: UpdateSchoolRoomParams,
+        result: MutableLiveData<Resource<Unit>>
+    ) {
+        object : NetworkBoundResources<UpdateSchoolRoomParams, Unit>(context, params, result) {
+
+            override fun shouldLoadFromLocal(params: UpdateSchoolRoomParams): Boolean = false
+            override fun shouldSaveToLocal(params: UpdateSchoolRoomParams): Boolean = true
+
+            override suspend fun saveToLocal(output: Unit) {
+                schoolRoomLocalDataSource.saveUpdateSchoolRoom(params)
+            }
+
+            override suspend fun callApi(): Resource<Unit> {
+                return schoolRoomRemoteDataSource.updateSchoolRoom(params)
+            }
+
+        }.createCall()
+    }
 
     override suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<out Item>>>) {
         object :

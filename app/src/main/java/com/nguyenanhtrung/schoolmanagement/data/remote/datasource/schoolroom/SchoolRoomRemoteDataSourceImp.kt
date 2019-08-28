@@ -9,6 +9,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.CreateSchoolRoomParams
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UpdateSchoolRoomParams
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
@@ -19,6 +20,14 @@ class SchoolRoomRemoteDataSourceImp @Inject constructor(private val firestore: F
 
     companion object {
         const val LIMIT = 15L
+    }
+
+    override suspend fun updateSchoolRoom(roomInfoParams: UpdateSchoolRoomParams): Resource<Unit> {
+        firestore.collection(AppKey.SCHOOL_ROOMS_PATH)
+            .document(roomInfoParams.fireBaseId)
+            .update(roomInfoParams.fields)
+            .await()
+        return Resource.success(Unit)
     }
 
 

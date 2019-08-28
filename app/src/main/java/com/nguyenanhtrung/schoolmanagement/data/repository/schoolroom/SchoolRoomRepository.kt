@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.CreateSchoolRoomParams
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UpdateSchoolRoomParams
 import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface SchoolRoomRepository {
@@ -17,5 +18,10 @@ interface SchoolRoomRepository {
     suspend fun createSchoolRoom(
         schoolRoomParams: CreateSchoolRoomParams,
         result: MutableLiveData<Resource<SchoolRoom>>
+    )
+
+    suspend fun updateSchoolRoom(
+        params: UpdateSchoolRoomParams,
+        result: MutableLiveData<Resource<Unit>>
     )
 }
