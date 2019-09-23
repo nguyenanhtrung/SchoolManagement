@@ -4,8 +4,10 @@ class AppKey private constructor(){
 
     companion object {
         const val USERS_PATH_FIRE_STORE = "users"
+        const val USER_COMMONS_PATH = "user_commons"
         const val USER_TYPES_PATH_FIRE_STORE = "user_types"
-        const val TASKS_PATH_FIRE_STORE = "tasks"
+        const val FEATURE_ACCOUNTS_PATH = "feature_accounts"
+        const val FEATURE_COMMONS_PATH = "feature_commons"
         const val TASK_PERMISSIONS_PATH = "task_permissions"
         const val ID_PATH_FIRE_STORE = "ids"
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"

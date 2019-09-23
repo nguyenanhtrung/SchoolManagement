@@ -1,9 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.task
 
 import android.content.Context
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
@@ -11,7 +8,6 @@ import com.nguyenanhtrung.schoolmanagement.data.local.model.UserTaskItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserTask
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
-import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
 import com.nguyenanhtrung.schoolmanagement.util.ResourceUtil
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -24,7 +20,7 @@ class UserTaskRemoteDataSourceImp @Inject constructor(
 
 
     override suspend fun loadUserTasksAsync(userTypeId: String): Resource<List<UserTaskItem>> {
-        val taskResult = firestore.collection(AppKey.TASKS_PATH_FIRE_STORE)
+        val taskResult = firestore.collection(AppKey.FEATURE_ACCOUNTS_PATH)
             .document(userTypeId)
             .collection(AppKey.TASK_PERMISSIONS_PATH)
             .get().await()

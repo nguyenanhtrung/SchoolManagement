@@ -17,6 +17,7 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
+import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_COMMONS_PATH
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
 import timber.log.Timber
@@ -202,7 +203,7 @@ class UserRemoteDataSourceImp @Inject constructor(
             firebaseAuth.currentUser ?: return Resource.failure(R.string.error_not_found_user)
         val userId = currentUser.uid
         val userSnapshot =
-            firestore.collection(USERS_PATH_FIRE_STORE).document(userId).get().await()
+            firestore.collection(USER_COMMONS_PATH).document(userId).get().await()
         val userCloudStore = userSnapshot.toObject(UserCloudStore::class.java)
             ?: return Resource.failure(R.string.error_parse_data)
 
@@ -211,10 +212,8 @@ class UserRemoteDataSourceImp @Inject constructor(
             userCloudStore.id,
             userId,
             userCloudStore.name,
-            typeName,
-            userCloudStore.typeId,
-            userCloudStore.avatarPath,
-            userCloudStore.accountName
+            UserType(userCloudStore.typeId, typeName),
+            userCloudStore.avatarPath
         )
         return Resource.success(userMapped)
     }
@@ -306,10 +305,8 @@ class UserRemoteDataSourceImp @Inject constructor(
                     it[AppKey.USER_ID_FIELD] as Long,
                     it.id,
                     it[AppKey.USER_NAME_FIELD] as String,
-                    userTypeName,
-                    userTypeId,
-                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
-                    it[AppKey.USER_ACCOUNT_NAME_FIELD] as String
+                    UserType(userTypeId, userTypeName),
+                    it[AppKey.USER_AVATAR_PATH_FIELD] as String
                 )
             )
         }
