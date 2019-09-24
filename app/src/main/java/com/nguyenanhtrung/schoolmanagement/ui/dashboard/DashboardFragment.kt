@@ -123,7 +123,7 @@ class DashboardFragment : BaseFragment() {
 
     private fun showUserTasks(userTasks: List<UserTaskItem>) {
         recycler_view_tasks.layoutManager = GridLayoutManager(requireContext(), 3)
-        recycler_view_tasks.addItemDecoration(MyGridDividerItemDecoration(32, 3))
+        recycler_view_tasks.addItemDecoration(MyGridDividerItemDecoration(16, 3))
         addTasks(userTasks)
     }
 

@@ -35,11 +35,11 @@
             android:id="@+id/circle_image_user"
             android:layout_width="@dimen/width_circle_user_image"
             android:layout_height="@dimen/height_circle_user_image"
-            android:layout_marginTop="@dimen/margin_normal_100"
             android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginTop="@dimen/margin_normal_100"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/top_layout"
-           />
+            tools:src="@drawable/ic_photo_empty" />
 
         <TextView
             android:id="@+id/text_account_name"

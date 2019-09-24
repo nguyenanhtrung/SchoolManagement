@@ -1,22 +1,15 @@
 package com.nguyenanhtrung.schoolmanagement.ui.login
 
+import android.animation.ObjectAnimator
 import android.app.Application
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
-import com.nguyenanhtrung.schoolmanagement.data.local.model.ResultModel
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
@@ -27,7 +20,6 @@ import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.openActivity
 import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
 import kotlinx.android.synthetic.main.activity_login.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class LoginActivity : BaseActivity() {
@@ -95,6 +87,22 @@ class LoginActivity : BaseActivity() {
     private fun subscribePasswordError() {
         loginViewModel.passwordErrorLiveData.observe(this, Observer {
             input_layout_password.setErrorWithState(it)
+            val animator = ObjectAnimator.ofFloat(
+                input_layout_password,
+                View.TRANSLATION_X,
+                0.0f,
+                25.0f,
+                -25.0f,
+                25.0f,
+                -25.0f,
+                15.0f,
+                -15.0f,
+                6.0f,
+                -6.0f,
+                0.0f
+            )
+            animator.duration = 400
+            animator.start()
         })
     }
 
