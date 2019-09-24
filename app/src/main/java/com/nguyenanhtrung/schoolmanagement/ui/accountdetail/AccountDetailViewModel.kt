@@ -70,7 +70,7 @@ class AccountDetailViewModel @Inject constructor(
     internal fun onClickButtonSave(newName: String, indexSelectedType: Int, newPassword: String) {
         val accountInfo = accountDetailParams.user
         val oldName = accountInfo.name
-        val oldAccountTypeId = accountInfo.typeId
+        val oldAccountTypeId = accountInfo.type.id
         val oldPassword = accountDetailParams.password
         val newAccountTypeId = getUserTypeIdByIndex(indexSelectedType)
 
@@ -97,7 +97,7 @@ class AccountDetailViewModel @Inject constructor(
                 return
             }
             updateAccountInfoParams.password = newPassword
-            updateAccountInfoParams.accountName = accountInfo.accountName
+            updateAccountInfoParams.accountName = accountInfo.name
         }
 
         if (oldAccountTypeId != newAccountTypeId) {

@@ -9,8 +9,8 @@ import kotlinx.android.synthetic.main.item_account.*
 data class UserItem(var user: User) : Item() {
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.text_account_email.text = user.accountName
-        viewHolder.text_account_type.text = user.typeName
+        viewHolder.text_account_email.text = user.name
+        viewHolder.text_account_type.text = user.type.name
         viewHolder.image_account.loadImageIfEmptyPath(user.avatarPath)
     }
 

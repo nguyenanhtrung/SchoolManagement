@@ -10,6 +10,7 @@ import javax.inject.Inject
 class FacultiesViewModel @Inject constructor() : BaseListItemViewModel() {
 
     override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
+        return false
     }
 
     override fun loadMoreItems(

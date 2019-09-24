@@ -5,9 +5,11 @@ import com.nguyenanhtrung.schoolmanagement.data.local.database.dao.user.UserDao
 import com.nguyenanhtrung.schoolmanagement.data.local.entity.UserInfoEntity
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.User
+import com.nguyenanhtrung.schoolmanagement.data.local.model.UserType
 import javax.inject.Inject
 
-class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) : UserLocalDataSource {
+class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) :
+    UserLocalDataSource {
 
 
     override suspend fun saveUserInfo(user: User) {
@@ -16,9 +18,8 @@ class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) :
             user.firebaseUserId,
             user.name,
             user.avatarPath,
-            user.typeId,
-            user.typeName,
-            user.accountName
+            user.type.id,
+            user.type.name
         )
         userDao.insertData(userInfoEntity)
     }
@@ -32,10 +33,8 @@ class UserLocalDataSourceImp @Inject constructor(private val userDao: UserDao) :
             userInfoEntity.id,
             userInfoEntity.firebaseUserId,
             userInfoEntity.name,
-            userInfoEntity.typeName,
-            userInfoEntity.typeId,
-            userInfoEntity.avatarPath,
-            userInfoEntity.accountName
+            UserType(userInfoEntity.typeId, userInfoEntity.typeName),
+            userInfoEntity.avatarPath
         )
         return Resource.success(mappedUser)
     }

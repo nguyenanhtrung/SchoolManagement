@@ -20,19 +20,33 @@ class UserTaskRemoteDataSourceImp @Inject constructor(
 
 
     override suspend fun loadUserTasksAsync(userTypeId: String): Resource<List<UserTaskItem>> {
-        val taskResult = firestore.collection(AppKey.FEATURE_ACCOUNTS_PATH)
+        val commonFeaturesTask = firestore.collection(AppKey.FEATURE_COMMONS_PATH)
+            .get()
+        val accountFeaturesTask = firestore.collection(AppKey.FEATURE_ACCOUNTS_PATH)
             .document(userTypeId)
-            .collection(AppKey.TASK_PERMISSIONS_PATH)
-            .get().await()
-        val mappedTasks = taskResult.map {
+            .collection(AppKey.FEATURES_PATH)
+            .get()
+        val commonFeatures = commonFeaturesTask.await().documents
+        val accountFeatures = accountFeaturesTask.await().documents
+
+        val features = mutableListOf<UserTask>()
+        features.addAll(commonFeatures.map {
             UserTask(
                 it.id,
                 it["name"] as String,
                 getIconId(it.id)
             )
-        }.reversed()
+        })
 
-        return Resource.success(mappedTasks.map {
+        features.addAll(accountFeatures.map {
+            UserTask(
+                it.id,
+                it["name"] as String,
+                getIconId(it.id)
+            )
+        })
+
+        return Resource.success(features.map {
             UserTaskItem(it)
         })
     }

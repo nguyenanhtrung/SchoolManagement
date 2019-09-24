@@ -160,7 +160,7 @@ class DashboardFragment : BaseFragment() {
     private fun showUserInfo(user: User?) {
         user?.let {
             text_account_name.text = it.name
-            text_account_type.text = it.typeName
+            text_account_type.text = it.type.name
             circle_image_user.loadImageIfEmptyPath(it.avatarPath)
         }
     }

@@ -66,15 +66,15 @@ class AccountDetailFragment : BaseFragment() {
                 detailViewModel.onSuccessSaveModifiedAccountInfo()
                 val accountDetailParams = detailViewModel.accountDetailParams
                 val oldAccInfo = accountDetailParams.user
-                val modifiedAccountInfo = User(
-                    oldAccInfo.id,
-                    oldAccInfo.firebaseUserId,
-                    edit_text_name.getString(),
-                    spinner_account_type.selectedItem as String,
-                    detailViewModel.getUserTypeIdByIndex(spinner_account_type.selectedIndex),
-                    accountName = oldAccInfo.accountName
-                )
-                mainViewModel.updateAccountInfo.value = Event(modifiedAccountInfo)
+//                val modifiedAccountInfo = User(
+//                    oldAccInfo.id,
+//                    oldAccInfo.firebaseUserId,
+//                    edit_text_name.getString(),
+//                    spinner_account_type.selectedItem as String,
+//                    detailViewModel.getUserTypeIdByIndex(spinner_account_type.selectedIndex),
+//                    name = oldAccInfo.accountName
+//                )
+//                mainViewModel.updateAccountInfo.value = Event(modifiedAccountInfo)
             }
         })
     }
@@ -221,11 +221,11 @@ class AccountDetailFragment : BaseFragment() {
 
     private fun showAccountDetailInfo(accountDetailParams: AccountDetailParams) {
         val user = accountDetailParams.user
-        text_account_name.text = user.accountName
+        text_account_name.text = user.name
         image_account_detail.loadImageIfEmptyPath(user.avatarPath)
         edit_text_name.setText(user.name)
         text_account_detail_id.text = "${getString(R.string.title_account_id)}: ${user.id}"
-        detailViewModel.showSelectedUserType(user.typeId)
+        detailViewModel.showSelectedUserType(user.type.id)
         edit_text_password.setText(accountDetailParams.password)
     }
 }

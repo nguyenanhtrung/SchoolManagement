@@ -23,8 +23,6 @@ class UserInfoEntity(
     val typeId: String,
 
     @ColumnInfo(name = "type_name")
-    val typeName: String,
+    val typeName: String
 
-    @ColumnInfo(name = "account_name")
-    val accountName: String
 )

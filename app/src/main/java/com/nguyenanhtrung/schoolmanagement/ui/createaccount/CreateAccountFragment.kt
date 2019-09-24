@@ -99,15 +99,15 @@ class CreateAccountFragment : BaseFragment() {
     }
 
     private fun updateAccounts(userFireBaseId: String) {
-        val user = User(
-            accountViewModel.maxId,
-            userFireBaseId,
-            edit_text_name.getString(),
-            spinner_user_type.selectedItem as String,
-            accountViewModel.getUserTypeId(spinner_user_type.selectedIndex),
-            accountName = edit_text_email.getString()
-        )
-        mainViewModel.mutableAccountEvent.value = Event(user)
+//        val user = User(
+//            accountViewModel.maxId,
+//            userFireBaseId,
+//            edit_text_name.getString(),
+//            spinner_user_type.selectedItem as String,
+//            accountViewModel.getUserTypeId(spinner_user_type.selectedIndex),
+//            accountName = edit_text_email.getString()
+//        )
+//        mainViewModel.mutableAccountEvent.value = Event(user)
     }
 
 

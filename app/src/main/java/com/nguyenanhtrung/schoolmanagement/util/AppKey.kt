@@ -6,6 +6,7 @@ class AppKey private constructor(){
         const val USERS_PATH_FIRE_STORE = "users"
         const val USER_COMMONS_PATH = "user_commons"
         const val USER_TYPES_PATH_FIRE_STORE = "user_types"
+        const val FEATURES_PATH = "features"
         const val FEATURE_ACCOUNTS_PATH = "feature_accounts"
         const val FEATURE_COMMONS_PATH = "feature_commons"
         const val TASK_PERMISSIONS_PATH = "task_permissions"

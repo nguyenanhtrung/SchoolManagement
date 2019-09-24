@@ -62,9 +62,9 @@ class DashboardViewModel @Inject constructor(
         val userInfoResult = _userInfoLiveData.value
         val userInfo = _userInfoLiveData.value?.data
         if (userInfoResult != null && userInfo != null) {
-            return userInfo.typeId
+            return userInfo.type.id
         }
-        Timber.d("UserTypeId = ${userInfo?.typeId}")
+        Timber.d("UserTypeId = ${userInfo?.type?.id}")
         return ""
     }
 

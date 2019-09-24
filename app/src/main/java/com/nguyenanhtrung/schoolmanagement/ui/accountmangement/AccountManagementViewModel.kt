@@ -100,7 +100,7 @@ class AccountManagementViewModel @Inject constructor(
     ): Boolean {
         if (item is UserItem) {
             val user = item.user
-            val accountName = user.accountName
+            val accountName = user.name
             return accountName.contains(query)
         }
         return false
