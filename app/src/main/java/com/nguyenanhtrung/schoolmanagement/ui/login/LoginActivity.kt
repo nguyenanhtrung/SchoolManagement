@@ -15,10 +15,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivity
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.forgotpassword.DialogForgotPasswordFragment
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainActivity
-import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
-import com.nguyenanhtrung.schoolmanagement.util.getString
-import com.nguyenanhtrung.schoolmanagement.util.openActivity
-import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
+import com.nguyenanhtrung.schoolmanagement.util.*
 import kotlinx.android.synthetic.main.activity_login.*
 import javax.inject.Inject
 
@@ -87,22 +84,6 @@ class LoginActivity : BaseActivity() {
     private fun subscribePasswordError() {
         loginViewModel.passwordErrorLiveData.observe(this, Observer {
             input_layout_password.setErrorWithState(it)
-            val animator = ObjectAnimator.ofFloat(
-                input_layout_password,
-                View.TRANSLATION_X,
-                0.0f,
-                25.0f,
-                -25.0f,
-                25.0f,
-                -25.0f,
-                15.0f,
-                -15.0f,
-                6.0f,
-                -6.0f,
-                0.0f
-            )
-            animator.duration = 400
-            animator.start()
         })
     }
 

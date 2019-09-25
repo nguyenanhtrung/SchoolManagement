@@ -17,10 +17,10 @@
             android:layout_width="@dimen/width_circle_user_image"
             android:layout_height="@dimen/height_circle_user_image"
             android:transitionName="@string/transition_name_image_account"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@drawable/ic_photo_empty" />
 
         <TextView
-            android:id="@+id/text_account_email"
+            android:id="@+id/text_account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -30,19 +30,22 @@
             android:ellipsize="marquee"
             android:textAppearance="@style/TitleNormal"
             android:transitionName="@string/transition_name_account_email"
-            tools:text="nguyenanhtrung2495@gmail.com" />
+            tools:text="nguyenanhtrung" />
 
         <TextView
             android:id="@+id/text_account_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_account_email"
+            android:layout_below="@id/text_account_name"
             android:layout_marginStart="@dimen/margin_small_100"
             android:layout_marginTop="@dimen/margin_small_100"
             android:transitionName="@string/transition_name_account_type"
             android:layout_toEndOf="@id/image_account"
             android:textAppearance="@style/TextAccountType"
-            tools:text="Student" />
+            android:padding="@dimen/padding_small_50"
+            tools:textColor="@color/colorTypeStudent"
+            tools:background="@drawable/bg_text_student_type"
+            tools:text="Sinh Vien" />
 
         <androidx.appcompat.widget.AppCompatCheckBox
             android:id="@+id/check_box_account"

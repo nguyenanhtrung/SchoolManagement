@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountdetail
 import android.app.Application
 import android.os.Bundle
 import android.view.*
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -18,6 +19,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.*
+import kotlinx.android.synthetic.main.dropdown_menu.*
 import kotlinx.android.synthetic.main.fragment_account_detail.*
 import javax.inject.Inject
 
@@ -37,6 +39,7 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     private lateinit var detailMenu: Menu
+    private lateinit var userTypeAdapter: ArrayAdapter<String>
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -85,11 +88,11 @@ class AccountDetailFragment : BaseFragment() {
             handleStateModifyInput(it, edit_text_password, input_layout_password)
             when (it) {
                 ModificationState.Edit -> {
-                    spinner_account_type.isEnabled = true
+                    filled_exposed_dropdown.isEnabled = true
                     showMenuItemWithEditState()
                 }
                 ModificationState.Save -> {
-                    spinner_account_type.isEnabled = false
+                    filled_exposed_dropdown.isEnabled = false
                     showMenuItemWithSaveState()
                 }
             }
@@ -148,7 +151,7 @@ class AccountDetailFragment : BaseFragment() {
             R.id.menu_item_save -> {
                 detailViewModel.onClickButtonSave(
                     edit_text_name.getString(),
-                    spinner_account_type.selectedIndex,
+                    filled_exposed_dropdown.listSelection,
                     edit_text_password.getString()
                 )
                 true
@@ -196,7 +199,7 @@ class AccountDetailFragment : BaseFragment() {
 
     private fun subscribeSelectedUserType() {
         detailViewModel.indexUserTypeSelected.observe(viewLifecycleOwner, Observer {
-            spinner_account_type.selectedIndex = it
+            filled_exposed_dropdown.listSelection = it
         })
     }
 
@@ -211,9 +214,15 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeUserTypes() {
         detailViewModel.userTypesLiveData.observe(viewLifecycleOwner, Observer {
             it.data?.let { userTypes ->
-                spinner_account_type.attachDataSource(userTypes.map { userType ->
-                    userType.name
-                })
+                if (!::userTypeAdapter.isInitialized) {
+                    userTypeAdapter = ArrayAdapter(
+                        requireActivity(),
+                        R.layout.dropdown_menu_popup_item,
+                        userTypes.map { userType ->
+                            userType.name
+                        })
+                }
+                filled_exposed_dropdown.setAdapter(userTypeAdapter)
                 detailViewModel.loadUserInfo()
             }
         })

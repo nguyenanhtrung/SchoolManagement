@@ -24,8 +24,8 @@
         android:id="@+id/top_layout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/padding_normal_150"
         android:background="@color/colorPrimary"
+        android:paddingBottom="@dimen/padding_normal_150"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -45,8 +45,8 @@
             android:id="@+id/text_account_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:textAppearance="@style/TitleNormal"
             android:textColor="@color/colorOnPrimary"
             app:layout_constraintBottom_toBottomOf="@+id/circle_image_user"
@@ -72,9 +72,9 @@
             android:id="@+id/button_log_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_normal_100"
             android:background="?attr/selectableItemBackgroundBorderless"
             app:layout_constraintBottom_toBottomOf="@+id/text_account_name"
-            android:layout_marginEnd="@dimen/margin_normal_100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/text_account_name"
             app:srcCompat="@drawable/ic_log_out"
@@ -85,8 +85,8 @@
             layout="@layout/include_search_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal_100"
             android:layout_marginStart="@dimen/margin_normal_100"
+            android:layout_marginTop="@dimen/margin_normal_100"
             android:layout_marginEnd="@dimen/margin_normal_100"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -100,17 +100,14 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_marginBottom="@dimen/margin_normal_100"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
         app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
         app:layout_constraintTop_toBottomOf="@+id/top_layout"
         app:layout_constraintVertical_bias="0.0"
         app:spanCount="3"
         tools:listitem="@layout/item_task_dashboard" />
-
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

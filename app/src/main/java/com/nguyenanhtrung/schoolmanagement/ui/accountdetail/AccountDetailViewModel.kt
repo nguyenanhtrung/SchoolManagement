@@ -121,7 +121,7 @@ class AccountDetailViewModel @Inject constructor(
         _messageLiveData.value = R.string.success_save_modified_account_info
     }
 
-    internal fun getUserTypeIdByIndex(index: Int): String {
+    private fun getUserTypeIdByIndex(index: Int): String {
         val userTypes = _userTypesLiveData.value?.data ?: return ""
         if (index < 0 || index >= userTypes.size) {
             return ""

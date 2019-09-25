@@ -16,7 +16,6 @@ import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdR
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
-import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USERS_PATH_FIRE_STORE
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_COMMONS_PATH
 import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
@@ -51,7 +50,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         profileFilter: ProfileFilter
     ): Resource<MutableList<out Item>> {
         val lastDocument =
-            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
+            firestore.collection(USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,
                 lastUserId
             ).whereGreaterThan(AppKey.USER_ID_FIELD, 0).get().await().documents[0]
@@ -83,16 +82,16 @@ class UserRemoteDataSourceImp @Inject constructor(
         lastDocumentSnapshot: DocumentSnapshot? = null
     ): QuerySnapshot {
         val querySnapshot = when (profileFilter) {
-            ProfileFilter.All -> firestore.collection(USERS_PATH_FIRE_STORE)
+            ProfileFilter.All -> firestore.collection(USER_COMMONS_PATH)
                 .orderBy(AppKey.USER_ID_FIELD)
                 .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
-            ProfileFilter.Updated -> firestore.collection(USERS_PATH_FIRE_STORE)
+            ProfileFilter.Updated -> firestore.collection(USER_COMMONS_PATH)
                 .orderBy(AppKey.USER_ID_FIELD)
                 .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
                 .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
-            ProfileFilter.NoUpdate -> firestore.collection(USERS_PATH_FIRE_STORE)
+            ProfileFilter.NoUpdate -> firestore.collection(USER_COMMONS_PATH)
                 .orderBy(AppKey.USER_ID_FIELD)
                 .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
                 .limit(USERS_LIMIT)
@@ -105,9 +104,9 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
-        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
-            .orderBy("id")
-            .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+        val querySnapshot = firestore.collection(USER_COMMONS_PATH)
+            .orderBy(AppKey.USER_ID_FIELD)
+            .whereGreaterThan(AppKey.USER_ID_FIELD, 1)
             .limit(USERS_LIMIT)
             .get()
             .await()
@@ -163,7 +162,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
     override suspend fun updateUserInfo(updateInfoParams: UpdateAccountInfoParams): Resource<Unit> {
-        val userRef = firestore.collection(USERS_PATH_FIRE_STORE)
+        val userRef = firestore.collection(USER_COMMONS_PATH)
             .document(updateInfoParams.fireBaseUserId)
         if (updateInfoParams.name.isNotEmpty()) {
             userRef.update(AppKey.USER_NAME_FIELD, updateInfoParams.name).await()
@@ -251,11 +250,11 @@ class UserRemoteDataSourceImp @Inject constructor(
             put(AppKey.USER_AVATAR_PATH_FIELD, "")
             put(AppKey.USER_NAME_FIELD, createAccountParam.name)
             put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
-            put(AppKey.USER_ACCOUNT_NAME_FIELD, createAccountParam.email)
+            put(AppKey.USER_NAME_FIELD, createAccountParam.email)
             put(AppKey.PROFILE_STATUS_FIELD, false)
             put(AppKey.PROFILE_IMAGE_PATH_FIELD, "")
         }
-        firestore.collection(USERS_PATH_FIRE_STORE)
+        firestore.collection(USER_COMMONS_PATH)
             .document(newUserId)
             .set(userInfo)
             .await()
@@ -317,11 +316,11 @@ class UserRemoteDataSourceImp @Inject constructor(
         userTypes: Map<String, String>
     ): Resource<MutableList<out Item>> {
         val lastDocument =
-            firestore.collection(USERS_PATH_FIRE_STORE).whereEqualTo(
+            firestore.collection(USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,
                 lastUserId
             ).get().await().documents[0]
-        val querySnapshot = firestore.collection(USERS_PATH_FIRE_STORE)
+        val querySnapshot = firestore.collection(USER_COMMONS_PATH)
             .orderBy(AppKey.USER_ID_FIELD, Query.Direction.ASCENDING)
             .limit(USERS_LIMIT)
             .startAfter(lastDocument)

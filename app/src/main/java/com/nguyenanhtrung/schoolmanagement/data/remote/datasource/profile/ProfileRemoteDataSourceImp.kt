@@ -79,7 +79,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     }
 
     private suspend fun updateUserProfileStatus(fireBaseUserId: String) {
-        firestore.collection(AppKey.USERS_PATH_FIRE_STORE)
+        firestore.collection(AppKey.USER_COMMONS_PATH)
             .document(fireBaseUserId)
             .update(AppKey.PROFILE_STATUS_FIELD, true)
             .await()
@@ -93,7 +93,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         val imageDownloadUri = uploadImageTask.storage.downloadUrl.await()
         val imagePathField = ArrayMap<String, String>()
         imagePathField[AppKey.PROFILE_IMAGE_PATH_FIELD] = imageDownloadUri.toString()
-        firestore.collection(AppKey.USERS_PATH_FIRE_STORE)
+        firestore.collection(AppKey.USER_COMMONS_PATH)
             .document(fireBaseUserId)
             .update(imagePathField.toMap())
             .await()

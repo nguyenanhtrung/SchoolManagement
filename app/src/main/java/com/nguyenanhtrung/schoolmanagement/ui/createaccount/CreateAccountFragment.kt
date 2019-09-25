@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -22,6 +23,7 @@ import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
 import com.nguyenanhtrung.schoolmanagement.util.clearText
 import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
+import kotlinx.android.synthetic.main.dropdown_menu.*
 import kotlinx.android.synthetic.main.fragment_create_new_account.*
 import javax.inject.Inject
 
@@ -37,6 +39,8 @@ class CreateAccountFragment : BaseFragment() {
     private val mainViewModel by lazy {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
+
+    private lateinit var userTypeAdapter: ArrayAdapter<String>
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -167,7 +171,7 @@ class CreateAccountFragment : BaseFragment() {
                     edit_text_name.getString(),
                     edit_text_email.getString(),
                     edit_text_password.getString(),
-                    spinner_user_type.selectedIndex
+                    filled_exposed_dropdown.listSelection
                 )
             )
         }
@@ -190,8 +194,11 @@ class CreateAccountFragment : BaseFragment() {
     }
 
     private fun showUserTypes(userTypes: List<UserType>) {
-        spinner_user_type.attachDataSource(userTypes.map {
-            it.name
-        })
+        if (!::userTypeAdapter.isInitialized) {
+            userTypeAdapter = ArrayAdapter(requireActivity(), R.layout.dropdown_menu_popup_item, userTypes.map {
+                it.name
+            })
+        }
+        filled_exposed_dropdown.setAdapter(userTypeAdapter)
     }
 }

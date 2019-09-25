@@ -8,6 +8,9 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -17,6 +20,11 @@ import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.ErrorState
 
+fun TextView.setCustomTextColor(@ColorRes resId: Int) {
+    setTextColor(ContextCompat.getColor(context, resId))
+}
+
+
 fun TextInputEditText.getString(): String {
     return text.toString()
 }
@@ -24,7 +32,7 @@ fun TextInputEditText.getString(): String {
 fun TextInputEditText.clearErrorWhenFocus(inputLayout: TextInputLayout) {
     addTextChangedListener(object : TextWatcher {
         override fun afterTextChanged(s: Editable?) {
-            if (s?.length != 0 && inputLayout.error != null ) {
+            if (s?.length != 0 && inputLayout.error != null) {
                 inputLayout.error = null
             }
         }
@@ -66,8 +74,11 @@ fun TextInputEditText.disableInput(inputLayout: TextInputLayout) {
 
 
 fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
-    when(errorState) {
-        is ErrorState.NoAction -> error = context.getString(errorState.messageId)
+    when (errorState) {
+        is ErrorState.NoAction -> {
+            error = context.getString(errorState.messageId)
+            MyAnimationUtils.shake(this)
+        }
         is ErrorState.Empty -> {
             if (error != null) {
                 error = null
@@ -77,12 +88,14 @@ fun TextInputLayout.setErrorWithState(errorState: ErrorState) {
 }
 
 fun Fragment.showKeyboard(view: View) {
-    val input = getSystemService(requireActivity() ,InputMethodManager::class.java) as InputMethodManager
+    val input =
+        getSystemService(requireActivity(), InputMethodManager::class.java) as InputMethodManager
     input.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
 }
 
 fun Fragment.hideKeyboard(view: View) {
-    val input = getSystemService(requireActivity() ,InputMethodManager::class.java) as InputMethodManager
+    val input =
+        getSystemService(requireActivity(), InputMethodManager::class.java) as InputMethodManager
     input.hideSoftInputFromWindow(view.windowToken, 0)
 }
 

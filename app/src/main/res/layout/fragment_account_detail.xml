@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:orientation="vertical"
-    tools:menu="@menu/fragment_account_detail"
     tools:context=".ui.main.MainActivity"
-    android:animateLayoutChanges="true">
+    tools:menu="@menu/fragment_account_detail">
 
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/card_view_account_background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_marginStart="@dimen/margin_normal_100"
+        android:layout_marginTop="@dimen/margin_normal_100"
         android:layout_marginEnd="@dimen/margin_normal_100"
         android:foregroundTint="@color/colorSurface">
 
@@ -40,8 +40,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal_100"
-                android:textAppearance="@style/TextNormalBold"
                 android:gravity="center_horizontal"
+                android:textAppearance="@style/TextNormalBold"
                 android:transitionName="@string/transition_name_account_email"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,14 +63,14 @@
                 android:id="@+id/input_layout_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_normal_100"
                 android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginTop="@dimen/margin_normal_100"
                 android:layout_marginEnd="@dimen/margin_normal_100"
                 android:hint="@string/title_full_name"
+                app:endIconMode="none"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/text_account_detail_id"
-                app:endIconMode="none">
+                app:layout_constraintTop_toBottomOf="@id/text_account_detail_id">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_name"
@@ -90,34 +90,44 @@
                 android:layout_marginTop="@dimen/margin_normal_100"
                 android:text="@string/title_account_type"
                 android:textAppearance="@style/TextNormal"
-                app:layout_constraintStart_toStartOf="@id/input_layout_name"
                 app:layout_constraintEnd_toEndOf="@id/input_layout_name"
+                app:layout_constraintStart_toStartOf="@id/input_layout_name"
                 app:layout_constraintTop_toBottomOf="@id/input_layout_name" />
 
+            <include
+                android:id="@+id/layout_fill_dropdown_menu"
+                layout="@layout/dropdown_menu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_normal_100"
+                android:layout_marginEnd="@dimen/margin_normal_100"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title_account_type" />
 
-                <org.angmarch.views.NiceSpinner
-                    android:id="@+id/spinner_account_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/margin_normal_100"
-                    android:layout_marginStart="@dimen/margin_normal_100"
-                    android:enabled="false"
-                    android:backgroundTint="@color/colorBackground"
-                    app:fontFamily="@font/roboto_medium"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/title_account_type" />
+
+            <!--                <org.angmarch.views.NiceSpinner-->
+            <!--                    android:id="@+id/spinner_account_type"-->
+            <!--                    android:layout_width="0dp"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginEnd="@dimen/margin_normal_100"-->
+            <!--                    android:layout_marginStart="@dimen/margin_normal_100"-->
+            <!--                    android:enabled="false"-->
+            <!--                    app:fontFamily="@font/roboto_medium"-->
+            <!--                    app:layout_constraintEnd_toEndOf="parent"-->
+            <!--                    app:layout_constraintStart_toStartOf="parent"-->
+            <!--                    app:layout_constraintTop_toBottomOf="@id/title_account_type" />-->
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/input_layout_password"
                 style="@style/Widget.OutLinePasswordInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="@string/title_password"
                 android:layout_marginTop="@dimen/margin_normal_100"
-                app:layout_constraintEnd_toEndOf="@+id/spinner_account_type"
-                app:layout_constraintStart_toStartOf="@+id/spinner_account_type"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_account_type">
+                android:hint="@string/title_password"
+                app:layout_constraintEnd_toEndOf="@+id/layout_fill_dropdown_menu"
+                app:layout_constraintStart_toStartOf="@+id/layout_fill_dropdown_menu"
+                app:layout_constraintTop_toBottomOf="@+id/layout_fill_dropdown_menu">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_text_password"

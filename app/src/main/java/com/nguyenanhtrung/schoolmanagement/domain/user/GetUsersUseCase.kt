@@ -7,6 +7,7 @@ import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
 import com.nguyenanhtrung.schoolmanagement.data.repository.usertype.UserTypeRepository
 import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import com.xwray.groupie.kotlinandroidextensions.Item
+import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 class GetUsersUseCase @Inject constructor(
@@ -22,6 +23,7 @@ class GetUsersUseCase @Inject constructor(
         params: Long,
         resultLiveData: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
+        delay(300)
         userTypes
         if (params < 0) {
             userRepository.getUsers(userTypes, resultLiveData)

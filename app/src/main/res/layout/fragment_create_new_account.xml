@@ -63,20 +63,12 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            style="@style/TextNormal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal_100"
-            android:text="@string/choose_account_type" />
-
-        <org.angmarch.views.NiceSpinner
-            android:id="@+id/spinner_user_type"
+        <include
+            layout="@layout/dropdown_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small_100"
-            app:arrowTint="@color/colorOnBackground" />
-
+            android:layout_marginTop="@dimen/margin_normal_100"
+            />
 
         <Button
             android:id="@+id/button_confirm"

@@ -6,7 +6,6 @@ import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -127,7 +126,7 @@ class AccountManagementFragment : BaseListItemFragment() {
         val position = accountViewModel.posAccountSelected
         val itemView = layoutManager?.findViewByPosition(position) ?: return
         val imageViewAcc = itemView.findViewById<CircleImageView>(R.id.image_account)
-        val textNameAcc = itemView.findViewById<TextView>(R.id.text_account_email)
+        val textNameAcc = itemView.findViewById<TextView>(R.id.text_account_name)
 
         val shareViews = FragmentNavigatorExtras(
             imageViewAcc to getString(R.string.transition_name_image_account),

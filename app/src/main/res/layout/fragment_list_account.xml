@@ -47,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add"
+        app:backgroundTint="@color/colorSecondary"
         app:layout_anchor="@id/bottom_app_bar_accounts"
         android:layout_marginEnd="@dimen/margin_normal_100"
         />
