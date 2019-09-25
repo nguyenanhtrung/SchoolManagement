@@ -23,7 +23,7 @@ class GetUsersUseCase @Inject constructor(
         params: Long,
         resultLiveData: MutableLiveData<Resource<MutableList<out Item>>>
     ) {
-        delay(300)
+        delay(450)
         userTypes
         if (params < 0) {
             userRepository.getUsers(userTypes, resultLiveData)

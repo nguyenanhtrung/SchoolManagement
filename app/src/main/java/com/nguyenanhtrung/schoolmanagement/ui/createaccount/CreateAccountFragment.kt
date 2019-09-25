@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.android.material.dialog.MaterialDialogs
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
@@ -25,6 +27,7 @@ import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
 import kotlinx.android.synthetic.main.dropdown_menu.*
 import kotlinx.android.synthetic.main.fragment_create_new_account.*
+import timber.log.Timber
 import javax.inject.Inject
 
 class CreateAccountFragment : BaseFragment() {
@@ -103,15 +106,16 @@ class CreateAccountFragment : BaseFragment() {
     }
 
     private fun updateAccounts(userFireBaseId: String) {
-//        val user = User(
-//            accountViewModel.maxId,
-//            userFireBaseId,
-//            edit_text_name.getString(),
-//            spinner_user_type.selectedItem as String,
-//            accountViewModel.getUserTypeId(spinner_user_type.selectedIndex),
-//            accountName = edit_text_email.getString()
-//        )
-//        mainViewModel.mutableAccountEvent.value = Event(user)
+        val user = User(
+            accountViewModel.maxId,
+            userFireBaseId,
+            edit_text_name.getString(),
+            UserType(
+                accountViewModel.getUserTypeId(),
+                accountViewModel.getUserTypeName()
+            )
+        )
+        mainViewModel.mutableAccountEvent.value = Event(user)
     }
 
 
@@ -130,6 +134,7 @@ class CreateAccountFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         setupNavigationEvent()
+        setupUserTypeDropDownEvent()
         setupButtonConfirmEvent()
         setupEditTextEvent()
         subscribeErrorInputName()
@@ -137,6 +142,12 @@ class CreateAccountFragment : BaseFragment() {
         subscribeErrorInputPassword()
         subscribeUserTypes()
         accountViewModel.loadUserTypes()
+    }
+
+    private fun setupUserTypeDropDownEvent() {
+        filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
+            accountViewModel.posUserTypeSelected = position
+        }
     }
 
     private fun setupEditTextEvent() {
@@ -170,8 +181,7 @@ class CreateAccountFragment : BaseFragment() {
                 CreateAccountInput(
                     edit_text_name.getString(),
                     edit_text_email.getString(),
-                    edit_text_password.getString(),
-                    filled_exposed_dropdown.listSelection
+                    edit_text_password.getString()
                 )
             )
         }
@@ -195,9 +205,10 @@ class CreateAccountFragment : BaseFragment() {
 
     private fun showUserTypes(userTypes: List<UserType>) {
         if (!::userTypeAdapter.isInitialized) {
-            userTypeAdapter = ArrayAdapter(requireActivity(), R.layout.dropdown_menu_popup_item, userTypes.map {
-                it.name
-            })
+            userTypeAdapter =
+                ArrayAdapter(requireActivity(), R.layout.dropdown_menu_popup_item, userTypes.map {
+                    it.name
+                })
         }
         filled_exposed_dropdown.setAdapter(userTypeAdapter)
     }

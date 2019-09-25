@@ -36,11 +36,11 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
     override suspend fun getUserPassword(fireBaseUserId: String): Resource<String> {
-        val documentSnapshot = firestore.collection(AppKey.AUTHENTICATION_PATH)
+        val documentSnapshot = firestore.collection(AppKey.USER_DETAILS_PATH)
             .document(fireBaseUserId)
             .get()
             .await()
-        val password = documentSnapshot[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] as String
+        val password = documentSnapshot[AppKey.PASSWORD_FIELD_USER_DETAILS_PATH] as String
         return Resource.success(password)
     }
 
@@ -145,14 +145,14 @@ class UserRemoteDataSourceImp @Inject constructor(
         accountName: String,
         newPassword: String
     ): Resource<Unit> {
-        val accCurrentPassword = firestore.collection(AppKey.AUTHENTICATION_PATH)
+        val accCurrentPassword = firestore.collection(AppKey.USER_DETAILS_PATH)
             .document(fireBaseUserId)
             .get()
             .await()
         val secondFireBaseAuth = createSecondFirebaseAuth(fireBaseUserId)
         secondFireBaseAuth.signInWithEmailAndPassword(
             accountName,
-            accCurrentPassword[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] as String
+            accCurrentPassword[AppKey.PASSWORD_FIELD_USER_DETAILS_PATH] as String
         ).await()
         val user = secondFireBaseAuth.currentUser
         user?.updatePassword(newPassword)
@@ -250,22 +250,26 @@ class UserRemoteDataSourceImp @Inject constructor(
             put(AppKey.USER_AVATAR_PATH_FIELD, "")
             put(AppKey.USER_NAME_FIELD, createAccountParam.name)
             put(AppKey.USER_TYPE_ID_FIELD, createAccountParam.userTypeId)
-            put(AppKey.USER_NAME_FIELD, createAccountParam.email)
             put(AppKey.PROFILE_STATUS_FIELD, false)
-            put(AppKey.PROFILE_IMAGE_PATH_FIELD, "")
         }
         firestore.collection(USER_COMMONS_PATH)
             .document(newUserId)
             .set(userInfo)
             .await()
-        updateUserPassword(newUserId, password = createAccountParam.password)
+        saveUserAccount(
+            newUserId,
+            email = createAccountParam.email,
+            password = createAccountParam.password
+        )
         return newUserId
     }
 
-    private suspend fun updateUserPassword(fireBaseUserId: String, password: String) {
+
+    private suspend fun saveUserAccount(fireBaseUserId: String, email: String, password: String) {
         val field = ArrayMap<String, String>()
-        field[AppKey.PASSWORD_FIELD_AUTHENTICATIONS_PATH] = password
-        firestore.collection(AppKey.AUTHENTICATION_PATH)
+        field[AppKey.EMAIL_FIELD_USER_DETAILS_PATH] = email
+        field[AppKey.PASSWORD_FIELD_USER_DETAILS_PATH] = password
+        firestore.collection(AppKey.USER_DETAILS_PATH)
             .document(fireBaseUserId)
             .set(field)
             .await()
@@ -274,7 +278,6 @@ class UserRemoteDataSourceImp @Inject constructor(
     private suspend fun updateUserStatus(userId: String) {
         val status = ArrayMap<String, Boolean>()
         status["status"] = false
-
         firestore.collection(AppKey.USER_STATUS_PATH_FIRE_STORE)
             .document(userId)
             .set(status)

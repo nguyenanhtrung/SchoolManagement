@@ -16,7 +16,8 @@ class CreateAccountViewModel @Inject constructor(
 ) :
     BaseViewModel() {
 
-    var maxId: Long = 0
+    internal var maxId: Long = 0
+    internal var posUserTypeSelected = 0
     var newFireBaseId = ""
     private lateinit var createAccountInput: CreateAccountInput
 
@@ -77,7 +78,7 @@ class CreateAccountViewModel @Inject constructor(
             return
         }
 
-        val userTypeIdSelected = getUserTypeId(createAccountInput.userTypeIndex)
+        val userTypeIdSelected = getUserTypeId()
         increaseUserId()
         val createAccountParam = CreateAccountParam(
             maxId.toString(),
@@ -91,7 +92,7 @@ class CreateAccountViewModel @Inject constructor(
     }
 
     internal fun createProfile(): Profile {
-        val userTypeName = getUserTypeName(createAccountInput.userTypeIndex)
+        val userTypeName = getUserTypeName()
         return Profile(
             newFireBaseId,
             maxId,
@@ -104,15 +105,15 @@ class CreateAccountViewModel @Inject constructor(
         maxId++
     }
 
-    private fun getUserTypeName(index: Int): String {
+    internal fun getUserTypeName(): String {
         val userTypes = _userTypesLiveData.value?.data
-        val userTypeSelected = userTypes?.get(index)
+        val userTypeSelected = userTypes?.get(posUserTypeSelected)
         return userTypeSelected?.name ?: return ""
     }
 
-    internal fun getUserTypeId(index: Int): String {
+    internal fun getUserTypeId(): String {
         val userTypes = _userTypesLiveData.value?.data
-        val userTypeSelected = userTypes?.get(index)
+        val userTypeSelected = userTypes?.get(posUserTypeSelected)
         return userTypeSelected?.id ?: return ""
     }
 }

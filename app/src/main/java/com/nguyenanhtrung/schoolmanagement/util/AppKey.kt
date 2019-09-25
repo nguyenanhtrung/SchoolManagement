@@ -4,6 +4,7 @@ class AppKey private constructor(){
 
     companion object {
         const val USER_COMMONS_PATH = "user_commons"
+        const val USER_DETAILS_PATH = "user_details"
         const val USER_TYPES_PATH_FIRE_STORE = "user_types"
         const val FEATURES_PATH = "features"
         const val FEATURE_ACCOUNTS_PATH = "feature_accounts"
@@ -12,7 +13,6 @@ class AppKey private constructor(){
         const val ID_PATH_FIRE_STORE = "custom_ids"
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"
         const val USER_PROFILES_PATH = "profiles"
-        const val AUTHENTICATION_PATH = "authentications"
         const val SCHOOL_ROOMS_PATH = "school_rooms"
         //
         const val USER_AVATAR_PATH_FIELD = "avatar_path"
@@ -28,7 +28,8 @@ class AppKey private constructor(){
         const val PROFILE_IMAGE_PATH_FIELD = "profileImagePath"
         const val GENDER_FIELD_PROFILE_PATH = "gender"
         //
-        const val PASSWORD_FIELD_AUTHENTICATIONS_PATH = "password"
+        const val PASSWORD_FIELD_USER_DETAILS_PATH = "password"
+        const val EMAIL_FIELD_USER_DETAILS_PATH = "email"
         //
 
         //

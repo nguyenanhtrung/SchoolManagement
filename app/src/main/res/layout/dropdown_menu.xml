@@ -9,8 +9,8 @@
         android:id="@+id/filled_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/choose_account_type"
         android:editable="false"
+        android:hint="@string/choose_account_type"
         android:cursorVisible="false" />
 
 </com.google.android.material.textfield.TextInputLayout>
