@@ -16,7 +16,7 @@ class AccountDetailViewModel @Inject constructor(
     private val updateUserInfoUseCase: UpdateUserInfoUseCase
 ) : BaseViewModel() {
     internal lateinit var accountDetailParams: AccountDetailParams
-
+    internal var posUserTypeSelected = -1
 
     private val _accountDetailInfo by lazy {
         MutableLiveData<AccountDetailParams>()
@@ -29,13 +29,6 @@ class AccountDetailViewModel @Inject constructor(
     }
     internal val userTypesLiveData: LiveData<Resource<List<UserType>>>
         get() = _userTypesLiveData
-
-    private val _indexUserTypeSelected by lazy {
-        MutableLiveData<Int>()
-    }
-    internal val indexUserTypeSelected: LiveData<Int>
-        get() = _indexUserTypeSelected
-
 
     private val _errorNameLiveData by lazy {
         MutableLiveData<ErrorState>()
@@ -71,7 +64,7 @@ class AccountDetailViewModel @Inject constructor(
         val accountInfo = accountDetailParams.user
         val oldName = accountInfo.name
         val oldAccountTypeId = accountInfo.type.id
-        val oldPassword = accountDetailParams.password
+        val oldPassword = accountDetailParams.userDetail.password
         val newAccountTypeId = getUserTypeIdByIndex(indexSelectedType)
 
         if (oldName == newName && newAccountTypeId == oldAccountTypeId
@@ -138,15 +131,16 @@ class AccountDetailViewModel @Inject constructor(
         getUserTypesUseCase.invoke(viewModelScope, true, _userTypesLiveData)
     }
 
-    internal fun showSelectedUserType(typeId: String) {
-        val userTypesResource = _userTypesLiveData.value ?: return
-        userTypesResource.data?.let {
-            val indexOfType = it.indexOfFirst { userType ->
-                val check = typeId == userType.id
-                check
-            }
-            _indexUserTypeSelected.value = indexOfType
+    internal fun getIndexOfSelectedUserType(): Int {
+        val userTypesResource = _userTypesLiveData.value ?: return 0
+        val userTypes = userTypesResource.data ?: return 0
+        val selectedType = accountDetailParams.user.type
+        val selectedTypeId = selectedType.id
+        posUserTypeSelected = userTypes.indexOfFirst { userType ->
+            val check = selectedTypeId == userType.id
+            check
         }
+        return posUserTypeSelected
     }
 
 }

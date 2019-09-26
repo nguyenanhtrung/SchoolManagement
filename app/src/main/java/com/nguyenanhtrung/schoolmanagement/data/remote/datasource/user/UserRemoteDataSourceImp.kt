@@ -14,6 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTy
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.userid.UserIdRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserCloudStore
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.AppKey.Companion.USER_COMMONS_PATH
@@ -42,6 +43,18 @@ class UserRemoteDataSourceImp @Inject constructor(
             .await()
         val password = documentSnapshot[AppKey.PASSWORD_FIELD_USER_DETAILS_PATH] as String
         return Resource.success(password)
+    }
+
+    override suspend fun getUserDetail(fireBaseUserId: String): Resource<UserDetail> {
+        val documentSnapshot = firestore.collection(AppKey.USER_DETAILS_PATH)
+            .document(fireBaseUserId)
+            .get()
+            .await()
+        val userDetail = UserDetail(
+            documentSnapshot[AppKey.EMAIL_FIELD_USER_DETAILS_PATH] as String,
+            documentSnapshot[AppKey.PASSWORD_FIELD_USER_DETAILS_PATH] as String
+        )
+        return Resource.success(userDetail)
     }
 
     override suspend fun getPagingUsesByProfileStatus(

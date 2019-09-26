@@ -3,12 +3,14 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountdetail
 import android.app.Application
 import android.os.Bundle
 import android.view.*
-import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.SingleChoiceListener
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
@@ -39,7 +41,9 @@ class AccountDetailFragment : BaseFragment() {
     }
 
     private lateinit var detailMenu: Menu
-    private lateinit var userTypeAdapter: ArrayAdapter<String>
+    private val userTypesDialog by lazy {
+        MaterialDialog(requireActivity())
+    }
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -88,11 +92,11 @@ class AccountDetailFragment : BaseFragment() {
             handleStateModifyInput(it, edit_text_password, input_layout_password)
             when (it) {
                 ModificationState.Edit -> {
-                    filled_exposed_dropdown.isEnabled = true
+                    edit_text_user_types.isEnabled = true
                     showMenuItemWithEditState()
                 }
                 ModificationState.Save -> {
-                    filled_exposed_dropdown.isEnabled = false
+                    edit_text_user_types.isEnabled = false
                     showMenuItemWithSaveState()
                 }
             }
@@ -164,12 +168,18 @@ class AccountDetailFragment : BaseFragment() {
     override fun setupUiEvents() {
         setSupportActionBar()
         setupNavigationEvent()
+        setupUserTypeSelectionEvent()
         subscribeUserTypes()
-        subscribeSelectedUserType()
         subscribeErrorPassword()
         subscribeErrorName()
         detailViewModel.loadUserTypes()
 
+    }
+
+    private fun setupUserTypeSelectionEvent() {
+        edit_text_user_types.setOnClickListener {
+            userTypesDialog.title(res = R.string.choose_account_type).show()
+        }
     }
 
     private fun setSupportActionBar() {
@@ -197,12 +207,6 @@ class AccountDetailFragment : BaseFragment() {
         }
     }
 
-    private fun subscribeSelectedUserType() {
-        detailViewModel.indexUserTypeSelected.observe(viewLifecycleOwner, Observer {
-            filled_exposed_dropdown.listSelection = it
-        })
-    }
-
     private fun subscribeUserInfo() {
         detailViewModel.currentUserLiveData.observe(this, Observer {
             it?.let {
@@ -214,27 +218,36 @@ class AccountDetailFragment : BaseFragment() {
     private fun subscribeUserTypes() {
         detailViewModel.userTypesLiveData.observe(viewLifecycleOwner, Observer {
             it.data?.let { userTypes ->
-                if (!::userTypeAdapter.isInitialized) {
-                    userTypeAdapter = ArrayAdapter(
-                        requireActivity(),
-                        R.layout.dropdown_menu_popup_item,
-                        userTypes.map { userType ->
-                            userType.name
-                        })
-                }
-                filled_exposed_dropdown.setAdapter(userTypeAdapter)
+                setDataUserTypeDialog(userTypes)
                 detailViewModel.loadUserInfo()
             }
         })
     }
 
+    private fun setDataUserTypeDialog(userTypes: List<UserType>) {
+        val typeNames = userTypes.map { userType ->
+            userType.name
+        }
+        val selectedIndex = detailViewModel.getIndexOfSelectedUserType()
+        userTypesDialog.listItemsSingleChoice(
+            items = typeNames,
+            initialSelection = selectedIndex,
+            selection = object : SingleChoiceListener {
+                override fun invoke(dialog: MaterialDialog, index: Int, text: String) {
+                    detailViewModel.posUserTypeSelected = index
+                    edit_text_user_types.setText(text)
+                }
+            })
+    }
+
     private fun showAccountDetailInfo(accountDetailParams: AccountDetailParams) {
         val user = accountDetailParams.user
-        text_account_name.text = user.name
         image_account_detail.loadImageIfEmptyPath(user.avatarPath)
         edit_text_name.setText(user.name)
         text_account_detail_id.text = "${getString(R.string.title_account_id)}: ${user.id}"
-        detailViewModel.showSelectedUserType(user.type.id)
-        edit_text_password.setText(accountDetailParams.password)
+        edit_text_user_types.setText(user.type.name)
+        val userDetail = accountDetailParams.userDetail
+        text_account_name.text = userDetail.account
+        edit_text_password.setText(accountDetailParams.userDetail.password)
     }
 }

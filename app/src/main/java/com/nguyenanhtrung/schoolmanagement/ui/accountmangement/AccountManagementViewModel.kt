@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
-import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserPasswordUseCase
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
+import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserDetailUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.userid.GetMaxUserIdUseCase
-import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AccountManagementViewModel @Inject constructor(
     private val getMaxUserIdUseCase: GetMaxUserIdUseCase,
     private val getUsersUseCase: GetUsersUseCase,
-    private val getUserPasswordUseCase: GetUserPasswordUseCase
+    private val getUserDetailUseCase: GetUserDetailUseCase
 ) : BaseListItemViewModel() {
 
     internal var posAccountSelected = -1
@@ -39,11 +39,11 @@ class AccountManagementViewModel @Inject constructor(
     internal val maxUserIdLiveData: LiveData<Resource<Long>>
         get() = _maxUserIdLiveData
 
-    private val _userPasswordLiveData by lazy {
-        createApiResultLiveData<String>()
+    private val _userDetailLiveData by lazy {
+        createApiResultLiveData<UserDetail>()
     }
-    internal val userPasswordLiveData: LiveData<Resource<String>>
-        get() = _userPasswordLiveData
+    internal val userDetailLiveData: LiveData<Resource<UserDetail>>
+        get() = _userDetailLiveData
 
 
     override fun loadMoreItems(
@@ -64,33 +64,33 @@ class AccountManagementViewModel @Inject constructor(
     }
 
     override fun onCustomClickItem(position: Int) {
-        if (posAccountSelected == position && _userPasswordLiveData.value != null) {
+        if (posAccountSelected == position && _userDetailLiveData.value != null) {
             //navigate to account detail with password and account info already have
             val selectedUserItem = itemCopys[posAccountSelected] as UserItem
             val selectedUser = selectedUserItem.user
-            val getPasswordResult = _userPasswordLiveData.value ?: return
-            val password = getPasswordResult.data ?: return
-            val accountDetailParams = AccountDetailParams(selectedUser, password)
+            val userDetailResource = _userDetailLiveData.value ?: return
+            val userDetail = userDetailResource.data ?: return
+            val accountDetailParams = AccountDetailParams(selectedUser, userDetail)
             _navToAccountDetail.value = Event(accountDetailParams)
             return
         }
         posAccountSelected = position
         val selectedItem = itemCopys[position] as UserItem
         val selectedUser = selectedItem.user
-        getUserPasswordUseCase.invoke(
+        getUserDetailUseCase.invoke(
             viewModelScope,
             selectedUser.firebaseUserId,
-            _userPasswordLiveData
+            _userDetailLiveData
         )
     }
 
-    internal fun onSuccessGetSelectedUserPassword(password: String) {
+    internal fun onSuccessGetUserDetail(userDetail: UserDetail) {
         if (posAccountSelected < 0) {
             return
         }
         val selectedUserItem = itemCopys[posAccountSelected] as UserItem
         val selectedUser = selectedUserItem.user
-        val accountDetailParams = AccountDetailParams(selectedUser, password)
+        val accountDetailParams = AccountDetailParams(selectedUser, userDetail)
         _navToAccountDetail.value = Event(accountDetailParams)
     }
 

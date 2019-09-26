@@ -2,18 +2,19 @@ package com.nguyenanhtrung.schoolmanagement.domain.user
 
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.nguyenanhtrung.schoolmanagement.data.repository.user.UserRepository
 import com.nguyenanhtrung.schoolmanagement.domain.base.BaseUseCase
 import javax.inject.Inject
 
-class GetUserPasswordUseCase @Inject constructor(private val userRepository: UserRepository) :
-    BaseUseCase<String, String>() {
+class GetUserDetailUseCase @Inject constructor(private val userRepository: UserRepository) :
+    BaseUseCase<String, UserDetail>() {
 
 
     override suspend fun execute(
         params: String,
-        resultLiveData: MutableLiveData<Resource<String>>
+        resultLiveData: MutableLiveData<Resource<UserDetail>>
     ) {
-        userRepository.getUserPassword(params, resultLiveData)
+        userRepository.getUserDetail(params, resultLiveData)
     }
 }

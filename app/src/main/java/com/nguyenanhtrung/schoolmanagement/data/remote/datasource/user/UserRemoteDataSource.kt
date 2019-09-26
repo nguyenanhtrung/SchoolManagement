@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 
 import androidx.collection.ArrayMap
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface UserRemoteDataSource {
@@ -29,6 +30,8 @@ interface UserRemoteDataSource {
     ): Resource<Unit>
 
     suspend fun getUserPassword(fireBaseUserId: String): Resource<String>
+
+    suspend fun getUserDetail(fireBaseUserId: String): Resource<UserDetail>
 
     suspend fun getUserByProfileStatus(
         userTypes: Map<String, String>,

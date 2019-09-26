@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
 
 import android.app.Application
 import android.os.Bundle
+import android.os.Handler
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -71,7 +72,7 @@ class AccountManagementFragment : BaseListItemFragment() {
 
     private fun subscribeModifyAccountInfo() {
         mainViewModel.stateModifyAccInfo.observe(this, Observer {
-            it.getContentIfNotHandled()?.let {modifiedUser ->
+            it.getContentIfNotHandled()?.let { modifiedUser ->
                 val posAccountSelected = accountViewModel.posAccountSelected
                 val selectedItem = itemAdapter.getItem(posAccountSelected) as UserItem
                 selectedItem.user = modifiedUser
@@ -81,9 +82,9 @@ class AccountManagementFragment : BaseListItemFragment() {
     }
 
     private fun subscribeGetSelectedUserPassword() {
-        accountViewModel.userPasswordLiveData.observe(this, Observer {
-            it.data?.let { password ->
-                accountViewModel.onSuccessGetSelectedUserPassword(password)
+        accountViewModel.userDetailLiveData.observe(this, Observer {
+            it.data?.let { userDetail ->
+                accountViewModel.onSuccessGetUserDetail(userDetail)
             }
         })
     }
@@ -116,7 +117,10 @@ class AccountManagementFragment : BaseListItemFragment() {
         accountViewModel.navToAccountDetail.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { accountDetailParams ->
                 hideKeyboard(edit_text_search)
-                openAccountDetailFragment(accountDetailParams)
+                val handler = Handler()
+                handler.postDelayed({
+                    openAccountDetailFragment(accountDetailParams)
+                }, 300)
             }
         })
     }
@@ -145,7 +149,6 @@ class AccountManagementFragment : BaseListItemFragment() {
     }
 
 
-
     private fun subscribeMaxUserId() {
         accountViewModel.maxUserIdLiveData.observe(this, Observer {
             it.data?.let { id ->
@@ -157,12 +160,16 @@ class AccountManagementFragment : BaseListItemFragment() {
     private fun subscribeNavigateToCreateAccount() {
         accountViewModel.navToCreateAccountFragment.observe(viewLifecycleOwner, Observer {
             it.getContentIfNotHandled()?.let { id ->
-                findNavController().navigate(
-                    AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest(
-                        id
+                val handler = Handler()
+                handler.postDelayed({
+                    findNavController().navigate(
+                        AccountManagementFragmentDirections.actionAccountManagementDestToCreateAccountDest(
+                            id
+                        )
                     )
-                )
+                }, 300)
                 mainViewModel.showToolbar()
+
             }
         })
     }

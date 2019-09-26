@@ -47,18 +47,14 @@
         <action
             android:id="@+id/action_accountManagementDest_to_createAccountDest"
             app:destination="@id/createAccountDest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            app:popUpTo="@+id/accountManagementDest" />
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit"
+            app:popEnterAnim="@anim/fragment_close_enter"
+            app:popExitAnim="@anim/fragment_close_exit"
+            app:popUpTo="@id/accountManagementDest" />
         <action
             android:id="@+id/action_accountManagementDest_to_accountDetailFragment"
             app:destination="@id/accountDetailFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
             app:popUpTo="@+id/accountManagementDest"
             app:popUpToInclusive="false" />
     </fragment>

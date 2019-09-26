@@ -5,14 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.dialog.MaterialDialogs
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.SingleChoiceListener
+import com.afollestad.materialdialogs.list.listItemsSingleChoice
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
@@ -25,9 +25,7 @@ import com.nguyenanhtrung.schoolmanagement.util.clearErrorWhenFocus
 import com.nguyenanhtrung.schoolmanagement.util.clearText
 import com.nguyenanhtrung.schoolmanagement.util.getString
 import com.nguyenanhtrung.schoolmanagement.util.setErrorWithState
-import kotlinx.android.synthetic.main.dropdown_menu.*
 import kotlinx.android.synthetic.main.fragment_create_new_account.*
-import timber.log.Timber
 import javax.inject.Inject
 
 class CreateAccountFragment : BaseFragment() {
@@ -43,7 +41,9 @@ class CreateAccountFragment : BaseFragment() {
         ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
     }
 
-    private lateinit var userTypeAdapter: ArrayAdapter<String>
+    private val userTypesDialog by lazy {
+        MaterialDialog(requireActivity())
+    }
 
     override fun injectDependencies(application: Application) {
         val myApp = application as MyApplication
@@ -134,7 +134,7 @@ class CreateAccountFragment : BaseFragment() {
 
     override fun setupUiEvents() {
         setupNavigationEvent()
-        setupUserTypeDropDownEvent()
+        setupUserTypeSelectionEvent()
         setupButtonConfirmEvent()
         setupEditTextEvent()
         subscribeErrorInputName()
@@ -144,9 +144,9 @@ class CreateAccountFragment : BaseFragment() {
         accountViewModel.loadUserTypes()
     }
 
-    private fun setupUserTypeDropDownEvent() {
-        filled_exposed_dropdown.setOnItemClickListener { _, _, position, _ ->
-            accountViewModel.posUserTypeSelected = position
+    private fun setupUserTypeSelectionEvent() {
+        edit_text_user_types.setOnClickListener {
+            userTypesDialog.title(res = R.string.choose_account_type).show()
         }
     }
 
@@ -198,18 +198,20 @@ class CreateAccountFragment : BaseFragment() {
     private fun subscribeUserTypes() {
         accountViewModel.userTypesLiveData.observe(viewLifecycleOwner, Observer {
             it.data?.let { userTypes ->
-                showUserTypes(userTypes)
+                loadUserTypes(userTypes)
             }
         })
     }
 
-    private fun showUserTypes(userTypes: List<UserType>) {
-        if (!::userTypeAdapter.isInitialized) {
-            userTypeAdapter =
-                ArrayAdapter(requireActivity(), R.layout.dropdown_menu_popup_item, userTypes.map {
-                    it.name
-                })
-        }
-        filled_exposed_dropdown.setAdapter(userTypeAdapter)
+    private fun loadUserTypes(userTypes: List<UserType>) {
+        edit_text_user_types.setText(userTypes[0].name)
+        userTypesDialog.listItemsSingleChoice(items = userTypes.map {
+            it.name
+        }, initialSelection = 0, selection = object : SingleChoiceListener {
+            override fun invoke(dialog: MaterialDialog, index: Int, text: String) {
+                accountViewModel.posUserTypeSelected = index
+                edit_text_user_types.setText(text)
+            }
+        })
     }
 }

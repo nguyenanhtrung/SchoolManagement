@@ -5,6 +5,11 @@
         <item name="android:textAppearance">@style/TextNormal</item>
     </style>
 
+    <style name="Widget.SelectionTextInputLayout" parent="Widget.OutLineTextInputLayout">
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
 
     <style name="Widget.OutLinePasswordInputLayout" parent="Widget.OutLineTextInputLayout">
         <item name="endIconMode">password_toggle</item>

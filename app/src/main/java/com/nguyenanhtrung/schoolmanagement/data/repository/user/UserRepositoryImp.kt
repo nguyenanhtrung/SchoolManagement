@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.NetworkBoundResources
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -107,6 +108,20 @@ class UserRepositoryImp @Inject constructor(
 
             override suspend fun callApi(): Resource<String> {
                 return userRemoteDataSource.getUserPassword(params)
+            }
+        }.createCall()
+    }
+
+    override suspend fun getUserDetail(
+        fireBaseUserId: String,
+        result: MutableLiveData<Resource<UserDetail>>
+    ) {
+        object : NetworkBoundResources<String, UserDetail>(context, fireBaseUserId, result) {
+            override fun shouldSaveToLocal(params: String): Boolean = false
+            override fun shouldLoadFromLocal(params: String): Boolean = false
+
+            override suspend fun callApi(): Resource<UserDetail> {
+                return userRemoteDataSource.getUserDetail(fireBaseUserId)
             }
         }.createCall()
     }

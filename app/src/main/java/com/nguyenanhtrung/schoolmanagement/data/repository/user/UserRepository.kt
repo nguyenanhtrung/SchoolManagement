@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface UserRepository {
@@ -50,5 +51,10 @@ interface UserRepository {
     suspend fun getUserPassword(
         fireBaseUserId: String,
         result: MutableLiveData<Resource<String>>
+    )
+
+    suspend fun getUserDetail(
+        fireBaseUserId: String,
+        result: MutableLiveData<Resource<UserDetail>>
     )
 }
