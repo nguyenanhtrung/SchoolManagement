@@ -21,7 +21,6 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
 import com.nguyenanhtrung.schoolmanagement.util.*
-import kotlinx.android.synthetic.main.dropdown_menu.*
 import kotlinx.android.synthetic.main.fragment_account_detail.*
 import javax.inject.Inject
 
@@ -71,17 +70,8 @@ class AccountDetailFragment : BaseFragment() {
         detailViewModel.stateSaveModifiedInfo.observe(this, Observer {
             if (it.status == Status.SUCCESS) {
                 detailViewModel.onSuccessSaveModifiedAccountInfo()
-                val accountDetailParams = detailViewModel.accountDetailParams
-                val oldAccInfo = accountDetailParams.user
-//                val modifiedAccountInfo = User(
-//                    oldAccInfo.id,
-//                    oldAccInfo.firebaseUserId,
-//                    edit_text_name.getString(),
-//                    spinner_account_type.selectedItem as String,
-//                    detailViewModel.getUserTypeIdByIndex(spinner_account_type.selectedIndex),
-//                    name = oldAccInfo.accountName
-//                )
-//                mainViewModel.updateAccountInfo.value = Event(modifiedAccountInfo)
+                val modifiedAccountInfo = detailViewModel.getModifiedAccountInfo(edit_text_name.getString())
+                mainViewModel.updateAccountInfo.value = Event(modifiedAccountInfo)
             }
         })
     }
@@ -155,7 +145,6 @@ class AccountDetailFragment : BaseFragment() {
             R.id.menu_item_save -> {
                 detailViewModel.onClickButtonSave(
                     edit_text_name.getString(),
-                    filled_exposed_dropdown.listSelection,
                     edit_text_password.getString()
                 )
                 true

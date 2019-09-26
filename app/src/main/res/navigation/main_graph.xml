@@ -18,10 +18,10 @@
         <action
             android:id="@+id/action_dashboardFragment_to_accountManagementFragment"
             app:destination="@id/accountManagementDest"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/dashboardDest" />
         <action
             android:id="@+id/action_dashboardDest_to_profilesDest"
@@ -47,14 +47,18 @@
         <action
             android:id="@+id/action_accountManagementDest_to_createAccountDest"
             app:destination="@id/createAccountDest"
-            app:enterAnim="@anim/fragment_open_enter"
-            app:exitAnim="@anim/fragment_open_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/accountManagementDest" />
         <action
             android:id="@+id/action_accountManagementDest_to_accountDetailFragment"
             app:destination="@id/accountDetailFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/accountManagementDest"
             app:popUpToInclusive="false" />
     </fragment>

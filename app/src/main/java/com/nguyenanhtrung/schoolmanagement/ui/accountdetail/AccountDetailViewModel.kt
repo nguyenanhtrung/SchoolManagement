@@ -60,12 +60,12 @@ class AccountDetailViewModel @Inject constructor(
         _stateEditAccountInfo.value = ModificationState.Edit
     }
 
-    internal fun onClickButtonSave(newName: String, indexSelectedType: Int, newPassword: String) {
+    internal fun onClickButtonSave(newName: String, newPassword: String) {
         val accountInfo = accountDetailParams.user
         val oldName = accountInfo.name
         val oldAccountTypeId = accountInfo.type.id
         val oldPassword = accountDetailParams.userDetail.password
-        val newAccountTypeId = getUserTypeIdByIndex(indexSelectedType)
+        val newAccountTypeId = getUserTypeIdByIndex(posUserTypeSelected)
 
         if (oldName == newName && newAccountTypeId == oldAccountTypeId
             && oldPassword == newPassword
@@ -84,11 +84,12 @@ class AccountDetailViewModel @Inject constructor(
             updateAccountInfoParams.name = newName
         }
 
-        if (oldPassword != newPassword
+        if (oldPassword != newPassword && Validator.isPasswordValid(
+                newPassword,
+                _errorPasswordLiveData
+            )
         ) {
-            if (!Validator.isPasswordValid(newPassword, _errorPasswordLiveData)) {
-                return
-            }
+
             updateAccountInfoParams.password = newPassword
             updateAccountInfoParams.accountName = accountInfo.name
         }
@@ -96,7 +97,6 @@ class AccountDetailViewModel @Inject constructor(
         if (oldAccountTypeId != newAccountTypeId) {
             updateAccountInfoParams.typeId = newAccountTypeId
         }
-
 
         updateUserInfoUseCase.invoke(
             viewModelScope,
@@ -122,6 +122,14 @@ class AccountDetailViewModel @Inject constructor(
         return userTypes[index].id
     }
 
+    private fun getCurrentUserType(): UserType {
+        val userTypes = _userTypesLiveData.value?.data ?: return UserType("", "")
+        if (posUserTypeSelected < 0 || posUserTypeSelected >= userTypes.size) {
+            return UserType("", "")
+        }
+        return userTypes[posUserTypeSelected]
+    }
+
 
     internal fun loadUserInfo() {
         _accountDetailInfo.value = accountDetailParams
@@ -129,6 +137,16 @@ class AccountDetailViewModel @Inject constructor(
 
     internal fun loadUserTypes() {
         getUserTypesUseCase.invoke(viewModelScope, true, _userTypesLiveData)
+    }
+
+    internal fun getModifiedAccountInfo(accName: String): User {
+        val oldAccInfo = accountDetailParams.user
+        return User(
+            oldAccInfo.id,
+            oldAccInfo.firebaseUserId,
+            accName,
+            getCurrentUserType()
+        )
     }
 
     internal fun getIndexOfSelectedUserType(): Int {
