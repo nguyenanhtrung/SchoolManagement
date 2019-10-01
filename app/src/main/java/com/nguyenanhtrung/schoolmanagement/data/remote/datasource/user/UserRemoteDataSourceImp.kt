@@ -108,26 +108,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     }
 
 
-    private fun mapToProfileItems(
-        querySnapshot: QuerySnapshot,
-        userTypes: Map<String, String>
-    ): List<ProfileItem> {
-        return querySnapshot.map {
-            val userTypeId = it[AppKey.USER_TYPE_ID_FIELD] as String
-            val userTypeName = userTypes[userTypeId] ?: ""
-            ProfileItem(
-                Profile(
-                    it.id,
-                    it[AppKey.USER_ID_FIELD] as Long,
-                    it[AppKey.USER_NAME_FIELD] as String,
-                    it[AppKey.PROFILE_STATUS_FIELD] as Boolean,
-                    userTypeName,
-                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
-                    it[AppKey.PROFILE_IMAGE_PATH_FIELD] as String
-                )
-            )
-        }
-    }
+
 
     override suspend fun changeUserPassword(
         fireBaseUserId: String,

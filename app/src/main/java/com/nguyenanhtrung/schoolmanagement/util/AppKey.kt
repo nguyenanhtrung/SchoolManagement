@@ -11,8 +11,6 @@ class AppKey private constructor(){
         const val FEATURE_COMMONS_PATH = "feature_commons"
         const val ID_PATH_FIRE_STORE = "custom_ids"
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"
-        const val USER_PROFILE_COMMONS_PATH = "profile_commons"
-        const val USER_PROFILE_DETAILS_PATH = "profile_details"
         const val SCHOOL_ROOMS_PATH = "school_rooms"
         //
         const val USER_AVATAR_PATH_FIELD = "avatar_path"
@@ -20,14 +18,22 @@ class AppKey private constructor(){
         const val USER_TYPE_ID_FIELD = "type_id"
         const val USER_ID_FIELD = "id"
         const val PROFILE_STATUS_FIELD = "profile_status"
-        //
-        const val BIRTHDAY_FIELD_PROFILE_PATH = "birthday"
+
+        //Profile common field
+        const val PROFILE_COMMONS_PATH = "profile_commons"
+        const val PROFILE_IMAGE_PATH_FIELD = "profile_image_path"
         const val PHONE_NUMBER_FIELD_PROFILE_PATH = "phone_number"
+        const val PROFILE_USER_ID_FIELD = "user_id"
+        const val PROFILE_USER_TYPE_ID_FIELD = "user_type_id"
+        const val NAME_FIELD_PROFILE_COMMONS = "name"
+        const val GENDER_FIELD_PROFILE_PATH = "gender"
+
+
+        //Profile detail field
+        const val PROFILE_DETAILS_PATH = "profile_details"
+        const val BIRTHDAY_FIELD_PROFILE_PATH = "birthday"
         const val ADDRESS_FIELD_PROFILE_PATH = "address"
         const val EMAIL_FIELD_PROFILE_PATH = "email"
-        const val PROFILE_IMAGE_PATH_FIELD = "profile_image_path"
-        const val GENDER_FIELD_PROFILE_PATH = "gender"
-        const val NAME_FIELD_PROFILE_COMMONS = "name"
         //
         const val PASSWORD_FIELD_USER_DETAILS_PATH = "password"
         const val EMAIL_FIELD_USER_DETAILS_PATH = "email"

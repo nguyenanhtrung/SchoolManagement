@@ -18,6 +18,7 @@ data class UserItem(var user: User) : Item() {
         viewHolder.text_account_name.text = user.name
         viewHolder.text_account_type.text = user.type.name
         ViewUtils.setColorTextAccountType(viewHolder.text_account_type, user.type.id)
+        
     }
 
 

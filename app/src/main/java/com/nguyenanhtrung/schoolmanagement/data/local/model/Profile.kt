@@ -10,7 +10,6 @@ data class Profile(
     val name: String,
     val phoneNumber: String,
     val gender: Gender,
-    var isProfileUpdated: Boolean = false,
     val userType: UserType,
     var profileImagePath: String = ""
 ): Parcelable

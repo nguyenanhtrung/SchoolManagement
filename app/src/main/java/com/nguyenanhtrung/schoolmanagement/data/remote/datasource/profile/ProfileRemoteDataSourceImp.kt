@@ -2,13 +2,12 @@ package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile
 
 import android.content.Context
 import androidx.collection.ArrayMap
-import androidx.collection.arrayMapOf
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
-import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.FileUtils
@@ -48,26 +47,32 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
     ): Resource<MutableList<out Item>> {
-
+        val querySnapshot = getProfilesQuery(profileFilter)
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.empty(R.string.title_empty_accounts)
+        }
+        val profileItems = mapToProfileItems(querySnapshot, userTypes)
+        return Resource.success(profileItems.toMutableList())
     }
 
-    private suspend fun getUserProfilesQuery(
+    private suspend fun getProfilesQuery(
         profileFilter: ProfileFilter,
         lastDocumentSnapshot: DocumentSnapshot? = null
     ): QuerySnapshot {
         val querySnapshot = when (profileFilter) {
-            ProfileFilter.All -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+            ProfileFilter.All -> firestore.collection(AppKey.PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.PROFILE_USER_ID_FIELD)
+                .whereGreaterThan(AppKey.PROFILE_USER_ID_FIELD, 0)
                 .limit(PROFILES_LIMIT)
-            ProfileFilter.Updated -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+            ProfileFilter.Updated -> firestore.collection(AppKey.PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.PROFILE_USER_ID_FIELD)
+                .whereGreaterThan(AppKey.PROFILE_USER_ID_FIELD, 0)
                 .limit(PROFILES_LIMIT)
                 .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
-            ProfileFilter.NoUpdate -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+            ProfileFilter.NoUpdate -> firestore.collection(AppKey.PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.PROFILE_USER_ID_FIELD)
+                .whereGreaterThan(AppKey.PROFILE_USER_ID_FIELD, 0)
                 .limit(PROFILES_LIMIT)
                 .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, false)
         }
@@ -75,6 +80,27 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             return querySnapshot.get().await()
         }
         return querySnapshot.startAfter(lastDocumentSnapshot).get().await()
+    }
+
+    private fun mapToProfileItems(
+        querySnapshot: QuerySnapshot,
+        userTypes: Map<String, String>
+    ): List<ProfileItem> {
+        return querySnapshot.map {
+            val userTypeId = it[AppKey.PROFILE_USER_TYPE_ID_FIELD]
+            val userTypeName = userTypes[userTypeId] ?: ""
+            ProfileItem(
+                Profile(
+                    it.id,
+                    it[AppKey.USER_ID_FIELD] as Long,
+                    it[AppKey.USER_NAME_FIELD] as String,
+                    it[AppKey.PROFILE_STATUS_FIELD] as Boolean,
+                    userTypeName,
+                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
+                    it[AppKey.PROFILE_IMAGE_PATH_FIELD] as String
+                )
+            )
+        }
     }
 
     override suspend fun getProfileDetail(fireBaseUserId: String): Resource<ProfileDetail> {
@@ -107,7 +133,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             put(AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH, profileUpdateParam.phoneNumber)
             put(AppKey.GENDER_FIELD_PROFILE_PATH, profileUpdateParam.gender.ordinal.toLong())
         }
-        firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
+        firestore.collection(AppKey.PROFILE_COMMONS_PATH)
             .document(profileUpdateParam.fireBaseUserId)
             .set(profileCommon)
             .await()
@@ -118,7 +144,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
             put(AppKey.EMAIL_FIELD_PROFILE_PATH, profileUpdateParam.email)
             put(AppKey.ADDRESS_FIELD_PROFILE_PATH, profileUpdateParam.address)
         }
-        firestore.collection(AppKey.USER_PROFILE_DETAILS_PATH)
+        firestore.collection(AppKey.PROFILE_DETAILS_PATH)
             .document(profileUpdateParam.fireBaseUserId)
             .set(profileDetail)
             .await()
