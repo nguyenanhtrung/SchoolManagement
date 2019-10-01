@@ -16,10 +16,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
-import com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Profile
-import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
+import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileFragment
@@ -159,11 +156,14 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.item_update_profile -> {
             updateViewModel.onClickConfirmUpdateItem(
-                birthday = edit_text_birthday.getString(),
-                phoneNumber = edit_text_phone.getString(),
-                address = edit_text_address.getString(),
-                email = edit_text_email.getString(),
-                genderId = toggle_group_gender.checkedButtonId
+                ProfileUpdateInput(
+                    name = edit_text_name.getString(),
+                    birthday = edit_text_birthday.getString(),
+                    phoneNumber = edit_text_phone.getString(),
+                    address = edit_text_address.getString(),
+                    email = edit_text_email.getString(),
+                    genderId = toggle_group_gender.checkedButtonId
+                )
             )
             true
         }

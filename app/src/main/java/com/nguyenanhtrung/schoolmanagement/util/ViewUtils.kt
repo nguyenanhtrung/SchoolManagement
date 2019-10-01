@@ -2,6 +2,9 @@ package com.nguyenanhtrung.schoolmanagement.util
 
 import android.app.DatePickerDialog
 import android.content.Context
+import android.widget.TextView
+import com.nguyenanhtrung.schoolmanagement.R
+import com.nguyenanhtrung.schoolmanagement.data.local.model.AccountType
 import java.util.*
 
 class ViewUtils private constructor() {
@@ -27,6 +30,15 @@ class ViewUtils private constructor() {
             datePicker.maxDate = maxDate
             datePickerDialog.show()
 
+        }
+
+        fun setColorTextAccountType(textAccountType: TextView, typeId: String) {
+            when (typeId) {
+                AccountType.STUDENT.id -> {
+                    textAccountType.setCustomTextColor(R.color.colorTypeStudent)
+                    textAccountType.setBackgroundResource(R.drawable.bg_text_student_type)
+                }
+            }
         }
     }
 }

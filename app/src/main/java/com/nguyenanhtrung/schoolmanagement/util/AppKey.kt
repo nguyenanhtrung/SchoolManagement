@@ -9,10 +9,10 @@ class AppKey private constructor(){
         const val FEATURES_PATH = "features"
         const val FEATURE_ACCOUNTS_PATH = "feature_accounts"
         const val FEATURE_COMMONS_PATH = "feature_commons"
-        const val TASK_PERMISSIONS_PATH = "task_permissions"
         const val ID_PATH_FIRE_STORE = "custom_ids"
         const val USER_STATUS_PATH_FIRE_STORE = "user_status"
-        const val USER_PROFILES_PATH = "profiles"
+        const val USER_PROFILE_COMMONS_PATH = "profile_commons"
+        const val USER_PROFILE_DETAILS_PATH = "profile_details"
         const val SCHOOL_ROOMS_PATH = "school_rooms"
         //
         const val USER_AVATAR_PATH_FIELD = "avatar_path"
@@ -22,11 +22,12 @@ class AppKey private constructor(){
         const val PROFILE_STATUS_FIELD = "profile_status"
         //
         const val BIRTHDAY_FIELD_PROFILE_PATH = "birthday"
-        const val PHONE_NUMBER_FIELD_PROFILE_PATH = "phoneNumber"
+        const val PHONE_NUMBER_FIELD_PROFILE_PATH = "phone_number"
         const val ADDRESS_FIELD_PROFILE_PATH = "address"
         const val EMAIL_FIELD_PROFILE_PATH = "email"
-        const val PROFILE_IMAGE_PATH_FIELD = "profileImagePath"
+        const val PROFILE_IMAGE_PATH_FIELD = "profile_image_path"
         const val GENDER_FIELD_PROFILE_PATH = "gender"
+        const val NAME_FIELD_PROFILE_COMMONS = "name"
         //
         const val PASSWORD_FIELD_USER_DETAILS_PATH = "password"
         const val EMAIL_FIELD_USER_DETAILS_PATH = "email"
@@ -40,7 +41,7 @@ class AppKey private constructor(){
         const val CAN_MODIFY_FIELD_SCHOOL_ROOMS = "canModify"
         //
         const val ID_TASK_ACCOUNT = 600
-        const val ID_TASK_PROFILES = 500
+        const val ID_TASK_PROFILES = 601
         const val ID_TASK_SCHOOL_ROOMS = 494
 
         const val PROFILE_IMAGES_PATH_STORAGE = "profile_images"

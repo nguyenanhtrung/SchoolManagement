@@ -1,6 +1,8 @@
 package com.nguyenanhtrung.schoolmanagement.data.local.model
 
+import android.content.Context
 import androidx.core.content.ContextCompat
+import com.google.android.material.chip.Chip
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.util.loadImageIfEmptyPath
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -13,33 +15,38 @@ class ProfileItem constructor(val profile: Profile) : Item() {
         with(viewHolder) {
             image_account_profile.loadImageIfEmptyPath(profile.profileImagePath)
             text_name.text = profile.name
+            text_phone_number.text = profile.phoneNumber
             val context = itemView.context
             text_account_detail_id.text =
                 "${context.getString(R.string.title_account_id)}: ${profile.userId}"
-            if (profile.isProfileUpdated) {
-                chip_status_profile.setTextColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.colorOnPrimary
-                    )
-                )
-                chip_status_profile.setChipBackgroundColorResource(R.color.colorPrimary)
-                chip_status_profile.text = context.getString(R.string.title_updated)
-            } else {
-                chip_status_profile.setTextColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.colorOnBackground
-                    )
-                )
-                chip_status_profile.setChipBackgroundColorResource(R.color.colorBackground)
-                chip_status_profile.text = context.getString(R.string.title_not_update)
-            }
+            showProfileStatus(viewHolder.chip_status_profile, context)
         }
     }
 
-    override fun getLayout(): Int = R.layout.item_profile
+    private fun showProfileStatus(chipStatus: Chip, context: Context) {
+        if (profile.isProfileUpdated) {
+            chipStatus.setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.colorOnPrimary
+                )
+            )
+            chipStatus.setChipBackgroundColorResource(R.color.colorPrimary)
+            chipStatus.text = context.getString(R.string.title_updated)
+        } else {
+            chipStatus.setTextColor(
+                ContextCompat.getColor(
+                    context,
+                    R.color.colorOnBackground
+                )
+            )
+            chipStatus.setChipBackgroundColorResource(R.color.colorBackground)
+            chipStatus.text = context.getString(R.string.title_not_update)
+        }
+    }
 
+
+    override fun getLayout(): Int = R.layout.item_profile
 
 
 }

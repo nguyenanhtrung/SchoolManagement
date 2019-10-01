@@ -25,25 +25,21 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
 
 
     internal fun onClickConfirmUpdateItem(
-        birthday: String,
-        phoneNumber: String,
-        address: String,
-        email: String,
-        genderId: Int
+        profileUpdateInput: ProfileUpdateInput
     ) {
-        if (!Validator.isBirthdayValid(birthday, _birthdayInputError)) {
+        if (!Validator.isBirthdayValid(profileUpdateInput.birthday, _birthdayInputError)) {
             return
         }
 
-        if (!Validator.isAddressValid(address, _addressInputError)) {
+        if (!Validator.isAddressValid(profileUpdateInput.address, _addressInputError)) {
             return
         }
 
-        if (!Validator.isPhoneNumberValid(phoneNumber, _phoneInputError)) {
+        if (!Validator.isPhoneNumberValid(profileUpdateInput.phoneNumber, _phoneInputError)) {
             return
         }
 
-        if (!Validator.isEmailValid(email, _emailInputError)) {
+        if (!Validator.isEmailValid(profileUpdateInput.email, _emailInputError)) {
             return
         }
 
@@ -52,21 +48,17 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         }
 
         val profileUpdateParam =
-            createProfileUpdateParam(birthday, phoneNumber, address, email, genderId)
+            createProfileUpdateParam(profileUpdateInput)
         updateUserProfileUseCase.invoke(viewModelScope, profileUpdateParam, _stateUpdateProfile)
     }
 
     private fun createProfileUpdateParam(
-        birthday: String,
-        phoneNumber: String,
-        address: String,
-        email: String,
-        genderId: Int
+        profileUpdateInput: ProfileUpdateInput
     ): ProfileUpdateParam {
         val imageUri = _profileImage.value ?: ""
         val currentUserInfo = _basicProfileInfo.value
         val fireBaseUserId = currentUserInfo?.fireBaseUserId ?: ""
-        val gender = when (genderId) {
+        val gender = when (profileUpdateInput.genderId) {
             R.id.button_male_gender -> Gender.MALE
             R.id.button_female_gender -> Gender.FEMALE
             else -> throw NoSuchElementException()
@@ -74,10 +66,11 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         return ProfileUpdateParam(
             imageUri,
             fireBaseUserId,
-            birthday,
-            phoneNumber,
-            address,
-            email,
+            profileUpdateInput.name,
+            profileUpdateInput.birthday,
+            profileUpdateInput.phoneNumber,
+            profileUpdateInput.address,
+            profileUpdateInput.email,
             gender
         )
     }

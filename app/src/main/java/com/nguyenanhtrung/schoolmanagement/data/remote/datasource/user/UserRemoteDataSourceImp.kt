@@ -90,31 +90,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return Resource.success(profileItems.toMutableList())
     }
 
-    private suspend fun getUserProfilesQuery(
-        profileFilter: ProfileFilter,
-        lastDocumentSnapshot: DocumentSnapshot? = null
-    ): QuerySnapshot {
-        val querySnapshot = when (profileFilter) {
-            ProfileFilter.All -> firestore.collection(USER_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
-                .limit(USERS_LIMIT)
-            ProfileFilter.Updated -> firestore.collection(USER_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
-                .limit(USERS_LIMIT)
-                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
-            ProfileFilter.NoUpdate -> firestore.collection(USER_COMMONS_PATH)
-                .orderBy(AppKey.USER_ID_FIELD)
-                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
-                .limit(USERS_LIMIT)
-                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, false)
-        }
-        if (lastDocumentSnapshot == null) {
-            return querySnapshot.get().await()
-        }
-        return querySnapshot.startAfter(lastDocumentSnapshot).get().await()
-    }
+
 
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
         val querySnapshot = firestore.collection(USER_COMMONS_PATH)

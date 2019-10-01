@@ -33,6 +33,7 @@
     <dimen name="heigh_search_bar">46dp</dimen>
     <dimen name="elevation_search_view">4dp</dimen>
     <dimen name="padding_small_50">4dp</dimen>
+    <dimen name="height_chip">50dp</dimen>
 
 
 </resources>

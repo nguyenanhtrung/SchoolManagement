@@ -18,7 +18,7 @@
             android:id="@+id/image_account_profile"
             android:layout_width="@dimen/width_circle_user_image"
             android:layout_height="@dimen/height_circle_user_image"
-            android:src="@drawable/image_empty" />
+            android:src="@drawable/ic_photo_empty" />
 
         <TextView
             android:id="@+id/text_name"
@@ -37,13 +37,23 @@
             android:layout_marginTop="@dimen/margin_small_50"
             android:layout_alignStart="@id/text_name"
             android:textAppearance="@style/TextNormal"
-            tools:text="Sv02121323" />
+            tools:text="SV02" />
+
+        <TextView
+            android:id="@+id/text_phone_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_account_detail_id"
+            android:layout_marginTop="@dimen/margin_small_50"
+            android:layout_alignStart="@id/text_account_detail_id"
+            android:textAppearance="@style/TextNormal"
+            tools:text="036-355-9931" />
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chip_status_profile"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_account_detail_id"
+            android:layout_height="@dimen/height_chip"
+            android:layout_below="@id/text_name"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="@dimen/margin_small_50"
             tools:text="@string/title_updated"

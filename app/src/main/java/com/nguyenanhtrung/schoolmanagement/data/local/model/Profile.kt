@@ -8,8 +8,9 @@ data class Profile(
     val fireBaseUserId: String,
     val userId: Long,
     val name: String,
+    val phoneNumber: String,
+    val gender: Gender,
     var isProfileUpdated: Boolean = false,
-    val userTypeName: String,
-    val avatarPath: String = "",
+    val userType: UserType,
     var profileImagePath: String = ""
 ): Parcelable

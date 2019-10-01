@@ -3,12 +3,16 @@ package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile
 import android.content.Context
 import androidx.collection.ArrayMap
 import androidx.collection.arrayMapOf
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSourceImp
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
 import com.nguyenanhtrung.schoolmanagement.util.AppKey
 import com.nguyenanhtrung.schoolmanagement.util.FileUtils
+import com.xwray.groupie.kotlinandroidextensions.Item
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -18,8 +22,12 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     @ApplicationContext private val context: Context
 ) : ProfileRemoteDataSource {
 
+    companion object {
+        private const val PROFILES_LIMIT = 10L
+    }
+
     override suspend fun saveProfileModified(profileModificationParams: ProfileModificationParams): Resource<String> {
-        firestore.collection(AppKey.USER_PROFILES_PATH)
+        firestore.collection(AppKey.USER_COMMONS_PATH)
             .document(profileModificationParams.firebaseUserId)
             .update(profileModificationParams.modifiedFields)
             .await()
@@ -35,8 +43,42 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         return Resource.success(newImageUri)
     }
 
+    override suspend fun getProfiles(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        profileFilter: ProfileFilter
+    ): Resource<MutableList<out Item>> {
+
+    }
+
+    private suspend fun getUserProfilesQuery(
+        profileFilter: ProfileFilter,
+        lastDocumentSnapshot: DocumentSnapshot? = null
+    ): QuerySnapshot {
+        val querySnapshot = when (profileFilter) {
+            ProfileFilter.All -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+                .limit(PROFILES_LIMIT)
+            ProfileFilter.Updated -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+                .limit(PROFILES_LIMIT)
+                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, true)
+            ProfileFilter.NoUpdate -> firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
+                .orderBy(AppKey.USER_ID_FIELD)
+                .whereGreaterThan(AppKey.USER_ID_FIELD, 0)
+                .limit(PROFILES_LIMIT)
+                .whereEqualTo(AppKey.PROFILE_STATUS_FIELD, false)
+        }
+        if (lastDocumentSnapshot == null) {
+            return querySnapshot.get().await()
+        }
+        return querySnapshot.startAfter(lastDocumentSnapshot).get().await()
+    }
+
     override suspend fun getProfileDetail(fireBaseUserId: String): Resource<ProfileDetail> {
-        val profileDetailTask = firestore.collection(AppKey.USER_PROFILES_PATH)
+        val profileDetailTask = firestore.collection(AppKey.USER_COMMONS_PATH)
             .document(fireBaseUserId)
             .get()
             .await()
@@ -59,18 +101,29 @@ class ProfileRemoteDataSourceImp @Inject constructor(
 
 
     override suspend fun updateUserProfile(profileUpdateParam: ProfileUpdateParam): Resource<String> {
-        val mappedProfileFields = ArrayMap<String, Any>()
-        with(mappedProfileFields) {
-            put(AppKey.BIRTHDAY_FIELD_PROFILE_PATH, profileUpdateParam.birthday)
+        val profileCommon = ArrayMap<String, Any>()
+        with(profileCommon) {
+            put(AppKey.NAME_FIELD_PROFILE_COMMONS, profileUpdateParam.name)
             put(AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH, profileUpdateParam.phoneNumber)
-            put(AppKey.ADDRESS_FIELD_PROFILE_PATH, profileUpdateParam.address)
-            put(AppKey.EMAIL_FIELD_PROFILE_PATH, profileUpdateParam.email)
             put(AppKey.GENDER_FIELD_PROFILE_PATH, profileUpdateParam.gender.ordinal.toLong())
         }
-        firestore.collection(AppKey.USER_PROFILES_PATH)
+        firestore.collection(AppKey.USER_PROFILE_COMMONS_PATH)
             .document(profileUpdateParam.fireBaseUserId)
-            .set(mappedProfileFields.toMap())
+            .set(profileCommon)
             .await()
+
+        val profileDetail = ArrayMap<String, Any>()
+        with(profileDetail) {
+            put(AppKey.BIRTHDAY_FIELD_PROFILE_PATH, profileUpdateParam.birthday)
+            put(AppKey.EMAIL_FIELD_PROFILE_PATH, profileUpdateParam.email)
+            put(AppKey.ADDRESS_FIELD_PROFILE_PATH, profileUpdateParam.address)
+        }
+        firestore.collection(AppKey.USER_PROFILE_DETAILS_PATH)
+            .document(profileUpdateParam.fireBaseUserId)
+            .set(profileDetail)
+            .await()
+
+
         updateUserProfileStatus(profileUpdateParam.fireBaseUserId)
         val imageUri =
             uploadProfileImage(profileUpdateParam.fireBaseUserId, profileUpdateParam.imageUri)
@@ -91,11 +144,11 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         val imageStream = FileUtils.getInputStreamLocalImage(context, imageUri) ?: return ""
         val uploadImageTask = profileImageRef.putStream(imageStream).await()
         val imageDownloadUri = uploadImageTask.storage.downloadUrl.await()
-        val imagePathField = ArrayMap<String, String>()
+        val imagePathField = ArrayMap<String, Any>()
         imagePathField[AppKey.PROFILE_IMAGE_PATH_FIELD] = imageDownloadUri.toString()
         firestore.collection(AppKey.USER_COMMONS_PATH)
             .document(fireBaseUserId)
-            .update(imagePathField.toMap())
+            .update(imagePathField)
             .await()
         return imageDownloadUri.toString()
     }
