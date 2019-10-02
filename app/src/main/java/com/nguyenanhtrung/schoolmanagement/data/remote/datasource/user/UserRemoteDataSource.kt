@@ -33,14 +33,4 @@ interface UserRemoteDataSource {
 
     suspend fun getUserDetail(fireBaseUserId: String): Resource<UserDetail>
 
-    suspend fun getUserByProfileStatus(
-        userTypes: Map<String, String>,
-        profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>>
-
-    suspend fun getPagingUsesByProfileStatus(
-        lastUserId: Long,
-        userTypes: Map<String, String>,
-        profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>>
 }

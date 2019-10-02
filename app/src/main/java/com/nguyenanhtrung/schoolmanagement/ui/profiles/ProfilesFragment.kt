@@ -103,7 +103,6 @@ class ProfilesFragment : BaseListItemFragment() {
                 val profileItem = itemAdapter.getItem(posItemSelected)
                 if (profileItem is ProfileItem) {
                     val profile = profileItem.profile
-                    profile.isProfileUpdated = true
                     profile.profileImagePath = imageUri
                     itemAdapter.notifyItemChanged(posItemSelected)
                 }

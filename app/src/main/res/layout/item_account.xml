@@ -66,6 +66,7 @@
             android:layout_marginTop="@dimen/margin_small_100"
             android:textAppearance="@style/TextAccountType"
             android:padding="@dimen/padding_small_50"
+            android:visibility="gone"
             tools:textColor="@color/colorSecondary"
             tools:text="CẬP NHẬT" />
     </RelativeLayout>

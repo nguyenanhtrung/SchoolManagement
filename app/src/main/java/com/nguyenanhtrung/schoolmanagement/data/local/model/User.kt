@@ -9,5 +9,6 @@ data class User(
     val firebaseUserId: String,
     val name: String,
     val type: UserType,
-    val avatarPath: String = ""
+    val avatarPath: String = "",
+    val profile_status: Boolean = false
 ) : Parcelable

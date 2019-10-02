@@ -55,7 +55,7 @@ class ProfilesViewModel @Inject constructor(
             //reload all list
             _clearItemsLiveData.value = true
             val params = Pair(-1L, currentProfileFilter)
-            getUsersByProfileStatusUseCase.invoke(viewModelScope, params,  _getItemsLiveData)
+            getUsersByProfileStatusUseCase.invoke(viewModelScope, params, _getItemsLiveData)
         }
     }
 
@@ -63,12 +63,7 @@ class ProfilesViewModel @Inject constructor(
     override fun onCustomClickItem(position: Int) {
         val profileItem: ProfileItem = itemCopys[position] as ProfileItem
         val profile = profileItem.profile
-        val isProfileUpdated = profile.isProfileUpdated
-        if (isProfileUpdated) {
-            _profileDetailScreen.value = Event(profile)
-        } else {
-            _profileUpdateScreen.value = Event(Pair(position, profile))
-        }
+        _profileDetailScreen.value = Event(profile)
     }
 
     override fun customCheckItemWithQuery(query: String, item: Item): Boolean {

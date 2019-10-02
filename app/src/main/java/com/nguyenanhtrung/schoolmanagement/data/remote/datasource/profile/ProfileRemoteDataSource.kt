@@ -14,8 +14,14 @@ interface ProfileRemoteDataSource {
     suspend fun saveProfileModified(profileModificationParams: ProfileModificationParams)
             : Resource<String>
 
-    suspend fun getProfiles(lastUserId: Long,
-                            userTypes: Map<String, String>,
-                            profileFilter: ProfileFilter
+    suspend fun getProfiles(
+        userTypes: Map<String, String>,
+        profileFilter: ProfileFilter
+    ): Resource<MutableList<out Item>>
+
+    suspend fun getPagingUsesByProfileStatus(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        profileFilter: ProfileFilter
     ): Resource<MutableList<out Item>>
 }

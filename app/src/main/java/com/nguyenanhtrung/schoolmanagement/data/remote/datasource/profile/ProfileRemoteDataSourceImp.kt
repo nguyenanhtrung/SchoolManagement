@@ -43,7 +43,6 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     }
 
     override suspend fun getProfiles(
-        lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
     ): Resource<MutableList<out Item>> {
@@ -51,6 +50,25 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         val querySize = querySnapshot.size()
         if (querySize == 0) {
             return Resource.empty(R.string.title_empty_accounts)
+        }
+        val profileItems = mapToProfileItems(querySnapshot, userTypes)
+        return Resource.success(profileItems.toMutableList())
+    }
+
+    override suspend fun getPagingUsesByProfileStatus(
+        lastUserId: Long,
+        userTypes: Map<String, String>,
+        profileFilter: ProfileFilter
+    ): Resource<MutableList<out Item>> {
+        val lastDocument =
+            firestore.collection(AppKey.USER_COMMONS_PATH).whereEqualTo(
+                AppKey.USER_ID_FIELD,
+                lastUserId
+            ).whereGreaterThan(AppKey.USER_ID_FIELD, 0).get().await().documents[0]
+        val querySnapshot = getProfilesQuery(profileFilter, lastDocument)
+        val querySize = querySnapshot.size()
+        if (querySize == 0) {
+            return Resource.completed()
         }
         val profileItems = mapToProfileItems(querySnapshot, userTypes)
         return Resource.success(profileItems.toMutableList())
@@ -87,16 +105,18 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         userTypes: Map<String, String>
     ): List<ProfileItem> {
         return querySnapshot.map {
-            val userTypeId = it[AppKey.PROFILE_USER_TYPE_ID_FIELD]
+            val userTypeId = it[AppKey.PROFILE_USER_TYPE_ID_FIELD] as String
             val userTypeName = userTypes[userTypeId] ?: ""
+            val genderId = it[AppKey.GENDER_FIELD_PROFILE_PATH] as Long
+            val gender = Gender.getGenreById(genderId.toInt())
             ProfileItem(
                 Profile(
                     it.id,
                     it[AppKey.USER_ID_FIELD] as Long,
                     it[AppKey.USER_NAME_FIELD] as String,
-                    it[AppKey.PROFILE_STATUS_FIELD] as Boolean,
-                    userTypeName,
-                    it[AppKey.USER_AVATAR_PATH_FIELD] as String,
+                    it[AppKey.PHONE_NUMBER_FIELD_PROFILE_PATH] as String,
+                    gender,
+                    UserType(userTypeId, userTypeName),
                     it[AppKey.PROFILE_IMAGE_PATH_FIELD] as String
                 )
             )

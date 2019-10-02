@@ -57,41 +57,6 @@ class UserRemoteDataSourceImp @Inject constructor(
         return Resource.success(userDetail)
     }
 
-    override suspend fun getPagingUsesByProfileStatus(
-        lastUserId: Long,
-        userTypes: Map<String, String>,
-        profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>> {
-        val lastDocument =
-            firestore.collection(USER_COMMONS_PATH).whereEqualTo(
-                AppKey.USER_ID_FIELD,
-                lastUserId
-            ).whereGreaterThan(AppKey.USER_ID_FIELD, 0).get().await().documents[0]
-        val querySnapshot = getUserProfilesQuery(profileFilter, lastDocument)
-        val querySize = querySnapshot.size()
-        if (querySize == 0) {
-            return Resource.completed()
-        }
-        val profileItems = mapToProfileItems(querySnapshot, userTypes)
-        return Resource.success(profileItems.toMutableList())
-    }
-
-    override suspend fun getUserByProfileStatus(
-        userTypes: Map<String, String>,
-        profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>> {
-
-        val querySnapshot = getUserProfilesQuery(profileFilter)
-        val querySize = querySnapshot.size()
-        if (querySize == 0) {
-            return Resource.empty(R.string.title_empty_accounts)
-        }
-        val profileItems = mapToProfileItems(querySnapshot, userTypes)
-        return Resource.success(profileItems.toMutableList())
-    }
-
-
-
     override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
         val querySnapshot = firestore.collection(USER_COMMONS_PATH)
             .orderBy(AppKey.USER_ID_FIELD)

@@ -1,5 +1,6 @@
 package com.nguyenanhtrung.schoolmanagement.data.local.model
 
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.nguyenanhtrung.schoolmanagement.R
@@ -18,7 +19,10 @@ data class UserItem(var user: User) : Item() {
         viewHolder.text_account_name.text = user.name
         viewHolder.text_account_type.text = user.type.name
         ViewUtils.setColorTextAccountType(viewHolder.text_account_type, user.type.id)
-        
+        when(user.profile_status) {
+            true ->  viewHolder.text_profile_status.visibility = View.GONE
+            else -> viewHolder.text_profile_status.visibility = View.VISIBLE
+        }
     }
 
 
