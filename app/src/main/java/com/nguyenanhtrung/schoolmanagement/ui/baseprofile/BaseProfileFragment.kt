@@ -146,7 +146,7 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
     private fun subscribeBasicProfileInfo() {
         baseProfileViewModel.basicProfileInfo.observe(viewLifecycleOwner, Observer {
             textProfileName.text = it.name
-            textUserTypeName.text = it.userTypeName
+            textUserTypeName.text = it.userType.name
             imageViewProfile.loadImageIfEmptyPath(it.profileImagePath)
         })
     }
