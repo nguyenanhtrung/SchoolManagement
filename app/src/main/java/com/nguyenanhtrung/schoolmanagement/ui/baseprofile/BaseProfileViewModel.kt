@@ -8,13 +8,13 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 
 abstract class BaseProfileViewModel : BaseViewModel() {
 
-    lateinit var profile: Profile
-
-    protected val _basicProfileInfo by lazy {
-        MutableLiveData<Profile>()
-    }
-    internal val basicProfileInfo: LiveData<Profile>
-        get() = _basicProfileInfo
+//    lateinit var profile: Profile
+//
+//    protected val _basicProfileInfo by lazy {
+//        MutableLiveData<Profile>()
+//    }
+//    internal val basicProfileInfo: LiveData<Profile>
+//        get() = _basicProfileInfo
 
     protected val _profileImage by lazy {
         MutableLiveData<String>()
@@ -52,9 +52,9 @@ abstract class BaseProfileViewModel : BaseViewModel() {
     internal val imageSelectedError: LiveData<ErrorState>
         get() = _imageSelectedError
 
-    fun loadBasicProfileInfo() {
-        _basicProfileInfo.value = profile
-    }
+//    fun loadBasicProfileInfo() {
+//        _basicProfileInfo.value = profile
+//    }
 
     fun onProfileImagePicked(imageUri: String) {
         _profileImage.value = imageUri

@@ -91,13 +91,13 @@ class CreateAccountViewModel @Inject constructor(
 
     }
 
-    internal fun createProfile(): Profile {
-        val userTypeName = getUserTypeName()
-        return Profile(
+    internal fun createProfileUpdateArguments(): ProfileUpdateArguments {
+        val userType = UserType(getUserTypeId(), getUserTypeName())
+        return ProfileUpdateArguments(
             newFireBaseId,
             maxId,
-            createAccountInput.fullName,
-            userTypeName = userTypeName
+            userType,
+            createAccountInput.fullName
         )
     }
 

@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-class ProfileUpdateParams(
+class ProfileUpdateArguments(
     val firebaseUserId: String,
     val userId: Long,
     val userType: UserType,

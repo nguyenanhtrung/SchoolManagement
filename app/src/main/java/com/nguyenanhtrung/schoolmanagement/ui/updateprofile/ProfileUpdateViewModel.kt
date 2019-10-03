@@ -15,7 +15,13 @@ import javax.inject.Inject
 class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase) :
     BaseProfileViewModel() {
 
-    var indexProfile: Int = 0
+    internal lateinit var profileUpdateArgs: ProfileUpdateArguments
+
+    private val _accountInfoLiveData by lazy {
+        MutableLiveData<ProfileUpdateAccountInfo>()
+    }
+    internal val accountInfoLiveData: LiveData<ProfileUpdateAccountInfo>
+        get() = _accountInfoLiveData
 
     private val _stateUpdateProfile by lazy {
         createApiResultLiveData<String>()

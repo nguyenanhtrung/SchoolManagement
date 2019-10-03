@@ -16,9 +16,9 @@
             android:layout_width="@dimen/width_profile_image"
             android:layout_height="@dimen/height_profile_image"
             android:layout_marginTop="@dimen/margin_normal_100"
+            app:cardBackgroundColor="@android:color/transparent"
             app:cardCornerRadius="@dimen/card_radius"
             app:cardElevation="0dp"
-            app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toTopOf="@+id/guideline_hori_top">
@@ -58,8 +58,8 @@
             android:id="@+id/button_pick_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_small_100"
             android:background="@drawable/bg_circle_button"
+            android:padding="@dimen/padding_small_100"
             app:layout_constraintBottom_toBottomOf="@+id/card_view_profile_image"
             app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
             app:layout_constraintHorizontal_bias="0.89"
@@ -70,13 +70,15 @@
             tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/text_profile_name"
+            android:id="@+id/text_account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:textAppearance="@style/TitleNormal"
-            app:layout_constraintEnd_toEndOf="@+id/card_view_profile_image"
-            app:layout_constraintStart_toStartOf="@+id/card_view_profile_image"
+            app:layout_constraintEnd_toStartOf="@+id/text_user_id"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/card_view_profile_image"
             tools:text="Nguyen Anh Trung" />
 
@@ -86,9 +88,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small_100"
             android:textAppearance="@style/TextNormal"
-            app:layout_constraintEnd_toEndOf="@+id/text_profile_name"
-            app:layout_constraintStart_toStartOf="@+id/text_profile_name"
-            app:layout_constraintTop_toBottomOf="@+id/text_profile_name"
+            app:layout_constraintEnd_toEndOf="@+id/text_user_id"
+            app:layout_constraintStart_toStartOf="@+id/text_account_name"
+            app:layout_constraintTop_toBottomOf="@+id/text_account_name"
             tools:text="Sinh Vien" />
 
         <TextView
@@ -106,11 +108,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
-            app:singleSelection="true"
             app:checkedButton="@id/button_male_gender"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
-            app:layout_constraintTop_toBottomOf="@+id/title_update_info">
+            app:layout_constraintTop_toBottomOf="@+id/title_update_info"
+            app:singleSelection="true">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_male_gender"
@@ -140,10 +142,9 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditText"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -158,48 +159,45 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_birthday"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditTextBirthday"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_address"
+            style="@style/Widget.AddressInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:hint="@string/hint_input_address"
-            style="@style/Widget.AddressInputLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_birthday">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditText"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_phone"
+            style="@style/Widget.PhoneInputLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_normal_100"
             android:hint="@string/hint_input_phone_number"
-            style="@style/Widget.PhoneInputLayout"
             app:layout_constraintEnd_toStartOf="@+id/guideline_ver_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_ver_start"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_address">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditText"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -214,11 +212,22 @@
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edit_text_email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 style="@style/Widget.EditText"
-                />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/text_user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_small_100"
+            android:text="- 123123"
+            android:textAppearance="@style/TitleNormal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/text_account_name"
+            tools:layout_editor_absoluteY="168dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

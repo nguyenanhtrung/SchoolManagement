@@ -48,15 +48,11 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
 
     override fun createBaseProfileViewModel(): BaseProfileViewModel = updateViewModel
 
-    override fun getProfileArg(): Profile {
-        return args.profile
-    }
-
     override fun bindImageViewProfile(): ImageView = image_profile
 
     override fun bindButtonPickImage(): ImageButton = button_pick_image
 
-    override fun bindTextProfileName(): TextView = text_profile_name
+    override fun bindTextProfileName(): TextView = text_account_name
 
     override fun bindTextUserTypeName(): TextView = text_profile_user_type
 
@@ -100,6 +96,16 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
         setHasOptionsMenu(true)
         onReceivedArgs()
         subscribeStateUpdateProfile()
+        subscribeAccountInfo()
+    }
+
+    private fun subscribeAccountInfo() {
+        updateViewModel.accountInfoLiveData.observe(this, Observer {
+            it?.let {
+                text_account_name.text = it.accountName
+                text_user_id.text = it.id
+            }
+        })
     }
 
     override fun setupUiEvents() {
@@ -108,13 +114,10 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
     }
 
     private fun onReceivedArgs() {
-        updateViewModel.indexProfile = args.posProfileItem
+        updateViewModel.profileUpdateArgs = args.profileUpdateArguments
     }
 
     private fun subscribeStateUpdateProfile() {
-        if (updateViewModel.indexProfile < 0) {
-            return
-        }
         updateViewModel.stateUpdateProfile.observe(this, Observer {
             it.data?.let { imageUri ->
                 disableProfileInput()

@@ -48,7 +48,7 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun bindButtonPickImage(): ImageButton = button_change_profile_image
 
-    override fun bindTextProfileName(): TextView = text_profile_name
+    override fun bindTextProfileName(): TextView = text_account_name
 
     override fun bindTextUserTypeName(): TextView = text_user_type_and_id
 

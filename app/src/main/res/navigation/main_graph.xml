@@ -138,9 +138,6 @@
         android:id="@+id/profileUpdateFragment"
         android:name="com.nguyenanhtrung.schoolmanagement.ui.updateprofile.ProfileUpdateFragment"
         android:label="Cập nhật thông tin">
-        <argument
-            android:name="profile"
-            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.Profile" />
         <action
             android:id="@+id/action_profileUpdateFragment_to_dialogFlowStatusDest"
             app:destination="@id/dialogFlowStatusDest"
@@ -149,9 +146,8 @@
             app:popEnterAnim="@anim/fragment_close_enter"
             app:popExitAnim="@anim/fragment_close_exit" />
         <argument
-            android:name="posProfileItem"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            android:name="profileUpdateArguments"
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParams" />
     </fragment>
     <fragment
         android:id="@+id/profileDetailFragment"

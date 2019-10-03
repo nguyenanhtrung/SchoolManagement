@@ -65,7 +65,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        baseProfileViewModel.profile = getProfileArg()
     }
 
     private fun bindViews() {
@@ -88,7 +87,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         bindViews()
         setupClearErrorWhenFocus()
         setupClickEventButtonPickImage()
-        subscribeBasicProfileInfo()
         subscribeBirthdayInputError()
         subscribePhoneInputError()
         subscribeAddressInputError()
@@ -96,7 +94,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         subscribeImageSelectedError()
         subscribeProfileImagePicked()
         setupClickEventInputBirthday()
-        baseProfileViewModel.loadBasicProfileInfo()
     }
 
     private fun setupClickEventButtonPickImage() {
@@ -143,13 +140,13 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
         })
     }
 
-    private fun subscribeBasicProfileInfo() {
-        baseProfileViewModel.basicProfileInfo.observe(viewLifecycleOwner, Observer {
-            textProfileName.text = it.name
-            textUserTypeName.text = it.userType.name
-            imageViewProfile.loadImageIfEmptyPath(it.profileImagePath)
-        })
-    }
+//    private fun subscribeBasicProfileInfo() {
+//        baseProfileViewModel.basicProfileInfo.observe(viewLifecycleOwner, Observer {
+//            textProfileName.text = it.name
+//            textUserTypeName.text = it.userType.name
+//            imageViewProfile.loadImageIfEmptyPath(it.profileImagePath)
+//        })
+//    }
 
     private fun subscribeBirthdayInputError() {
         baseProfileViewModel.birthdayInputError.observe(viewLifecycleOwner, Observer {
@@ -253,7 +250,6 @@ abstract class BaseProfileFragment : BaseFragment(), EasyPermissions.PermissionC
 
 
     abstract fun createBaseProfileViewModel(): BaseProfileViewModel
-    abstract fun getProfileArg(): Profile
     abstract fun bindImageViewProfile(): ImageView
     abstract fun bindButtonPickImage(): ImageButton
     abstract fun bindTextProfileName(): TextView
