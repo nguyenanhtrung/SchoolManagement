@@ -16,12 +16,16 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
-import com.nguyenanhtrung.schoolmanagement.data.local.model.*
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Event
+import com.nguyenanhtrung.schoolmanagement.data.local.model.FlowStatusInfo
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateInput
+import com.nguyenanhtrung.schoolmanagement.data.local.model.Status
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileFragment
 import com.nguyenanhtrung.schoolmanagement.ui.baseprofile.BaseProfileViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.main.MainViewModel
+import com.nguyenanhtrung.schoolmanagement.util.ViewUtils
 import com.nguyenanhtrung.schoolmanagement.util.disableInput
 import com.nguyenanhtrung.schoolmanagement.util.getString
 import kotlinx.android.synthetic.main.fragment_update_profile.*
@@ -97,6 +101,7 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
         onReceivedArgs()
         subscribeStateUpdateProfile()
         subscribeAccountInfo()
+        updateViewModel.showAccountInfo()
     }
 
     private fun subscribeAccountInfo() {
@@ -104,6 +109,9 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
             it?.let {
                 text_account_name.text = it.accountName
                 text_user_id.text = it.id
+                val userType = it.userType
+                text_profile_user_type.text = userType.name
+                ViewUtils.setColorTextAccountType(text_profile_user_type, userType.id)
             }
         })
     }

@@ -67,8 +67,9 @@
             android:textAppearance="@style/TextAccountType"
             android:padding="@dimen/padding_small_50"
             android:visibility="gone"
-            tools:textColor="@color/colorSecondary"
-            tools:text="CẬP NHẬT" />
+            android:text="@string/title_update"
+            android:textColor="@color/colorSecondary"
+            />
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

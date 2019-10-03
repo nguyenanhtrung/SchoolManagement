@@ -75,9 +75,6 @@ class ProfileDetailFragment : BaseProfileFragment() {
         myApp.appComponent.inject(this)
     }
 
-    override fun getProfileArg(): Profile {
-        return profileArgs.profile
-    }
 
 
     override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
@@ -86,12 +83,17 @@ class ProfileDetailFragment : BaseProfileFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        onReceivedArguments()
         setHasOptionsMenu(true)
         subscribeProfileDetail()
         detailViewModel.loadProfileDetail()
         subscribeStateModifyProfile()
         subscribeSaveProfileModification()
 
+    }
+
+    private fun onReceivedArguments() {
+        detailViewModel.profile = profileArgs.profile
     }
 
 

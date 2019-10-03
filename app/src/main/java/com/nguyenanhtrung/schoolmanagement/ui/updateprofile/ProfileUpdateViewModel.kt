@@ -15,6 +15,7 @@ import javax.inject.Inject
 class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase) :
     BaseProfileViewModel() {
 
+
     internal lateinit var profileUpdateArgs: ProfileUpdateArguments
 
     private val _accountInfoLiveData by lazy {
@@ -62,8 +63,7 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
         profileUpdateInput: ProfileUpdateInput
     ): ProfileUpdateParam {
         val imageUri = _profileImage.value ?: ""
-        val currentUserInfo = _basicProfileInfo.value
-        val fireBaseUserId = currentUserInfo?.fireBaseUserId ?: ""
+        val fireBaseUserId = profileUpdateArgs.firebaseUserId
         val gender = when (profileUpdateInput.genderId) {
             R.id.button_male_gender -> Gender.MALE
             R.id.button_female_gender -> Gender.FEMALE
@@ -79,6 +79,16 @@ class ProfileUpdateViewModel @Inject constructor(private val updateUserProfileUs
             profileUpdateInput.email,
             gender
         )
+    }
+
+    internal fun showAccountInfo() {
+        if (::profileUpdateArgs.isInitialized) {
+            _accountInfoLiveData.value = ProfileUpdateAccountInfo(
+                profileUpdateArgs.userId.toString(),
+                profileUpdateArgs.accountName,
+                profileUpdateArgs.userType
+            )
+        }
     }
 
 

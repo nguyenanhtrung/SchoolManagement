@@ -69,13 +69,9 @@ class CreateAccountFragment : BaseFragment() {
     private fun subscribeEventClickUpdateProfile() {
         mainViewModel.observableClickUpdateProfile.observe(this, Observer {
             it.getContentIfNotHandled()?.let {
-                val profile = accountViewModel.createProfile()
+                val profile = accountViewModel.createProfileUpdateArguments()
                 if (findNavController().currentDestination?.id == R.id.dialogFlowStatusDest) {
-                    findNavController().navigate(
-                        DialogFlowStatusFragmentDirections.actionDialogFlowStatusDestToProfileUpdateFragment(
-                            profile
-                        )
-                    )
+
                 }
             }
         })

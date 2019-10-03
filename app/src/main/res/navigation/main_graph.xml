@@ -147,7 +147,7 @@
             app:popExitAnim="@anim/fragment_close_exit" />
         <argument
             android:name="profileUpdateArguments"
-            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateParams" />
+            app:argType="com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateArguments" />
     </fragment>
     <fragment
         android:id="@+id/profileDetailFragment"

@@ -92,7 +92,6 @@ class ProfilesFragment : BaseListItemFragment() {
     override fun setupUiEvents() {
         super.setupUiEvents()
         setupToolbar()
-        subscribeNavigateToProfileUpdateScreen()
         subscribeNavigateToProfileDetailScreen()
     }
 
@@ -122,17 +121,7 @@ class ProfilesFragment : BaseListItemFragment() {
         })
     }
 
-    private fun subscribeNavigateToProfileUpdateScreen() {
-        profileViewModel.profileUpdateScreen.observe(viewLifecycleOwner, Observer {
-            it.getContentIfNotHandled()?.let { params ->
-                findNavController().navigate(
-                    ProfilesFragmentDirections.actionProfilesDestToProfileUpdateFragment(
-                        params.second, params.first
-                    )
-                )
-            }
-        })
-    }
+
 
     private fun setupToolbar() {
         mainViewModel.showToolbar()

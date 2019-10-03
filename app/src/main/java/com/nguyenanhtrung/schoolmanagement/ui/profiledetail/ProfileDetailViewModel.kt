@@ -18,6 +18,7 @@ class ProfileDetailViewModel @Inject constructor(
 ) :
     BaseProfileViewModel() {
 
+    internal lateinit var profile: Profile
     private lateinit var profileModificationInfo: ProfileDetail
     internal lateinit var profileDetail: ProfileDetail
 
@@ -100,30 +101,30 @@ class ProfileDetailViewModel @Inject constructor(
 
     internal fun onClickButtonSaveModifiedProfile(newProfileInfo: ProfileDetail) {
         if (isProfileModified(newProfileInfo)) {
-            this.profileModificationInfo = newProfileInfo
-            val modifiedFields = createModifiedFields(profileDetail, newProfileInfo)
-
-            val originImagePath = profile.profileImagePath
-            val selectedImagePath = _profileImage.value ?: originImagePath
-
-            var newImagePath = ""
-            if (originImagePath != selectedImagePath) {
-                newImagePath = selectedImagePath
-            }
-
-            val profileModificationParams = ProfileModificationParams(
-                profile.fireBaseUserId,
-                newImagePath,
-                modifiedFields
-            )
-
-            saveProfileModificationUseCase.invoke(
-                viewModelScope,
-                profileModificationParams,
-                _saveProfileModification
-            )
-        } else {
-            _stateModifyProfileInfo.value = ModificationState.Save
+//            this.profileModificationInfo = newProfileInfo
+//            val modifiedFields = createModifiedFields(profileDetail, newProfileInfo)
+//
+//            val originImagePath = profile.profileImagePath
+//            val selectedImagePath = _profileImage.value ?: originImagePath
+//
+//            var newImagePath = ""
+//            if (originImagePath != selectedImagePath) {
+//                newImagePath = selectedImagePath
+//            }
+//
+//            val profileModificationParams = ProfileModificationParams(
+//                profile.fireBaseUserId,
+//                newImagePath,
+//                modifiedFields
+//            )
+//
+//            saveProfileModificationUseCase.invoke(
+//                viewModelScope,
+//                profileModificationParams,
+//                _saveProfileModification
+//            )
+//        } else {
+//            _stateModifyProfileInfo.value = ModificationState.Save
         }
 
     }
