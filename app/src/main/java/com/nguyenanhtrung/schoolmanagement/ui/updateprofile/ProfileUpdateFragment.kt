@@ -33,7 +33,7 @@ import pub.devrel.easypermissions.EasyPermissions
 import javax.inject.Inject
 
 
-class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionCallbacks {
+class ProfileUpdateFragment : BaseProfileFragment() {
 
     private val args: ProfileUpdateFragmentArgs by navArgs()
 
@@ -179,5 +179,10 @@ class ProfileUpdateFragment : BaseProfileFragment(), EasyPermissions.PermissionC
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        mainViewModel.showToolbar()
     }
 }

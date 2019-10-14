@@ -61,6 +61,13 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@+id/accountManagementDest"
             app:popUpToInclusive="false" />
+        <action
+            android:id="@+id/action_accountManagementDest_to_profileUpdateFragment"
+            app:destination="@id/profileUpdateFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/createAccountDest"
@@ -111,13 +118,6 @@
         <action
             android:id="@+id/action_profilesDest_to_filterBottomSheetDialogFragment"
             app:destination="@id/filterBottomSheetDest" />
-        <action
-            android:id="@+id/action_profilesDest_to_profileUpdateFragment"
-            app:destination="@id/profileUpdateFragment"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_right"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_left" />
         <action
             android:id="@+id/action_profilesDest_to_profileDetailFragment"
             app:destination="@id/profileDetailFragment"

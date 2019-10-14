@@ -8,7 +8,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import com.xwray.groupie.kotlinandroidextensions.ViewHolder
 import kotlinx.android.synthetic.main.item_account.*
 
-data class UserItem(var user: User) : Item() {
+data class UserItem(
+    var user: User
+) : Item() {
+
+     var onClickUpdateProfileListener: OnClickUpdateProfileListener? = null
 
 
     interface OnClickUpdateProfileListener {
@@ -17,6 +21,7 @@ data class UserItem(var user: User) : Item() {
     }
 
     override fun bind(viewHolder: ViewHolder, position: Int) {
+
         viewHolder.image_account.loadImageIfEmptyPath(user.avatarPath)
         viewHolder.text_account_name.text = user.name
         viewHolder.text_account_type.text = user.type.name
@@ -24,6 +29,16 @@ data class UserItem(var user: User) : Item() {
         when (user.profile_status) {
             true -> viewHolder.text_profile_status.visibility = View.GONE
             else -> viewHolder.text_profile_status.visibility = View.VISIBLE
+        }
+
+        viewHolder.text_profile_status.setOnClickListener {
+            onClickUpdateProfileListener?.onClickUpdateProfile(it, ProfileUpdateArguments(
+                user.firebaseUserId,
+                user.id,
+                user.type,
+                user.name
+            )
+            )
         }
     }
 

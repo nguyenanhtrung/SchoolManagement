@@ -64,12 +64,12 @@
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/margin_small_100"
             android:layout_marginTop="@dimen/margin_small_100"
-            android:textAppearance="@style/TextAccountType"
+            android:background="?attr/selectableItemBackground"
             android:padding="@dimen/padding_small_50"
-            android:visibility="gone"
             android:text="@string/title_update"
+            android:textAppearance="@style/TextAccountType"
             android:textColor="@color/colorSecondary"
-            />
+            android:visibility="gone" />
     </RelativeLayout>
 
 </com.google.android.material.card.MaterialCardView>

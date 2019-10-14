@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.AccountDetailParams
+import com.nguyenanhtrung.schoolmanagement.data.local.model.ProfileUpdateArguments
 import com.nguyenanhtrung.schoolmanagement.data.local.model.UserItem
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseActivityViewModel
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
@@ -111,6 +112,26 @@ class AccountManagementFragment : BaseListItemFragment() {
             accountViewModel.onClickButtonCreateAccount()
         }
         subscribeNavigateToAccountDetail()
+        setupClickUpdateProfileEvent()
+    }
+
+    private fun setupClickUpdateProfileEvent() {
+        for (index in 0 until itemAdapter.itemCount) {
+            val userItem = itemAdapter.getItem(index) as UserItem
+            userItem.onClickUpdateProfileListener = object : UserItem.OnClickUpdateProfileListener {
+                override fun onClickUpdateProfile(
+                    view: View,
+                    profileUpdateArguments: ProfileUpdateArguments
+                ) {
+                    findNavController().navigate(
+                        AccountManagementFragmentDirections.actionAccountManagementDestToProfileUpdateFragment(
+                            profileUpdateArguments
+                        )
+                    )
+                }
+            }
+        }
+
     }
 
     private fun subscribeNavigateToAccountDetail() {
