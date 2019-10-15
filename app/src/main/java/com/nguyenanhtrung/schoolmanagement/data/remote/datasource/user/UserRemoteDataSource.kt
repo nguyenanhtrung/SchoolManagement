@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user
 
 import androidx.collection.ArrayMap
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -14,12 +15,12 @@ interface UserRemoteDataSource {
 
     suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<String>
 
-    suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>>
+    suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out GenericItem>>
 
     suspend fun getPagingUsers(
         lastUserId: Long,
         userTypes: Map<String, String>
-    ): Resource<MutableList<out Item>>
+    ): Resource<MutableList<out GenericItem>>
 
     suspend fun updateUserInfo(updateInfoParams: UpdateAccountInfoParams): Resource<Unit>
 

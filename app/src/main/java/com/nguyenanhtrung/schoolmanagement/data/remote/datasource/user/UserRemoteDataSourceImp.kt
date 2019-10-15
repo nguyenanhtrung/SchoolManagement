@@ -9,6 +9,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.QuerySnapshot
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.usertype.UserTypeLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
@@ -57,7 +58,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return Resource.success(userDetail)
     }
 
-    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out Item>> {
+    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out GenericItem>> {
         val querySnapshot = firestore.collection(USER_COMMONS_PATH)
             .orderBy(AppKey.USER_ID_FIELD)
             .whereGreaterThan(AppKey.USER_ID_FIELD, 1)
@@ -252,7 +253,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getPagingUsers(
         lastUserId: Long,
         userTypes: Map<String, String>
-    ): Resource<MutableList<out Item>> {
+    ): Resource<MutableList<out GenericItem>> {
         val lastDocument =
             firestore.collection(USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,

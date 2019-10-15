@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.AccountDetailParams
@@ -28,6 +30,7 @@ import com.nguyenanhtrung.schoolmanagement.util.hideKeyboard
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.fragment_list_account.*
 import kotlinx.android.synthetic.main.include_search_view.*
+import kotlinx.android.synthetic.main.item_account.view.*
 import javax.inject.Inject
 
 class AccountManagementFragment : BaseListItemFragment() {
@@ -75,9 +78,9 @@ class AccountManagementFragment : BaseListItemFragment() {
         mainViewModel.stateModifyAccInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { modifiedUser ->
                 val posAccountSelected = accountViewModel.posAccountSelected
-                val selectedItem = itemAdapter.getItem(posAccountSelected) as UserItem
+                val selectedItem = fastAdapter.getItem(posAccountSelected) as UserItem
                 selectedItem.user = modifiedUser
-                itemAdapter.notifyItemChanged(posAccountSelected)
+                fastAdapter.notifyItemChanged(posAccountSelected)
             }
         })
     }
@@ -116,22 +119,31 @@ class AccountManagementFragment : BaseListItemFragment() {
     }
 
     private fun setupClickUpdateProfileEvent() {
-        for (index in 0 until itemAdapter.itemCount) {
-            val userItem = itemAdapter.getItem(index) as UserItem
-            userItem.onClickUpdateProfileListener = object : UserItem.OnClickUpdateProfileListener {
-                override fun onClickUpdateProfile(
-                    view: View,
-                    profileUpdateArguments: ProfileUpdateArguments
-                ) {
-                    findNavController().navigate(
-                        AccountManagementFragmentDirections.actionAccountManagementDestToProfileUpdateFragment(
-                            profileUpdateArguments
-                        )
-                    )
-                }
+        fastAdapter.addEventHook(object : ClickEventHook<UserItem>() {
+            override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
+                return viewHolder.itemView.text_profile_status
             }
-        }
 
+            override fun onClick(
+                v: View,
+                position: Int,
+                fastAdapter: FastAdapter<UserItem>,
+                item: UserItem
+            ) {
+                val user = item.user
+                val profileUpdateArguments = ProfileUpdateArguments(
+                    user.firebaseUserId,
+                    user.id,
+                    user.type,
+                    user.name
+                )
+                findNavController().navigate(
+                    AccountManagementFragmentDirections.actionAccountManagementDestToProfileUpdateFragment(
+                        profileUpdateArguments
+                    )
+                )
+            }
+        })
     }
 
     private fun subscribeNavigateToAccountDetail() {

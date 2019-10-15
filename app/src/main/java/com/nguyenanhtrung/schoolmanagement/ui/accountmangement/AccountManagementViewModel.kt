@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.accountmangement
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUserDetailUseCase
@@ -47,9 +48,9 @@ class AccountManagementViewModel @Inject constructor(
 
 
     override fun loadMoreItems(
-        lastItem: Item<ViewHolder>,
+        lastItem: GenericItem,
         itemsLiveData:
-        MutableLiveData<Resource<MutableList<out com.xwray.groupie.kotlinandroidextensions.Item>>>
+        MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
         val userItem = lastItem as UserItem
         val user = userItem.user
@@ -58,7 +59,7 @@ class AccountManagementViewModel @Inject constructor(
 
     override fun loadItemsFromServer(
         getItemsLiveData:
-        MutableLiveData<Resource<MutableList<out com.xwray.groupie.kotlinandroidextensions.Item>>>
+        MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
         getUsersUseCase.invoke(viewModelScope, -1, getItemsLiveData)
     }
@@ -96,7 +97,7 @@ class AccountManagementViewModel @Inject constructor(
 
     override fun customCheckItemWithQuery(
         query: String,
-        item: com.xwray.groupie.kotlinandroidextensions.Item
+        item: GenericItem
     ): Boolean {
         if (item is UserItem) {
             val user = item.user
@@ -113,7 +114,7 @@ class AccountManagementViewModel @Inject constructor(
             _emptyUsersLiveData.value = ListEmptyState.CLEAR
         }
         val newUserItem = UserItem(newUser)
-        addItems(mutableListOf(newUserItem))
+//        addItems(mutableListOf(newUserItem))
     }
 
     internal fun onClickButtonCreateAccount() {

@@ -2,6 +2,9 @@ package com.nguyenanhtrung.schoolmanagement.ui.baselistitem
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.RecyclerView
+import com.mikepenz.fastadapter.GenericItem
+import com.mikepenz.fastadapter.items.AbstractItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.xwray.groupie.ViewHolder
@@ -20,9 +23,9 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     private var shouldLoadMoreItem = true
 
     protected val _getItemsLiveData by lazy {
-        createApiResultLiveData<MutableList<out Item>>()
+        createApiResultLiveData<MutableList<out GenericItem>>()
     }
-    internal val getItemsLiveData: LiveData<Resource<MutableList<out Item>>>
+    internal val getItemsLiveData: LiveData<Resource<MutableList<out GenericItem>>>
         get() = _getItemsLiveData
 
     protected val _emptyUsersLiveData by lazy {
@@ -38,9 +41,9 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         get() = _errorItemsLiveData
 
     private val _itemsLiveData by lazy {
-        MutableLiveData<MutableList<out Item>>()
+        MutableLiveData<MutableList<out GenericItem>>()
     }
-    internal val itemsLiveData: LiveData<MutableList<out Item>>
+    internal val itemsLiveData: LiveData<MutableList<out GenericItem>>
         get() = _itemsLiveData
 
     protected val _clearItemsLiveData by lazy {
@@ -56,18 +59,20 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         get() = _stateLoadMoreItemLiveData
 
 
-    internal fun onLoadMoreItem(lastItem: com.xwray.groupie.Item<ViewHolder>) {
-        if (!shouldLoadMoreItem) {
-            return
-        }
-        if (_stateLoadMoreItemLiveData.value == Status.LOADING) {
-            return
-        }
-        _stateLoadMoreItemLiveData.value = Status.LOADING
-        loadMoreItems(lastItem, _getItemsLiveData)
-    }
+//    internal fun onLoadMoreItem(lastItem: com.xwray.groupie.Item<ViewHolder>) {
+//        if (!shouldLoadMoreItem) {
+//            return
+//        }
+//        if (_stateLoadMoreItemLiveData.value == Status.LOADING) {
+//            return
+//        }
+//        _stateLoadMoreItemLiveData.value = Status.LOADING
+//        loadMoreItems(lastItem, _getItemsLiveData)
+//    }
 
-    internal fun handleStatusGetItems(getItemsResult: Resource<MutableList<out Item>>) {
+    internal fun handleStatusGetItems(getItemsResult:
+                                      Resource<MutableList<out GenericItem>>) {
+
         when (getItemsResult.status) {
             Status.EMPTY -> {
                 val emptyItem = EmptyItem(getItemsResult.error)
@@ -89,7 +94,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
 
                 val items = getItemsResult.data
                 items?.let {
-                    itemCopys.addAll(it)
+//                    itemCopys.addAll(it)
                     _itemsLiveData.value = it
                 }
             }
@@ -111,9 +116,9 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         onCustomClickItem(position)
     }
 
-    internal fun onClickButtonRetry() {
-        loadItemsFromServer(_getItemsLiveData)
-    }
+//    internal fun onClickButtonRetry() {
+//        loadItemsFromServer(_getItemsLiveData)
+//    }
 
     private fun enableLoadMore() {
         if (!shouldLoadMoreItem) {
@@ -132,51 +137,44 @@ abstract class BaseListItemViewModel : BaseViewModel() {
         return emptyState is ListEmptyState.EMPTY
     }
 
-    internal fun onSearchItemQueryChange(query: String) {
-        if ((lastQueryItem == null && query.isEmpty()) || (lastQueryItem == query) || isItemsEmpty()) {
-            return
-        }
-        lastQueryItem = query
-
-        //clear current list item in recycler view
-        _clearItemsLiveData.value = true
-        if (query.isEmpty()) {
-            enableLoadMore()
-            //copy list from item copys to current list in recycler view
-            _itemsLiveData.value = itemCopys
-        } else {
-            disableLoadMore()
-            val newItems = mutableListOf<Item>()
-            val items = _itemsLiveData.value ?: return
-            items.forEach {
-                if (customCheckItemWithQuery(query, it)) {
-                    newItems += it
-                }
-            }
-            _itemsLiveData.value = newItems
-        }
-    }
-
-    internal fun addItems(items: MutableList<Item>) {
-        _itemsLiveData.value = items
-        itemCopys.addAll(items)
-    }
-
-    internal fun addItem(item: Item) {
-        itemCopys.add(item)
-        _itemsLiveData.value = mutableListOf(item)
-    }
+//    internal fun onSearchItemQueryChange(query: String) {
+//        if ((lastQueryItem == null && query.isEmpty()) || (lastQueryItem == query) || isItemsEmpty()) {
+//            return
+//        }
+//        lastQueryItem = query
+//
+//        //clear current list item in recycler view
+//        _clearItemsLiveData.value = true
+//        if (query.isEmpty()) {
+//            enableLoadMore()
+//            //copy list from item copys to current list in recycler view
+//            _itemsLiveData.value = itemCopys
+//        } else {
+//            disableLoadMore()
+//            val newItems = mutableListOf<Item>()
+//            val items = _itemsLiveData.value ?: return
+//            items.forEach {
+//                if (customCheckItemWithQuery(query, it)) {
+//                    newItems += it
+//                }
+//            }
+//            _itemsLiveData.value = newItems
+//        }
+//    }
 
 
-
-    protected abstract fun customCheckItemWithQuery(query: String, item: Item): Boolean
+    protected abstract fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean
 
     protected abstract fun loadMoreItems(
-        lastItem: com.xwray.groupie.Item<ViewHolder>,
-        itemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>
+        lastItem: GenericItem,
+        itemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
     )
 
-    protected abstract fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>)
+    protected abstract fun loadItemsFromServer(
+        getItemsLiveData:
+        MutableLiveData<Resource
+        <MutableList<out GenericItem>>>
+    )
 
     protected abstract fun onCustomClickItem(position: Int)
 

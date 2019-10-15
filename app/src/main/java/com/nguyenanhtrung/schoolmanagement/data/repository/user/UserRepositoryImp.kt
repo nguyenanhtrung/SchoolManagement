@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.user.UserLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.user.UserRemoteDataSource
@@ -148,10 +149,10 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun getUsers(
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
 
-        object : NetworkBoundResources<Map<String, String>, MutableList<out Item>>(
+        object : NetworkBoundResources<Map<String, String>, MutableList<out GenericItem>>(
             context,
             userTypes,
             result
@@ -160,7 +161,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldLoadFromLocal(params: Map<String, String>): Boolean = false
             override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
                 return userRemoteDataSource.getUsers(userTypes)
             }
         }.createCall()
@@ -169,9 +170,9 @@ class UserRepositoryImp @Inject constructor(
     override suspend fun getUsersByLimit(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
-        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<out Item>>(
+        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<out GenericItem>>(
             context,
             Pair(lastUserId, userTypes),
             result
@@ -183,7 +184,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<Long, Map<String, String>>): Boolean = false
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
                 return userRemoteDataSource.getPagingUsers(params.first, params.second)
             }
         }.createCall()

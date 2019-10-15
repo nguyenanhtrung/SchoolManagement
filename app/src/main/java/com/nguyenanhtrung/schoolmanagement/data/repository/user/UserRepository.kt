@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.user
 
 import androidx.collection.ArrayMap
 import androidx.lifecycle.MutableLiveData
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UserDetail
 import com.xwray.groupie.kotlinandroidextensions.Item
@@ -18,13 +19,13 @@ interface UserRepository {
 
     suspend fun getUsers(
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     )
 
     suspend fun getUsersByLimit(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     )
 
     suspend fun updateUserInfo(
