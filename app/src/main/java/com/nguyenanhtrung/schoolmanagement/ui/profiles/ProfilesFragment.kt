@@ -99,11 +99,11 @@ class ProfilesFragment : BaseListItemFragment() {
         mainViewModel.profileUpdated.observe(this, Observer {
             it.getContentIfNotHandled()?.let { imageUri ->
                 val posItemSelected = profileViewModel.posItemSelected
-                val profileItem = itemAdapter.getItem(posItemSelected)
+                val profileItem = getItem(posItemSelected)
                 if (profileItem is ProfileItem) {
                     val profile = profileItem.profile
                     profile.profileImagePath = imageUri
-                    itemAdapter.notifyItemChanged(posItemSelected)
+                    notifyItemChanged(posItemSelected)
                 }
             }
         })

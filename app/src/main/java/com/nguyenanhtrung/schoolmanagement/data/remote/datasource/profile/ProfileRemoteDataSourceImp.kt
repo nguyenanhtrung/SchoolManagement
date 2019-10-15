@@ -6,6 +6,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.R
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.di.ApplicationContext
@@ -45,7 +46,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     override suspend fun getProfiles(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>> {
+    ): Resource<MutableList<out GenericItem>> {
         val querySnapshot = getProfilesQuery(profileFilter)
         val querySize = querySnapshot.size()
         if (querySize == 0) {
@@ -59,7 +60,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out Item>> {
+    ): Resource<MutableList<out GenericItem>> {
         val lastDocument =
             firestore.collection(AppKey.USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,

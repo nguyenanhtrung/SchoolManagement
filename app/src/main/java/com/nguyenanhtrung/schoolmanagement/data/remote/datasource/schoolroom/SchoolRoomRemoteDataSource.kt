@@ -9,9 +9,9 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface SchoolRoomRemoteDataSource {
 
-    suspend fun getSchoolRoomsAsync(): Resource<MutableList<out Item>>
+    suspend fun getSchoolRoomsAsync(): Resource<MutableList<SchoolRoomItem>>
 
-    suspend fun getPagingSchoolRoomsAsync(lastRoomId: Long): Resource<MutableList<out Item>>
+    suspend fun getPagingSchoolRoomsAsync(lastRoomId: Long): Resource<MutableList<SchoolRoomItem>>
 
     suspend fun createSchoolRoom(schoolRoomParams: CreateSchoolRoomParams): Resource<SchoolRoom>
 

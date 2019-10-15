@@ -22,7 +22,7 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
         return result > 0
     }
 
-    override suspend fun getSchoolRooms(offset: Int): Resource<MutableList<out Item>> {
+    override suspend fun getSchoolRooms(offset: Int): Resource<MutableList<SchoolRoomItem>> {
         val schoolRoomEntities = schoolRoomDao.getSchoolRooms(offset)
         val schoolRoomItems = schoolRoomEntities.map {
             SchoolRoomItem(
@@ -32,9 +32,8 @@ class SchoolRoomLocalDataSourceImp @Inject constructor(private val schoolRoomDao
         return Resource.success(schoolRoomItems)
     }
 
-    override suspend fun saveSchoolRooms(schoolRoomItems: List<Item>) {
-        val schoolRoomEntities = schoolRoomItems.map {
-            val schoolRoomItem = it as SchoolRoomItem
+    override suspend fun saveSchoolRooms(schoolRoomItems: List<SchoolRoomItem>) {
+        val schoolRoomEntities = schoolRoomItems.map {schoolRoomItem ->
             val schoolRoom = schoolRoomItem.schoolRoom
             SchoolRoomEntity(
                 schoolRoom.roomId,

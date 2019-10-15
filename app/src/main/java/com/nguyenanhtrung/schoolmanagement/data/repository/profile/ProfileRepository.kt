@@ -1,6 +1,7 @@
 package com.nguyenanhtrung.schoolmanagement.data.repository.profile
 
 import androidx.lifecycle.MutableLiveData
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.xwray.groupie.kotlinandroidextensions.Item
 
@@ -26,11 +27,11 @@ interface ProfileRepository {
     suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     )
 
     suspend fun getUsersByProfileFilter(
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     )
 }

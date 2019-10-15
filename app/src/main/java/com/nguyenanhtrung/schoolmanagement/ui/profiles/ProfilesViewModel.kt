@@ -3,6 +3,7 @@ package com.nguyenanhtrung.schoolmanagement.ui.profiles
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.profile.GetFilterProfileDatasUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersByProfileStatusUseCase
@@ -66,15 +67,15 @@ class ProfilesViewModel @Inject constructor(
         _profileDetailScreen.value = Event(profile)
     }
 
-    override fun customCheckItemWithQuery(query: String, item: Item): Boolean {
+    override fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean {
         val profileItem = item as ProfileItem
         val profile = profileItem.profile
         return profile.name.contains(query) || profile.userId.toString().contains(query)
     }
 
     override fun loadMoreItems(
-        lastItem: com.xwray.groupie.Item<ViewHolder>,
-        itemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>
+        lastItem: GenericItem,
+        itemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
         val lastProfileItem = lastItem as ProfileItem
         val lastProfile = lastProfileItem.profile
@@ -83,7 +84,7 @@ class ProfilesViewModel @Inject constructor(
         getUsersByProfileStatusUseCase.invoke(viewModelScope, params, itemsLiveData)
     }
 
-    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out Item>>>) {
+    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>) {
         val params = Pair(-1L, currentProfileFilter)
         getUsersByProfileStatusUseCase.invoke(viewModelScope, params, getItemsLiveData)
     }

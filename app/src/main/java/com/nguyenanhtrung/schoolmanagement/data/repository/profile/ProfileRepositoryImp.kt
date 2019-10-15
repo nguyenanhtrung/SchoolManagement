@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.profile
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.profile.ProfileLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.profile.ProfileRemoteDataSource
@@ -75,10 +76,10 @@ class ProfileRepositoryImp @Inject constructor(
 
     override suspend fun getUsersByProfileFilter(
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
         object :
-            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<out Item>>(
+            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<out GenericItem>>(
                 context, params, result
             ) {
 
@@ -88,7 +89,7 @@ class ProfileRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<ProfileFilter, Map<String, String>>): Boolean =
                 false
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
                 return profileRemoteDataSource.getProfiles(params.second, params.first)
             }
 
@@ -98,11 +99,11 @@ class ProfileRepositoryImp @Inject constructor(
     override suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
     ) {
         val finalParams = Pair(lastUserId, params)
         object :
-            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<out Item>>(
+            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<out GenericItem>>(
                 context,
                 finalParams,
                 result
@@ -116,7 +117,7 @@ class ProfileRepositoryImp @Inject constructor(
 
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
                 val pair = finalParams.second
                 val userId = finalParams.first
                 val profileFilter = pair.first

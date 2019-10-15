@@ -31,7 +31,7 @@ class SchoolRoomRemoteDataSourceImp @Inject constructor(private val firestore: F
     }
 
 
-    override suspend fun getSchoolRoomsAsync(): Resource<MutableList<out Item>> {
+    override suspend fun getSchoolRoomsAsync(): Resource<MutableList<SchoolRoomItem>> {
         val querySnapshot = firestore.collection(AppKey.SCHOOL_ROOMS_PATH)
             .orderBy(AppKey.ROOM_ID_FIELD_SCHOOL_ROOMS)
             .limit(LIMIT)
@@ -59,7 +59,7 @@ class SchoolRoomRemoteDataSourceImp @Inject constructor(private val firestore: F
         return schoolRooms.toMutableList()
     }
 
-    override suspend fun getPagingSchoolRoomsAsync(lastRoomId: Long): Resource<MutableList<out Item>> {
+    override suspend fun getPagingSchoolRoomsAsync(lastRoomId: Long): Resource<MutableList<SchoolRoomItem>> {
         val lastDocumentSnapshot = firestore.collection(AppKey.SCHOOL_ROOMS_PATH)
             .whereEqualTo(AppKey.ROOM_ID_FIELD_SCHOOL_ROOMS, lastRoomId)
             .get().await()

@@ -78,9 +78,9 @@ class AccountManagementFragment : BaseListItemFragment() {
         mainViewModel.stateModifyAccInfo.observe(this, Observer {
             it.getContentIfNotHandled()?.let { modifiedUser ->
                 val posAccountSelected = accountViewModel.posAccountSelected
-                val selectedItem = fastAdapter.getItem(posAccountSelected) as UserItem
+                val selectedItem = getItem(posAccountSelected) as UserItem
                 selectedItem.user = modifiedUser
-                fastAdapter.notifyItemChanged(posAccountSelected)
+                notifyItemChanged(posAccountSelected)
             }
         })
     }
@@ -119,7 +119,7 @@ class AccountManagementFragment : BaseListItemFragment() {
     }
 
     private fun setupClickUpdateProfileEvent() {
-        fastAdapter.addEventHook(object : ClickEventHook<UserItem>() {
+        onClickViewInItemView(object : ClickEventHook<UserItem>() {
             override fun onBind(viewHolder: RecyclerView.ViewHolder): View? {
                 return viewHolder.itemView.text_profile_status
             }

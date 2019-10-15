@@ -62,9 +62,9 @@ class SchoolRoomsFragment : BaseListItemFragment() {
         mainViewModel.stateUpdateSchoolRoom.observe(this, Observer {
             it.getContentIfNotHandled()?.let { schoolRoom ->
                 val position = schoolRoomsViewModel.posItemSelected
-                val selectedItem = itemAdapter.getItem(position) as SchoolRoomItem
+                val selectedItem = getItem(position) as SchoolRoomItem
                 selectedItem.schoolRoom = schoolRoom
-                itemAdapter.notifyItemChanged(position)
+                notifyItemChanged(position)
             }
         })
     }
@@ -84,7 +84,7 @@ class SchoolRoomsFragment : BaseListItemFragment() {
     private fun subscribeSuccessAddSchoolRoom() {
         mainViewModel.stateAddSchoolRoom.observe(this, Observer {
             it.getContentIfNotHandled()?.let { schoolRoom ->
-                schoolRoomsViewModel.addItem(SchoolRoomItem(schoolRoom))
+                addItem(SchoolRoomItem(schoolRoom))
             }
         })
     }
@@ -103,8 +103,9 @@ class SchoolRoomsFragment : BaseListItemFragment() {
         super.setupUiEvents()
         float_button_add.setOnClickListener {
             var lastRoomId = 0L
-            if (itemAdapter.itemCount != 0) {
-                val lastRoomItem = itemAdapter.getItem(itemAdapter.itemCount - 1) as SchoolRoomItem
+            val itemCount = getItemCount()
+            if (itemCount != 0) {
+                val lastRoomItem = getItem(itemCount - 1) as SchoolRoomItem
                 val lastRoom = lastRoomItem.schoolRoom
                 lastRoomId = lastRoom.roomId
             }

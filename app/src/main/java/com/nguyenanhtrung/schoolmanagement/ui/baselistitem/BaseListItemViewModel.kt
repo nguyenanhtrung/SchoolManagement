@@ -10,7 +10,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 
-abstract class BaseListItemViewModel : BaseViewModel() {
+abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 
     internal val itemCopys by lazy {
         mutableListOf<Item>()
@@ -22,10 +22,10 @@ abstract class BaseListItemViewModel : BaseViewModel() {
 
     private var shouldLoadMoreItem = true
 
-    protected val _getItemsLiveData by lazy {
-        createApiResultLiveData<MutableList<out GenericItem>>()
+    protected val _getItemsLiveData : MutableLiveData<Resource<MutableList<T>>> by lazy {
+        createApiResultLiveData<MutableList<T>>()
     }
-    internal val getItemsLiveData: LiveData<Resource<MutableList<out GenericItem>>>
+    internal val getItemsLiveData: LiveData<Resource<MutableList<T>>>
         get() = _getItemsLiveData
 
     protected val _emptyUsersLiveData by lazy {
@@ -173,7 +173,7 @@ abstract class BaseListItemViewModel : BaseViewModel() {
     protected abstract fun loadItemsFromServer(
         getItemsLiveData:
         MutableLiveData<Resource
-        <MutableList<out GenericItem>>>
+        <MutableList<T>>>
     )
 
     protected abstract fun onCustomClickItem(position: Int)

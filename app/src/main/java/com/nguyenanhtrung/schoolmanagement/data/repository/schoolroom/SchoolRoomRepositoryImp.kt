@@ -2,6 +2,7 @@ package com.nguyenanhtrung.schoolmanagement.data.repository.schoolroom
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.schoolroom.SchoolRoomLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
@@ -39,24 +40,24 @@ class SchoolRoomRepositoryImp @Inject constructor(
         }.createCall()
     }
 
-    override suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<out Item>>>) {
+    override suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<out GenericItem>>>) {
         object :
-            NetworkBoundResources<Unit, MutableList<out Item>>(context, Unit, result) {
+            NetworkBoundResources<Unit, MutableList<out GenericItem>>(context, Unit, result) {
 
             override suspend fun shouldFetchFromServer(params: Unit): Boolean {
                 return !schoolRoomLocalDataSource.isSchoolRoomsSaved(0)
             }
 
             override fun shouldSaveToLocal(params: Unit): Boolean = true
-            override suspend fun saveToLocal(output: MutableList<out Item>) {
+            override suspend fun saveToLocal(output: MutableList<out GenericItem>) {
                 schoolRoomLocalDataSource.saveSchoolRooms(output)
             }
 
-            override suspend fun loadFromLocal(params: Unit): Resource<MutableList<out Item>> {
+            override suspend fun loadFromLocal(params: Unit): Resource<MutableList<out GenericItem>> {
                 return schoolRoomLocalDataSource.getSchoolRooms(0)
             }
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
                 return schoolRoomRemoteDataSource.getSchoolRoomsAsync()
             }
 

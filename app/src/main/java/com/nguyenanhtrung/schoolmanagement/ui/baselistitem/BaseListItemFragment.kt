@@ -10,18 +10,11 @@ import com.mikepenz.fastadapter.FastAdapter
 import com.mikepenz.fastadapter.GenericFastAdapter
 import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.adapters.GenericItemAdapter
-import com.mikepenz.fastadapter.adapters.ItemAdapter
-import com.mikepenz.fastadapter.items.AbstractItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
-import com.nguyenanhtrung.schoolmanagement.util.addErrorItem
-import com.nguyenanhtrung.schoolmanagement.util.removeFirstItem
-import com.nguyenanhtrung.schoolmanagement.util.removeLastItem
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.include_search_view.*
+
 
 abstract class BaseListItemFragment : BaseFragment() {
 
@@ -31,11 +24,11 @@ abstract class BaseListItemFragment : BaseFragment() {
 
     private lateinit var recyclerView: RecyclerView
 
-    protected val itemAdapter by lazy {
+    private val itemAdapter by lazy {
         GenericItemAdapter()
     }
 
-    protected val fastAdapter: GenericFastAdapter by lazy {
+    private val fastAdapter: GenericFastAdapter by lazy {
         FastAdapter.with(itemAdapter)
     }
 
@@ -166,6 +159,24 @@ abstract class BaseListItemFragment : BaseFragment() {
 //                }
 //        }
 //        recyclerView.addOnScrollListener(endlessScrollListener)
+    }
+
+    protected fun getItem(position: Int): GenericItem? {
+        return fastAdapter.getItem(position)
+    }
+
+    protected fun notifyItemChanged(position: Int) {
+        fastAdapter.notifyItemChanged(position)
+    }
+
+    protected fun onClickViewInItemView(clickEventHook: ClickEventHook<out GenericItem>) {
+        fastAdapter.addEventHook(clickEventHook)
+    }
+
+    protected fun getItemCount() = fastAdapter.itemCount
+
+    protected fun addItem(item: GenericItem) {
+        itemAdapter.add(item)
     }
 
     abstract fun bindRecyclerView(): RecyclerView
