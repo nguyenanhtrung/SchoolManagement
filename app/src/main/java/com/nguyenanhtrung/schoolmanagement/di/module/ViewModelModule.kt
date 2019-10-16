@@ -111,8 +111,8 @@ abstract class ViewModelModule {
     @ViewModelKey(SchoolRoomDetailViewModel::class)
     abstract fun bindSchoolRoomDetailViewModel(schoolRoomDetailViewModel: SchoolRoomDetailViewModel) : ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(FacultiesViewModel::class)
-    abstract fun bindFacultiesViewModel(facultiesViewModel: FacultiesViewModel) : ViewModel
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(FacultiesViewModel::class)
+//    abstract fun bindFacultiesViewModel(facultiesViewModel: FacultiesViewModel) : ViewModel
 }

@@ -35,8 +35,8 @@ data class UserItem(
             text_account_type.text = userType.name
             ViewUtils.setColorTextAccountType(text_account_type, userType.id)
             when(user.profile_status) {
-                true -> text_profile_status.visibility = View.VISIBLE
-                else -> text_profile_status.visibility = View.GONE
+                true -> text_profile_status.visibility = View.GONE
+                else -> text_profile_status.visibility = View.VISIBLE
             }
         }
 
