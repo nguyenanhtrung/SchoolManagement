@@ -10,12 +10,12 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
 class GetSchoolRoomsUseCase @Inject constructor(private val schoolRoomRepository: SchoolRoomRepository) :
-    BaseUseCase<Long, MutableList<out GenericItem>>() {
+    BaseUseCase<Long, MutableList<SchoolRoomItem>>() {
 
 
     override suspend fun execute(
         params: Long,
-        resultLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        resultLiveData: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>
     ) {
         if (params < 0) {
             schoolRoomRepository.getSchoolRoomsAsync(resultLiveData)

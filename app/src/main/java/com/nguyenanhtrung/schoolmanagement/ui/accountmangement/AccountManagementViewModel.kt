@@ -18,7 +18,7 @@ class AccountManagementViewModel @Inject constructor(
     private val getMaxUserIdUseCase: GetMaxUserIdUseCase,
     private val getUsersUseCase: GetUsersUseCase,
     private val getUserDetailUseCase: GetUserDetailUseCase
-) : BaseListItemViewModel() {
+) : BaseListItemViewModel<UserItem>() {
 
     internal var posAccountSelected = -1
 
@@ -48,9 +48,9 @@ class AccountManagementViewModel @Inject constructor(
 
 
     override fun loadMoreItems(
-        lastItem: GenericItem,
+        lastItem: UserItem,
         itemsLiveData:
-        MutableLiveData<Resource<MutableList<out GenericItem>>>
+        MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
         val userItem = lastItem as UserItem
         val user = userItem.user
@@ -59,7 +59,7 @@ class AccountManagementViewModel @Inject constructor(
 
     override fun loadItemsFromServer(
         getItemsLiveData:
-        MutableLiveData<Resource<MutableList<out GenericItem>>>
+        MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
         getUsersUseCase.invoke(viewModelScope, -1, getItemsLiveData)
     }
@@ -97,16 +97,12 @@ class AccountManagementViewModel @Inject constructor(
 
     override fun customCheckItemWithQuery(
         query: String,
-        item: GenericItem
+        item: UserItem
     ): Boolean {
-        if (item is UserItem) {
-            val user = item.user
-            val accountName = user.name
-            return accountName.contains(query)
-        }
-        return false
+        val user = item.user
+        val accountName = user.name
+        return accountName.contains(query)
     }
-
 
 
     internal fun onSuccessCreateAccount(newUser: User) {

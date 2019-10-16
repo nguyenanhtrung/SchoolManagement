@@ -10,9 +10,9 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface SchoolRoomLocalDataSource {
 
-    suspend fun getSchoolRooms(offset: Int): Resource<MutableList<out GenericItem>>
+    suspend fun getSchoolRooms(offset: Int): Resource<MutableList<SchoolRoomItem>>
 
-    suspend fun saveSchoolRooms(schoolRoomItems: List<GenericItem>)
+    suspend fun saveSchoolRooms(schoolRoomItems: List<SchoolRoomItem>)
 
     suspend fun saveSchoolRoom(schoolRoom: SchoolRoom)
 

@@ -149,10 +149,10 @@ class UserRepositoryImp @Inject constructor(
 
     override suspend fun getUsers(
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        result: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
 
-        object : NetworkBoundResources<Map<String, String>, MutableList<out GenericItem>>(
+        object : NetworkBoundResources<Map<String, String>, MutableList<UserItem>>(
             context,
             userTypes,
             result
@@ -161,7 +161,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldLoadFromLocal(params: Map<String, String>): Boolean = false
             override fun shouldSaveToLocal(params: Map<String, String>): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
+            override suspend fun callApi(): Resource<MutableList<UserItem>> {
                 return userRemoteDataSource.getUsers(userTypes)
             }
         }.createCall()
@@ -170,9 +170,9 @@ class UserRepositoryImp @Inject constructor(
     override suspend fun getUsersByLimit(
         lastUserId: Long,
         userTypes: Map<String, String>,
-        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        result: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
-        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<out GenericItem>>(
+        object : NetworkBoundResources<Pair<Long, Map<String, String>>, MutableList<UserItem>>(
             context,
             Pair(lastUserId, userTypes),
             result
@@ -184,7 +184,7 @@ class UserRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<Long, Map<String, String>>): Boolean = false
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
+            override suspend fun callApi(): Resource<MutableList<UserItem>> {
                 return userRemoteDataSource.getPagingUsers(params.first, params.second)
             }
         }.createCall()

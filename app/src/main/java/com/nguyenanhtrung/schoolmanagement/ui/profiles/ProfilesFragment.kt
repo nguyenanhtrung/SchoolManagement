@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_profiles.*
 import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
 
-class ProfilesFragment : BaseListItemFragment() {
+class ProfilesFragment : BaseListItemFragment<ProfileItem>() {
 
 
     @Inject
@@ -42,7 +42,9 @@ class ProfilesFragment : BaseListItemFragment() {
 
     override fun bindRecyclerView(): RecyclerView = recycler_view_profiles
 
-    override fun bindItemsViewModel(): BaseListItemViewModel = profileViewModel
+    override fun bindItemsViewModel(): BaseListItemViewModel<ProfileItem> {
+        return profileViewModel
+    }
 
     override fun bindSearchView(): SearchView = edit_text_search
 

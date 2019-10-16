@@ -15,6 +15,7 @@ import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.mikepenz.fastadapter.FastAdapter
+import com.mikepenz.fastadapter.GenericItem
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.nguyenanhtrung.schoolmanagement.MyApplication
 import com.nguyenanhtrung.schoolmanagement.R
@@ -33,7 +34,7 @@ import kotlinx.android.synthetic.main.include_search_view.*
 import kotlinx.android.synthetic.main.item_account.view.*
 import javax.inject.Inject
 
-class AccountManagementFragment : BaseListItemFragment() {
+class AccountManagementFragment : BaseListItemFragment<UserItem>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -48,7 +49,9 @@ class AccountManagementFragment : BaseListItemFragment() {
 
     override fun bindRecyclerView(): RecyclerView = recycler_view_accounts
 
-    override fun bindItemsViewModel(): BaseListItemViewModel = accountViewModel
+    override fun bindItemsViewModel(): BaseListItemViewModel<UserItem> {
+        return accountViewModel
+    }
 
     override fun bindSearchView(): SearchView = edit_text_search
 

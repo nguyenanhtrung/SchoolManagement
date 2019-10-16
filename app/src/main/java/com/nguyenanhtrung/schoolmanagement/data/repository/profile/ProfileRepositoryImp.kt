@@ -76,10 +76,10 @@ class ProfileRepositoryImp @Inject constructor(
 
     override suspend fun getUsersByProfileFilter(
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     ) {
         object :
-            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<out GenericItem>>(
+            NetworkBoundResources<Pair<ProfileFilter, Map<String, String>>, MutableList<ProfileItem>>(
                 context, params, result
             ) {
 
@@ -89,7 +89,7 @@ class ProfileRepositoryImp @Inject constructor(
             override fun shouldSaveToLocal(params: Pair<ProfileFilter, Map<String, String>>): Boolean =
                 false
 
-            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
+            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
                 return profileRemoteDataSource.getProfiles(params.second, params.first)
             }
 
@@ -99,11 +99,11 @@ class ProfileRepositoryImp @Inject constructor(
     override suspend fun getPagingUserByProfileFilter(
         lastUserId: Long,
         params: Pair<ProfileFilter, Map<String, String>>,
-        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        result: MutableLiveData<Resource<MutableList<ProfileItem>>>
     ) {
         val finalParams = Pair(lastUserId, params)
         object :
-            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<out GenericItem>>(
+            NetworkBoundResources<Pair<Long, Pair<ProfileFilter, Map<String, String>>>, MutableList<ProfileItem>>(
                 context,
                 finalParams,
                 result
@@ -117,7 +117,7 @@ class ProfileRepositoryImp @Inject constructor(
 
             override fun shouldShowLoading(): Boolean = false
 
-            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
+            override suspend fun callApi(): Resource<MutableList<ProfileItem>> {
                 val pair = finalParams.second
                 val userId = finalParams.first
                 val profileFilter = pair.first

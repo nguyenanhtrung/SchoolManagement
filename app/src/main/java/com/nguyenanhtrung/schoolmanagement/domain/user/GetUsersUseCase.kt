@@ -14,7 +14,7 @@ import javax.inject.Inject
 class GetUsersUseCase @Inject constructor(
     private val userRepository: UserRepository,
     private val userTypeRepository: UserTypeRepository
-) : BaseUseCase<Long, MutableList<out GenericItem>>() {
+) : BaseUseCase<Long, MutableList<UserItem>>() {
 
     private val userTypes by lazy {
         userTypeRepository.getUserTypes()
@@ -22,7 +22,7 @@ class GetUsersUseCase @Inject constructor(
 
     override suspend fun execute(
         params: Long,
-        resultLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        resultLiveData: MutableLiveData<Resource<MutableList<UserItem>>>
     ) {
         delay(450)
         userTypes

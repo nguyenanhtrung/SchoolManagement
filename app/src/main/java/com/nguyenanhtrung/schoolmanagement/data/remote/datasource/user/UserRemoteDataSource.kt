@@ -15,12 +15,12 @@ interface UserRemoteDataSource {
 
     suspend fun createNewUser(createAccountParam: CreateAccountParam): Resource<String>
 
-    suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out GenericItem>>
+    suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>>
 
     suspend fun getPagingUsers(
         lastUserId: Long,
         userTypes: Map<String, String>
-    ): Resource<MutableList<out GenericItem>>
+    ): Resource<MutableList<UserItem>>
 
     suspend fun updateUserInfo(updateInfoParams: UpdateAccountInfoParams): Resource<Unit>
 

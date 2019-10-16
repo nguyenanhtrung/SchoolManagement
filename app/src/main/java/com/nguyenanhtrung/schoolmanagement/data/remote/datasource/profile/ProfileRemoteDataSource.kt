@@ -18,11 +18,11 @@ interface ProfileRemoteDataSource {
     suspend fun getProfiles(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out GenericItem>>
+    ): Resource<MutableList<ProfileItem>>
 
     suspend fun getPagingUsesByProfileStatus(
         lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out GenericItem>>
+    ): Resource<MutableList<ProfileItem>>
 }

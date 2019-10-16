@@ -19,35 +19,35 @@ import kotlinx.android.synthetic.main.fragment_list_item_with_adding_button.*
 import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
 
-class FacultiesFragment : BaseListItemFragment() {
+class FacultiesFragment {
 
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    private val facultiesViewModel by lazy {
-        ViewModelProviders.of(this, viewModelFactory)[FacultiesViewModel::class.java]
-    }
-
-    private val mainViewModel by lazy {
-        ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
-    }
-
-    override fun createFragmentViewModel(): BaseViewModel = facultiesViewModel
-
-    override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
-
-    override fun bindItemsViewModel(): BaseListItemViewModel = facultiesViewModel
-
-    override fun injectDependencies(application: Application) {
-        val myApp = application as MyApplication
-        myApp.appComponent.inject(this)
-    }
-
-    override fun bindSearchView(): SearchView = edit_text_search
-
-    override fun bindRecyclerView(): RecyclerView = recycler_view_items
-
-    override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
-        return inflater.inflate(R.layout.fragment_list_item_with_adding_button, container, false)
-    }
+//    @Inject
+//    lateinit var viewModelFactory: ViewModelProvider.Factory
+//
+//    private val facultiesViewModel by lazy {
+//        ViewModelProviders.of(this, viewModelFactory)[FacultiesViewModel::class.java]
+//    }
+//
+//    private val mainViewModel by lazy {
+//        ViewModelProviders.of(requireActivity())[MainViewModel::class.java]
+//    }
+//
+//    override fun createFragmentViewModel(): BaseViewModel = facultiesViewModel
+//
+//    override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
+//
+//    override fun bindItemsViewModel(): BaseListItemViewModel = facultiesViewModel
+//
+//    override fun injectDependencies(application: Application) {
+//        val myApp = application as MyApplication
+//        myApp.appComponent.inject(this)
+//    }
+//
+//    override fun bindSearchView(): SearchView = edit_text_search
+//
+//    override fun bindRecyclerView(): RecyclerView = recycler_view_items
+//
+//    override fun inflateLayout(inflater: LayoutInflater, container: ViewGroup?): View? {
+//        return inflater.inflate(R.layout.fragment_list_item_with_adding_button, container, false)
+//    }
 }

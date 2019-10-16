@@ -6,6 +6,7 @@ import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.datasource.schoolroom.SchoolRoomLocalDataSource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.Resource
 import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoom
+import com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem
 import com.nguyenanhtrung.schoolmanagement.data.remote.datasource.schoolroom.SchoolRoomRemoteDataSource
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.CreateSchoolRoomParams
 import com.nguyenanhtrung.schoolmanagement.data.remote.model.UpdateSchoolRoomParams
@@ -40,24 +41,24 @@ class SchoolRoomRepositoryImp @Inject constructor(
         }.createCall()
     }
 
-    override suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<out GenericItem>>>) {
+    override suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>) {
         object :
-            NetworkBoundResources<Unit, MutableList<out GenericItem>>(context, Unit, result) {
+            NetworkBoundResources<Unit, MutableList<SchoolRoomItem>>(context, Unit, result) {
 
             override suspend fun shouldFetchFromServer(params: Unit): Boolean {
                 return !schoolRoomLocalDataSource.isSchoolRoomsSaved(0)
             }
 
             override fun shouldSaveToLocal(params: Unit): Boolean = true
-            override suspend fun saveToLocal(output: MutableList<out GenericItem>) {
+            override suspend fun saveToLocal(output: MutableList<SchoolRoomItem>) {
                 schoolRoomLocalDataSource.saveSchoolRooms(output)
             }
 
-            override suspend fun loadFromLocal(params: Unit): Resource<MutableList<out GenericItem>> {
+            override suspend fun loadFromLocal(params: Unit): Resource<MutableList<SchoolRoomItem>> {
                 return schoolRoomLocalDataSource.getSchoolRooms(0)
             }
 
-            override suspend fun callApi(): Resource<MutableList<out GenericItem>> {
+            override suspend fun callApi(): Resource<MutableList<SchoolRoomItem>> {
                 return schoolRoomRemoteDataSource.getSchoolRoomsAsync()
             }
 
@@ -66,9 +67,9 @@ class SchoolRoomRepositoryImp @Inject constructor(
 
     override suspend fun getPagingSchoolRoomsAsync(
         lastRoomId: Long,
-        result: MutableLiveData<Resource<MutableList<out Item>>>
+        result: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>
     ) {
-        object : NetworkBoundResources<Long, MutableList<out Item>>(context, lastRoomId, result) {
+        object : NetworkBoundResources<Long, MutableList<SchoolRoomItem>>(context, lastRoomId, result) {
 
             override fun shouldShowLoading(): Boolean = false
             override fun shouldSaveToLocal(params: Long): Boolean = true
@@ -78,16 +79,16 @@ class SchoolRoomRepositoryImp @Inject constructor(
                 return schoolRoomLocalDataSource.isSchoolRoomsSaved(params.toInt())
             }
 
-            override suspend fun loadFromLocal(params: Long): Resource<MutableList<out Item>> {
+            override suspend fun loadFromLocal(params: Long): Resource<MutableList<SchoolRoomItem>> {
                 return schoolRoomLocalDataSource.getSchoolRooms(offset = params.toInt())
             }
 
-            override suspend fun saveToLocal(output: MutableList<out Item>) {
+            override suspend fun saveToLocal(output: MutableList<SchoolRoomItem>) {
                 schoolRoomLocalDataSource.saveSchoolRooms(output)
             }
 
 
-            override suspend fun callApi(): Resource<MutableList<out Item>> {
+            override suspend fun callApi(): Resource<MutableList<SchoolRoomItem>> {
                 return schoolRoomRemoteDataSource.getPagingSchoolRoomsAsync(params)
             }
         }.createCall()

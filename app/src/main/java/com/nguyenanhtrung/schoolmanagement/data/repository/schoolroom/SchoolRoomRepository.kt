@@ -11,10 +11,11 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 
 interface SchoolRoomRepository {
 
-    suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<out GenericItem>>>)
+    suspend fun getSchoolRoomsAsync(result: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>)
+
     suspend fun getPagingSchoolRoomsAsync(
         lastRoomId: Long,
-        result: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        result: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>
     )
 
     suspend fun createSchoolRoom(

@@ -14,8 +14,8 @@ import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 import javax.inject.Inject
 
-class SchoolRoomsViewModel<SchoolRoomItem> @Inject constructor(private val getSchoolRoomsUseCase: GetSchoolRoomsUseCase) :
-    BaseListItemViewModel<com.nguyenanhtrung.schoolmanagement.data.local.model.SchoolRoomItem>() {
+class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase: GetSchoolRoomsUseCase) :
+    BaseListItemViewModel<SchoolRoomItem>() {
 
     private val _roomDetailNavigation by lazy {
         MutableLiveData<Event<SchoolRoom>>()
@@ -23,7 +23,7 @@ class SchoolRoomsViewModel<SchoolRoomItem> @Inject constructor(private val getSc
     internal val roomDetailNavigation: LiveData<Event<SchoolRoom>>
         get() = _roomDetailNavigation
 
-    override fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean {
+    override fun customCheckItemWithQuery(query: String, item: SchoolRoomItem): Boolean {
         val schoolRoomItem = item as SchoolRoomItem
         val schoolRoom = schoolRoomItem.schoolRoom
         return schoolRoom.roomName.contains(query, true) || schoolRoom.roomNumber.contains(
@@ -33,15 +33,15 @@ class SchoolRoomsViewModel<SchoolRoomItem> @Inject constructor(private val getSc
     }
 
     override fun loadMoreItems(
-        lastItem: GenericItem,
-        itemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        lastItem: SchoolRoomItem,
+        itemsLiveData: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>
     ) {
         val schoolRoomItem = lastItem as SchoolRoomItem
         val lastRoom = schoolRoomItem.schoolRoom
         getSchoolRoomsUseCase.invoke(viewModelScope, lastRoom.roomId, itemsLiveData)
     }
 
-    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>) {
+    override fun loadItemsFromServer(getItemsLiveData: MutableLiveData<Resource<MutableList<SchoolRoomItem>>>) {
         getSchoolRoomsUseCase.invoke(viewModelScope, -1, getItemsLiveData)
     }
 

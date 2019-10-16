@@ -13,7 +13,7 @@ import com.xwray.groupie.kotlinandroidextensions.Item
 abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 
     internal val itemCopys by lazy {
-        mutableListOf<Item>()
+        mutableListOf<T>()
     }
 
     internal var posItemSelected = -1
@@ -41,9 +41,9 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
         get() = _errorItemsLiveData
 
     private val _itemsLiveData by lazy {
-        MutableLiveData<MutableList<out GenericItem>>()
+        MutableLiveData<MutableList<T>>()
     }
-    internal val itemsLiveData: LiveData<MutableList<out GenericItem>>
+    internal val itemsLiveData: LiveData<MutableList<T>>
         get() = _itemsLiveData
 
     protected val _clearItemsLiveData by lazy {
@@ -71,7 +71,7 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 //    }
 
     internal fun handleStatusGetItems(getItemsResult:
-                                      Resource<MutableList<out GenericItem>>) {
+                                      Resource<MutableList<T>>) {
 
         when (getItemsResult.status) {
             Status.EMPTY -> {
@@ -163,11 +163,11 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 //    }
 
 
-    protected abstract fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean
+    protected abstract fun customCheckItemWithQuery(query: String, item: T): Boolean
 
     protected abstract fun loadMoreItems(
-        lastItem: GenericItem,
-        itemsLiveData: MutableLiveData<Resource<MutableList<out GenericItem>>>
+        lastItem: T,
+        itemsLiveData: MutableLiveData<Resource<MutableList<T>>>
     )
 
     protected abstract fun loadItemsFromServer(

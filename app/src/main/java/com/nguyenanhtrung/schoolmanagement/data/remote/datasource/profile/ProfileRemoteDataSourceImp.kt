@@ -46,7 +46,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
     override suspend fun getProfiles(
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out GenericItem>> {
+    ): Resource<MutableList<ProfileItem>> {
         val querySnapshot = getProfilesQuery(profileFilter)
         val querySize = querySnapshot.size()
         if (querySize == 0) {
@@ -60,7 +60,7 @@ class ProfileRemoteDataSourceImp @Inject constructor(
         lastUserId: Long,
         userTypes: Map<String, String>,
         profileFilter: ProfileFilter
-    ): Resource<MutableList<out GenericItem>> {
+    ): Resource<MutableList<ProfileItem>> {
         val lastDocument =
             firestore.collection(AppKey.USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,

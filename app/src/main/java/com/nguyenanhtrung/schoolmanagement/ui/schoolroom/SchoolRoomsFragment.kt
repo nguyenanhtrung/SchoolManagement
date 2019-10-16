@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_list_item_with_adding_button.*
 import kotlinx.android.synthetic.main.include_search_view.*
 import javax.inject.Inject
 
-class SchoolRoomsFragment : BaseListItemFragment() {
+class SchoolRoomsFragment : BaseListItemFragment<SchoolRoomItem>() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
@@ -45,7 +45,9 @@ class SchoolRoomsFragment : BaseListItemFragment() {
 
     override fun bindActivityViewModel(): BaseActivityViewModel = mainViewModel
 
-    override fun bindItemsViewModel(): BaseListItemViewModel = schoolRoomsViewModel
+    override fun bindItemsViewModel(): BaseListItemViewModel<SchoolRoomItem> {
+        return schoolRoomsViewModel
+    }
 
     override fun bindRecyclerView(): RecyclerView = recycler_view_items
 

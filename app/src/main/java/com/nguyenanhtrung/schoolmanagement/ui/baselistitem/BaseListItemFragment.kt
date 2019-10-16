@@ -16,7 +16,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
 
 
-abstract class BaseListItemFragment : BaseFragment() {
+abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
 
     private val itemsViewModel by lazy {
         bindItemsViewModel()
@@ -180,6 +180,6 @@ abstract class BaseListItemFragment : BaseFragment() {
     }
 
     abstract fun bindRecyclerView(): RecyclerView
-    abstract fun bindItemsViewModel(): BaseListItemViewModel
+    abstract fun bindItemsViewModel(): BaseListItemViewModel<T>
     abstract fun bindSearchView(): SearchView
 }

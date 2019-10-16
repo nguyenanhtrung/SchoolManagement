@@ -58,7 +58,7 @@ class UserRemoteDataSourceImp @Inject constructor(
         return Resource.success(userDetail)
     }
 
-    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<out GenericItem>> {
+    override suspend fun getUsers(userTypes: Map<String, String>): Resource<MutableList<UserItem>> {
         val querySnapshot = firestore.collection(USER_COMMONS_PATH)
             .orderBy(AppKey.USER_ID_FIELD)
             .whereGreaterThan(AppKey.USER_ID_FIELD, 1)
@@ -253,7 +253,7 @@ class UserRemoteDataSourceImp @Inject constructor(
     override suspend fun getPagingUsers(
         lastUserId: Long,
         userTypes: Map<String, String>
-    ): Resource<MutableList<out GenericItem>> {
+    ): Resource<MutableList<UserItem>> {
         val lastDocument =
             firestore.collection(USER_COMMONS_PATH).whereEqualTo(
                 AppKey.USER_ID_FIELD,
