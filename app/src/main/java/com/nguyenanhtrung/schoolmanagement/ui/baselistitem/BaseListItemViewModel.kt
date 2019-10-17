@@ -56,16 +56,17 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem 
 
 
 
-//    internal fun onLoadMoreItem(lastItem: com.xwray.groupie.Item<ViewHolder>) {
-//        if (!shouldLoadMoreItem) {
-//            return
-//        }
-//        if (_stateLoadMoreItemLiveData.value == Status.LOADING) {
-//            return
-//        }
-//        _stateLoadMoreItemLiveData.value = Status.LOADING
-//        loadMoreItems(lastItem, _getItemsLiveData)
-//    }
+    internal fun onLoadMoreItem(lastItemPosition: Int) {
+        if (!shouldLoadMoreItem) {
+            return
+        }
+        if (_stateLoadMoreItemLiveData.value == Status.LOADING) {
+            return
+        }
+        _stateLoadMoreItemLiveData.value = Status.LOADING
+        val lastItem = getItem(lastItemPosition)
+        loadMoreItems(lastItem, _getItemsLiveData)
+    }
 
     internal fun handleStatusGetItems(
         getItemsResult:
@@ -94,7 +95,6 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem 
 
                 val items = getItemsResult.data
                 items?.let {
-                    //                    itemCopys.addAll(it)
                     _itemsLiveData.value = it
                 }
             }
@@ -116,9 +116,9 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem 
         onCustomClickItem(position)
     }
 
-//    internal fun onClickButtonRetry() {
-//        loadItemsFromServer(_getItemsLiveData)
-//    }
+    internal fun onClickButtonRetry() {
+        loadItemsFromServer(_getItemsLiveData)
+    }
 
     private fun enableLoadMore() {
         if (!shouldLoadMoreItem) {

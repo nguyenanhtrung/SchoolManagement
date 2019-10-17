@@ -105,7 +105,7 @@ class SchoolRoomsFragment : BaseListItemFragment<SchoolRoomItem>() {
         super.setupUiEvents()
         float_button_add.setOnClickListener {
             var lastRoomId = 0L
-            val itemCount = getItemCount()
+            val itemCount = listItemCount
             if (itemCount != 0) {
                 val lastRoomItem = getItem(itemCount - 1) as SchoolRoomItem
                 val lastRoom = lastRoomItem.schoolRoom

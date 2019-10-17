@@ -14,7 +14,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseFragment
 import com.nguyenanhtrung.schoolmanagement.util.EndlessScrollListener
 
 
-abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
+abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem {
 
     private val itemsViewModel by lazy {
         bindItemsViewModel()
@@ -30,6 +30,8 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
         FastAdapter.with(itemAdapter)
     }
 
+    protected val listItemCount = fastAdapter.itemCount
+
     private lateinit var endlessScrollListener: EndlessScrollListener
     private lateinit var searchView: SearchView
 
@@ -43,8 +45,6 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
         subscribeClearItems()
         itemsViewModel.loadItems()
     }
-
-
 
 
     private fun subscribeClearItems() {
@@ -69,7 +69,7 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
 
     private fun subscribeEmptyStateGetItems() {
         itemsViewModel.emptyUsersLiveData.observe(this, Observer {
-            when(it) {
+            when (it) {
                 ListEmptyState.CLEAR -> {
                     itemAdapter.clear()
                 }
@@ -92,7 +92,7 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
                             fastAdapter: FastAdapter<ErrorItem>,
                             item: ErrorItem
                         ) {
-
+                            itemsViewModel.onClickButtonRetry()
                         }
 
                     })
@@ -103,12 +103,12 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
     }
 
     private fun subscribeStateLoadingMoreItems() {
-//        itemsViewModel.stateLoadMoreItemLiveData.observe(this, Observer {
-//            when (it) {
-//                Status.LOADING -> itemAdapter.add(LoadMoreItem())
-//                else -> itemAdapter.removeLastItem()
-//            }
-//        })
+        itemsViewModel.stateLoadMoreItemLiveData.observe(this, Observer {
+            when (it) {
+                Status.LOADING -> itemAdapter.add(LoadMoreItem())
+                else -> itemAdapter.remove(listItemCount - 1)
+            }
+        })
     }
 
     private fun bindBaseViews() {
@@ -130,9 +130,10 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
 
             override fun onQueryTextChange(newText: String): Boolean {
                 itemAdapter.filter(newText)
-                itemAdapter.itemFilter.filterPredicate = {item: GenericItem, constraint: CharSequence? ->
-                    itemsViewModel.onSearchItemQueryChange(constraint.toString(), item)
-                }
+                itemAdapter.itemFilter.filterPredicate =
+                    { item: GenericItem, constraint: CharSequence? ->
+                        itemsViewModel.onSearchItemQueryChange(constraint.toString(), item)
+                    }
                 return true
             }
         })
@@ -161,16 +162,17 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
     }
 
     private fun setupLoadMoreItemEvent() {
-//        if (!::endlessScrollListener.isInitialized) {
-//            endlessScrollListener =
-//                object : EndlessScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
-//                    override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
-//                        val lastUserItem = itemAdapter.getItem(itemAdapter.itemCount - 1)
-//                        itemsViewModel.onLoadMoreItem(lastUserItem)
-//                    }
-//                }
-//        }
-//        recyclerView.addOnScrollListener(endlessScrollListener)
+        if (!::endlessScrollListener.isInitialized) {
+            endlessScrollListener =
+                object : EndlessScrollListener(recyclerView.layoutManager as LinearLayoutManager) {
+                    override fun onLoadMore(totalItemsCount: Int, view: RecyclerView) {
+                        val itemCount = listItemCount
+                        val lastItemPosition = itemCount - 1
+                        itemsViewModel.onLoadMoreItem(lastItemPosition)
+                    }
+                }
+        }
+        recyclerView.addOnScrollListener(endlessScrollListener)
     }
 
     protected fun getItem(position: Int): GenericItem? {
@@ -184,8 +186,6 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
     protected fun onClickViewInItemView(clickEventHook: ClickEventHook<out GenericItem>) {
         fastAdapter.addEventHook(clickEventHook)
     }
-
-    protected fun getItemCount() = fastAdapter.itemCount
 
     protected fun addItem(item: GenericItem) {
         itemAdapter.add(item)
