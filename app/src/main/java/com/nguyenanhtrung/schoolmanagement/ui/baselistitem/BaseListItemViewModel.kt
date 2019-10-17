@@ -10,11 +10,7 @@ import com.nguyenanhtrung.schoolmanagement.ui.base.BaseViewModel
 import com.xwray.groupie.ViewHolder
 import com.xwray.groupie.kotlinandroidextensions.Item
 
-abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
-
-    internal val itemCopys by lazy {
-        mutableListOf<T>()
-    }
+abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem {
 
     internal var posItemSelected = -1
 
@@ -22,7 +18,7 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 
     private var shouldLoadMoreItem = true
 
-    protected val _getItemsLiveData : MutableLiveData<Resource<MutableList<T>>> by lazy {
+    protected val _getItemsLiveData: MutableLiveData<Resource<MutableList<T>>> by lazy {
         createApiResultLiveData<MutableList<T>>()
     }
     internal val getItemsLiveData: LiveData<Resource<MutableList<T>>>
@@ -59,6 +55,7 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
         get() = _stateLoadMoreItemLiveData
 
 
+
 //    internal fun onLoadMoreItem(lastItem: com.xwray.groupie.Item<ViewHolder>) {
 //        if (!shouldLoadMoreItem) {
 //            return
@@ -70,8 +67,11 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 //        loadMoreItems(lastItem, _getItemsLiveData)
 //    }
 
-    internal fun handleStatusGetItems(getItemsResult:
-                                      Resource<MutableList<T>>) {
+    internal fun handleStatusGetItems(
+        getItemsResult:
+        Resource<MutableList<T>>
+    ) {
+
 
         when (getItemsResult.status) {
             Status.EMPTY -> {
@@ -94,7 +94,7 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
 
                 val items = getItemsResult.data
                 items?.let {
-//                    itemCopys.addAll(it)
+                    //                    itemCopys.addAll(it)
                     _itemsLiveData.value = it
                 }
             }
@@ -137,33 +137,22 @@ abstract class BaseListItemViewModel<T> : BaseViewModel() where T : GenericItem{
         return emptyState is ListEmptyState.EMPTY
     }
 
-//    internal fun onSearchItemQueryChange(query: String) {
-//        if ((lastQueryItem == null && query.isEmpty()) || (lastQueryItem == query) || isItemsEmpty()) {
-//            return
-//        }
-//        lastQueryItem = query
-//
-//        //clear current list item in recycler view
-//        _clearItemsLiveData.value = true
-//        if (query.isEmpty()) {
-//            enableLoadMore()
-//            //copy list from item copys to current list in recycler view
-//            _itemsLiveData.value = itemCopys
-//        } else {
-//            disableLoadMore()
-//            val newItems = mutableListOf<Item>()
-//            val items = _itemsLiveData.value ?: return
-//            items.forEach {
-//                if (customCheckItemWithQuery(query, it)) {
-//                    newItems += it
-//                }
-//            }
-//            _itemsLiveData.value = newItems
-//        }
-//    }
+    protected fun getItem(position: Int): T {
+        val items = _itemsLiveData.value ?: throw IllegalStateException()
+        return items[position]
+    }
+
+    internal fun onSearchItemQueryChange(query: String, item: GenericItem): Boolean {
+        if (query.isEmpty()) {
+            enableLoadMore()
+        } else {
+            disableLoadMore()
+        }
+        return customCheckItemWithQuery(query, item)
+    }
 
 
-    protected abstract fun customCheckItemWithQuery(query: String, item: T): Boolean
+    protected abstract fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean
 
     protected abstract fun loadMoreItems(
         lastItem: T,

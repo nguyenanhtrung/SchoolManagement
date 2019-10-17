@@ -3,10 +3,12 @@ package com.nguyenanhtrung.schoolmanagement.ui.profiles
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.mikepenz.fastadapter.GenericItem
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
 import com.nguyenanhtrung.schoolmanagement.domain.profile.GetFilterProfileDatasUseCase
 import com.nguyenanhtrung.schoolmanagement.domain.user.GetUsersByProfileStatusUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
+import java.util.*
 import javax.inject.Inject
 
 class ProfilesViewModel @Inject constructor(
@@ -56,14 +58,15 @@ class ProfilesViewModel @Inject constructor(
 
 
     override fun onCustomClickItem(position: Int) {
-        val profileItem: ProfileItem = itemCopys[position]
+        val profileItem: ProfileItem = getItem(position)
         val profile = profileItem.profile
         _profileDetailScreen.value = Event(profile)
     }
 
-    override fun customCheckItemWithQuery(query: String, item: ProfileItem): Boolean {
-        val profile = item.profile
-        return profile.name.contains(query) || profile.userId.toString().contains(query)
+    override fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean {
+        val profileItem = item as ProfileItem
+        val name = profileItem.profile.name
+        return name.toLowerCase(Locale.getDefault()).contains(query.toLowerCase(Locale.getDefault()))
     }
 
     override fun loadMoreItems(

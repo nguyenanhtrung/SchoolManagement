@@ -6,9 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.mikepenz.fastadapter.FastAdapter
-import com.mikepenz.fastadapter.GenericFastAdapter
-import com.mikepenz.fastadapter.GenericItem
+import com.mikepenz.fastadapter.*
 import com.mikepenz.fastadapter.adapters.GenericItemAdapter
 import com.mikepenz.fastadapter.listeners.ClickEventHook
 import com.nguyenanhtrung.schoolmanagement.data.local.model.*
@@ -45,6 +43,8 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
         subscribeClearItems()
         itemsViewModel.loadItems()
     }
+
+
 
 
     private fun subscribeClearItems() {
@@ -129,7 +129,10 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
             override fun onQueryTextSubmit(query: String?): Boolean = false
 
             override fun onQueryTextChange(newText: String): Boolean {
-//                itemsViewModel.onSearchItemQueryChange(newText)
+                itemAdapter.filter(newText)
+                itemAdapter.itemFilter.filterPredicate = {item: GenericItem, constraint: CharSequence? ->
+                    itemsViewModel.onSearchItemQueryChange(constraint.toString(), item)
+                }
                 return true
             }
         })
@@ -137,9 +140,18 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem{
     }
 
     private fun setupItemClickEvent() {
-//        itemAdapter.setOnItemClickListener { item, _ ->
-//            itemsViewModel.onClickItem(itemAdapter.getAdapterPosition(item))
-//        }
+        fastAdapter.onClickListener = object : ClickListener<GenericItem> {
+            override fun invoke(
+                v: View?,
+                adapter: IAdapter<IItem<out RecyclerView.ViewHolder>>,
+                item: IItem<out RecyclerView.ViewHolder>,
+                position: Int
+            ): Boolean {
+                itemsViewModel.onClickItem(position)
+                return true
+            }
+
+        }
     }
 
     private fun setupRecyclerViewItems() {

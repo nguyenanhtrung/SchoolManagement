@@ -87,6 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_small_100"
+            android:padding="@dimen/padding_small_50"
             android:textAppearance="@style/TextNormal"
             app:layout_constraintEnd_toEndOf="@+id/text_user_id"
             app:layout_constraintStart_toStartOf="@+id/text_account_name"
@@ -224,10 +225,10 @@
             android:layout_marginStart="@dimen/margin_small_100"
             android:text="- 123123"
             android:textAppearance="@style/TitleNormal"
+            app:layout_constraintBaseline_toBaselineOf="@id/text_account_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/text_account_name"
-            tools:layout_editor_absoluteY="168dp" />
+            app:layout_constraintStart_toEndOf="@+id/text_account_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

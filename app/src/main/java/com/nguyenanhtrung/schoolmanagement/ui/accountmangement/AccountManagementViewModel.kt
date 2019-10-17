@@ -12,6 +12,7 @@ import com.nguyenanhtrung.schoolmanagement.domain.userid.GetMaxUserIdUseCase
 import com.nguyenanhtrung.schoolmanagement.ui.baselistitem.BaseListItemViewModel
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
+import java.util.*
 import javax.inject.Inject
 
 class AccountManagementViewModel @Inject constructor(
@@ -67,7 +68,7 @@ class AccountManagementViewModel @Inject constructor(
     override fun onCustomClickItem(position: Int) {
         if (posAccountSelected == position && _userDetailLiveData.value != null) {
             //navigate to account detail with password and account info already have
-            val selectedUserItem = itemCopys[posAccountSelected] as UserItem
+            val selectedUserItem = getItem(posAccountSelected)
             val selectedUser = selectedUserItem.user
             val userDetailResource = _userDetailLiveData.value ?: return
             val userDetail = userDetailResource.data ?: return
@@ -76,7 +77,7 @@ class AccountManagementViewModel @Inject constructor(
             return
         }
         posAccountSelected = position
-        val selectedItem = itemCopys[position] as UserItem
+        val selectedItem = getItem(position) as UserItem
         val selectedUser = selectedItem.user
         getUserDetailUseCase.invoke(
             viewModelScope,
@@ -89,19 +90,16 @@ class AccountManagementViewModel @Inject constructor(
         if (posAccountSelected < 0) {
             return
         }
-        val selectedUserItem = itemCopys[posAccountSelected] as UserItem
+        val selectedUserItem = getItem(posAccountSelected)
         val selectedUser = selectedUserItem.user
         val accountDetailParams = AccountDetailParams(selectedUser, userDetail)
         _navToAccountDetail.value = Event(accountDetailParams)
     }
 
-    override fun customCheckItemWithQuery(
-        query: String,
-        item: UserItem
-    ): Boolean {
-        val user = item.user
-        val accountName = user.name
-        return accountName.contains(query)
+    override fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean {
+        val userItem = item as UserItem
+        return userItem.user.name.toLowerCase(Locale.getDefault())
+            .contains(query.toLowerCase(Locale.getDefault()))
     }
 
 

@@ -23,7 +23,7 @@ class SchoolRoomsViewModel @Inject constructor(private val getSchoolRoomsUseCase
     internal val roomDetailNavigation: LiveData<Event<SchoolRoom>>
         get() = _roomDetailNavigation
 
-    override fun customCheckItemWithQuery(query: String, item: SchoolRoomItem): Boolean {
+    override fun customCheckItemWithQuery(query: String, item: GenericItem): Boolean {
         val schoolRoomItem = item as SchoolRoomItem
         val schoolRoom = schoolRoomItem.schoolRoom
         return schoolRoom.roomName.contains(query, true) || schoolRoom.roomNumber.contains(
