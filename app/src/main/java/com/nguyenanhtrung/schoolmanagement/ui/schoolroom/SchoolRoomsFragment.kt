@@ -86,6 +86,7 @@ class SchoolRoomsFragment : BaseListItemFragment<SchoolRoomItem>() {
     private fun subscribeSuccessAddSchoolRoom() {
         mainViewModel.stateAddSchoolRoom.observe(this, Observer {
             it.getContentIfNotHandled()?.let { schoolRoom ->
+                
                 addItem(SchoolRoomItem(schoolRoom))
             }
         })

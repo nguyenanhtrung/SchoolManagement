@@ -57,6 +57,7 @@ class AddSchoolRoomFragment : BaseSchoolRoomFragment() {
     private fun subscribeStateAddSchoolRoom() {
         addRoomViewModel.stateSchoolRoomAdding.observe(this, Observer {
             it.data?.let { schoolRoom ->
+                addRoomViewModel.onSuccessAddSchoolRoom(schoolRoom.roomId)
                 mainViewModel.showMessage(R.string.title_success_add_school_room)
                 resetAllInput()
                 mainViewModel.notifySuccessAddSchoolRoom(schoolRoom)

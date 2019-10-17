@@ -191,6 +191,10 @@ abstract class BaseListItemFragment<T> : BaseFragment() where T : GenericItem {
         itemAdapter.add(item)
     }
 
+    protected fun removeItem(position: Int) {
+        itemAdapter.remove(position)
+    }
+
     abstract fun bindRecyclerView(): RecyclerView
     abstract fun bindItemsViewModel(): BaseListItemViewModel<T>
     abstract fun bindSearchView(): SearchView

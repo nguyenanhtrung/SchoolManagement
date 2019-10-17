@@ -48,7 +48,7 @@ class AppKey private constructor(){
         //
         const val ID_TASK_ACCOUNT = 600
         const val ID_TASK_PROFILES = 601
-        const val ID_TASK_SCHOOL_ROOMS = 494
+        const val ID_TASK_SCHOOL_ROOMS = 605
 
         const val PROFILE_IMAGES_PATH_STORAGE = "profile_images"
 

@@ -20,7 +20,7 @@ class AddSchoolRoomViewModel @Inject constructor(private val addSchoolRoomUseCas
     internal val stateSchoolRoomAdding: LiveData<Resource<SchoolRoom>>
         get() = _stateSchoolRoomAdding
 
-    var lastRoomId: Long = 0L
+    internal var lastRoomId: Long = 0L
 
     internal fun onClickButtonConfirm(
         roomNumber: String,
@@ -47,5 +47,9 @@ class AddSchoolRoomViewModel @Inject constructor(private val addSchoolRoomUseCas
             isOfficeRoom
         )
         addSchoolRoomUseCase.invoke(viewModelScope, createRoomParams, _stateSchoolRoomAdding)
+    }
+
+    internal fun onSuccessAddSchoolRoom(newId: Long) {
+        lastRoomId = newId
     }
 }
